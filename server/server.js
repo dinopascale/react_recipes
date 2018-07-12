@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const custoErrorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./api/users');
+const db = require('./db/db');
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -15,7 +16,6 @@ app
   .prepare()
   .then(() => {
     const server = express();
-
     //MIDDLEWARES
     server.use(bodyParser.json());
 

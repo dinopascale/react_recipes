@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const custoErrorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./api/users');
+const recipeRoutes = require('./api/recipes');
 const db = require('./db/db');
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -21,6 +22,7 @@ app
 
     //API ROUTES
     server.use('/api', userRoutes);
+    server.use('/api', recipeRoutes);
 
     //DYNAMIC ROUTES
 

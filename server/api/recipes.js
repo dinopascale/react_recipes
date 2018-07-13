@@ -90,32 +90,6 @@ router.get('/recipes/:id', async (req, res, next) => {
   }
 });
 
-router.delete('/recipes/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const obId = new ObjectId(id);
-
-    const deletedRecipe = await Recipe.findByIdAndRemove(obId);
-
-    if (!deletedRecipe) {
-      return res.status(404).json({
-        message: `No recipe with ID: ${id} was found`
-      });
-    }
-
-    res.status(200).json({
-      message: 'Recipe Deleted',
-      request: {
-        methods: ['GET'],
-        endpoint: req.headers.host + '/api/recipes/'
-      }
-    });
-  } catch (e) {
-    e.status = 400;
-    next(e);
-  }
-});
-
 router.patch('/recipes/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -134,6 +108,32 @@ router.patch('/recipes/:id', async (req, res, next) => {
 
     res.status(200).json({
       message: 'Recipe Updated!',
+      request: {
+        methods: ['GET'],
+        endpoint: req.headers.host + '/api/recipes/'
+      }
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
+router.delete('/recipes/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const obId = new ObjectId(id);
+
+    const deletedRecipe = await Recipe.findByIdAndRemove(obId);
+
+    if (!deletedRecipe) {
+      return res.status(404).json({
+        message: `No recipe with ID: ${id} was found`
+      });
+    }
+
+    res.status(200).json({
+      message: 'Recipe Deleted',
       request: {
         methods: ['GET'],
         endpoint: req.headers.host + '/api/recipes/'

@@ -4,7 +4,7 @@ const nextJS = require('next');
 const bodyParser = require('body-parser');
 
 const custoErrorHandler = require('./middleware/errorHandler');
-const userRoutes = require('./api/users');
+const userRoutes = require('./api/user');
 const recipeRoutes = require('./api/recipes');
 const db = require('./db/db');
 

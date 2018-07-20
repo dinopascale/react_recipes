@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const recipeSchema = mongoose.Schema({
   name: {
@@ -26,12 +27,18 @@ const recipeSchema = mongoose.Schema({
     default: true
   },
   _creator: {
-    type: String
-    // required: true
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   },
   img: {
-    type: String
-    // default:
+    type: String,
+    trim: true,
+    default:
+      'https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg',
+    validate: {
+      validator: validator.isURL,
+      message: '{VALUE} is not a URL'
+    }
   },
   directions: {
     type: String,

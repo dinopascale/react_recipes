@@ -1,21 +1,25 @@
 const express = require('express');
 const { ObjectId } = require('mongoose').Types;
+const checkAuth = require('../middleware/check-auth');
+const checkAuthor = require('../middleware/check-author');
 
 const User = require('../models/user');
 
 const router = express.Router();
 
-router.post('/user/signup', async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
+//ONLY FOR DEV, NOT USABLE IN PRODUCTION
 
-    const user = await new User({ email, password }).save();
-    res.status(200).json({ message: 'User Subs', user });
+router.get('/users', async (req, res, next) => {
+  try {
+    const users = await User.find({}).select('-__v');
+    res.status(200).json({ total: users.length, users });
   } catch (e) {
     e.status = 400;
     next(e);
   }
 });
+
+//USER LOGIN
 
 router.post('/user/login', async (req, res, next) => {
   try {
@@ -35,19 +39,36 @@ router.post('/user/login', async (req, res, next) => {
   }
 });
 
-router.get('/user', async (req, res, next) => {
+//USER SIGNUP
+
+router.post('/user/signup', async (req, res, next) => {
   try {
-    const users = await User.find({}).select('-__v');
-    res.status(200).json({ users });
+    const { email, password, username } = req.body;
+
+    const user = await new User({ email, password, username }).save();
+
+    const token = await user.generateAuthToken();
+
+    res.status(200).json({ message: 'User Subs', user, token });
   } catch (e) {
     e.status = 400;
     next(e);
   }
 });
 
-router.delete('/user/:id', async (req, res, next) => {
+//GET SINGLE USER - EDITABLE IF AUTHOR
+
+router.get('/user/:id', async (req, res, next) => {});
+
+//UPDATE SINGLE USER - GUARDED
+
+router.patch('/user/:id', checkAuth, checkAuthor, async (req, res, next) => {});
+
+//DELETE SINGLE USER - GUARDED
+
+router.delete('/user/:id', checkAuth, checkAuthor, async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id } = res.locals;
     const obId = new ObjectId(id);
 
     const deletedUser = await User.findByIdAndRemove(obId);

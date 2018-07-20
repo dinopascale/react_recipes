@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
   email: {
     type: String,
     required: [true, 'Email is required'],
@@ -19,6 +24,21 @@ const userSchema = mongoose.Schema({
     required: [true, 'Password is required'],
     trim: true,
     minlength: [6, 'Your password must be at least six characters long']
+  },
+  bio: {
+    type: String,
+    trim: true,
+    maxlength: 140
+  },
+  avatar: {
+    type: String,
+    trim: true,
+    default:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/240px-Placeholder_no_text.svg.png',
+    validate: {
+      validator: validator.isURL,
+      message: '{VALUE} is not a URL'
+    }
   }
 });
 
@@ -74,8 +94,10 @@ userSchema.pre('save', async function(next) {
 
 userSchema.post('save', function(err, doc, next) {
   if (err.name === 'MongoError' && err.code === 11000) {
-    const e = new Error('Email already taken');
-    e.statuss = 409;
+    const e = new Error();
+    e.message = err.message.includes('email')
+      ? 'Email already taken'
+      : 'Username already taken';
     next(e);
   } else {
     next(err);

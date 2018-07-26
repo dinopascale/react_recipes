@@ -1,0 +1,27 @@
+import { Fragment } from 'react';
+import Link from 'next/link';
+
+export default () => (
+  <Fragment>
+    <Link href="/">
+      <a>
+        <img src="/static/chef.png" alt="React Recipes Logo" />
+      </a>
+    </Link>
+    <style jsx>
+      {`
+        a {
+          flex: 1 0 0;
+          max-width: 50px;
+          text-align: right;
+        }
+
+        @media (min-width: 499px) {
+          a {
+            text-align: left;
+          }
+        }
+      `}
+    </style>
+  </Fragment>
+);

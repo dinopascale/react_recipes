@@ -10,9 +10,10 @@ const router = express.Router();
 
 router.get('/recipes', async (req, res, next) => {
   try {
-    const recipes = await Recipe.find({ sharable: true }).select(
-      'name preparationTime cookTime difficulty _creator img tag'
-    );
+    const num = req.query.num || 4;
+    const recipes = await Recipe.find({ sharable: true })
+      .limit(+num)
+      .select('name preparationTime cookTime difficulty _creator img tag');
 
     res.status(200).json({
       total: recipes.length,
@@ -21,7 +22,7 @@ router.get('/recipes', async (req, res, next) => {
           ...recipe._doc,
           request: {
             methods: ['GET'],
-            endpoint: req.headers.host + '/api/recipes/' + recipe._doc._id
+            endpoint: req.headers.host + '/api/recipe/' + recipe._doc._id
           }
         };
       })

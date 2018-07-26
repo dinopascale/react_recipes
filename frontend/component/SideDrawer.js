@@ -1,5 +1,7 @@
 import { Fragment } from 'react';
-import NavigationElements from '../../shared/NavigationElements';
+
+import Header from './sideDrawer/Header';
+import NavigationElements from '../shared/NavigationElements';
 import Backdrop from './sideDrawer/Backdrop';
 
 export default props => {
@@ -7,7 +9,8 @@ export default props => {
     <Fragment>
       <Backdrop show={props.open} clicked={props.closed} />
       <div className={props.open ? 'side-drawer open' : 'side-drawer close'}>
-        <nav>
+        <Header />
+        <nav style={{ padding: '0 15px' }}>
           <NavigationElements />
         </nav>
       </div>
@@ -21,9 +24,8 @@ export default props => {
           top: 0;
           z-index: 200;
           background-color: white;
-          padding: 32px 16px;
           box-sizing: border-box;
-          transition: transform 0.3s ease-out;
+          transition: transform 0.4s ease-out;
         }
 
         @media (min-width: 499px) {
@@ -33,12 +35,12 @@ export default props => {
         }
 
         .open {
-          transform: translateX(0);
+          transform: translate(0, 0);
           box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.3);
         }
 
         .close {
-          transform: translateX(-100%);
+          transform: translate(-100%, 0);
         }
       `}</style>
     </Fragment>

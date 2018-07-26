@@ -1,8 +1,8 @@
-import NavigationElements from '../../shared/NavigationElements';
-import Logo from './header/Logo';
-import ToggleButton from './header/ToggleButton';
+import NavigationElements from '../shared/NavigationElements';
+import Logo from './toolbar/Logo';
+import ToggleButton from './toolbar/ToggleButton';
 
-const Header = props => (
+const Toolbar = props => (
   <div className="navbar">
     <ToggleButton openSideDrawer={props.opened} />
     <Logo />
@@ -14,6 +14,7 @@ const Header = props => (
         display: flex;
         justify-content: space-between;
         flex: 1 0 0;
+        padding: 0 10px;
       }
 
       .desktop-only {
@@ -30,4 +31,4 @@ const Header = props => (
   </div>
 );
 
-export default Header;
+export default Toolbar;

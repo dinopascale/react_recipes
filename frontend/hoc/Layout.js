@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Head from 'next/head';
 
-import Header from '../component/Header';
+import Toolbar from '../component/Toolbar';
 import SideDrawer from '../component/SideDrawer';
 
 class Layout extends React.Component {
@@ -35,13 +35,19 @@ class Layout extends React.Component {
           />
         </Head>
         <div className="app-container">
-          <Header opened={this.openSideDrawerHandler} />
-          <SideDrawer open={this.state.showSideDrawer} closed={this.closeSideDrawerHandler} />
-          {this.props.children}
+          <Toolbar opened={this.openSideDrawerHandler} />
+          <SideDrawer
+            open={this.state.showSideDrawer}
+            closed={this.closeSideDrawerHandler}
+          />
+          <main className="content">{this.props.children}</main>
         </div>
         <style jsx>{`
           .app-container {
-            padding: 10px;
+          }
+          .content {
+            font-family: 'Open Sans', sans-serif;
+            box-sizing: border-box;
           }
         `}</style>
       </Fragment>

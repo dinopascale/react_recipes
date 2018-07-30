@@ -2,6 +2,7 @@ const express = require('express');
 const { parse } = require('url');
 const nextJS = require('next');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const custoErrorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./api/user');
@@ -20,6 +21,7 @@ app
 
     //MIDDLEWARES
     server.use(bodyParser.json());
+    server.use(cookieParser({ httpOnly: true }));
 
     //API ROUTES
     server.use('/api', userRoutes);

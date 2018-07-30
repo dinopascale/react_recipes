@@ -3,6 +3,7 @@ const { ObjectId } = require('mongoose').Types;
 
 const Recipe = require('../models/recipe');
 const checkAuth = require('../middleware/check-auth');
+const checkAuthor = require('../middleware/check-author');
 
 const router = express.Router();
 
@@ -68,16 +69,26 @@ router.post('/recipe', checkAuth, async (req, res, next) => {
 
 //GET SINGLE RECIPE BY ID - ADD "EDITABLE" FIELD IF AUTHOR
 
-router.get('/recipe/:id', async (req, res, next) => {
+router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
   try {
     const { id } = req.params;
     const obId = new ObjectId(id);
 
     const recipe = await Recipe.findByIdAndGetAuthor(obId);
 
+    let isAuthor = false;
+
+    if (
+      res.locals.issuerId &&
+      res.locals.issuerId.equals(recipe._creator._id)
+    ) {
+      isAuthor = true;
+    }
+
     res.status(200).json({
       recipe: {
         ...recipe,
+        isAuthor,
         request: {
           methods: ['UPDATE', 'DELETE'],
           endpoint: req.headers.host + '/api/recipes/' + recipe._id

@@ -1,5 +1,8 @@
 import { withRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
+
+import axios from 'axios';
+
 import Head from 'next/head';
 import { Fragment } from 'react';
 
@@ -17,6 +20,7 @@ const Recipe = props => (
         className="recipe-image"
       />
     </div>
+    <p>Is Author: {props.recipe.isAuthor ? 'Yes' : 'Nope'}</p>
     <h1 className="recipe-title">{props.recipe.name}</h1>
     <h5 className="recipe-author">by {props.recipe._creator.username}</h5>
     <InfoRow infos={props.infos} />
@@ -52,8 +56,23 @@ Recipe.getInitialProps = async props => {
     ? `${props.req.protocol}://${props.req.get('Host')}`
     : '';
 
-  const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`);
+  const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: props.req ? { cookie: props.req.headers.cookie } : undefined
+  });
+
   const data = await res.json();
+
+  //   const resp = await axios.get(
+  //     `${baseUrl}/api/recipe/${props.query.id}`,
+  //     { headers: props.req ? { cookie: props.req.headers.cookie } : undefined },
+  //     {
+  //       withCredentials: true
+  //     }
+  //   );
+
+  //   const data = resp.data;
 
   if (!data.recipe || data.recipe.length === 0) {
     props.res.redirect('/');
@@ -66,8 +85,6 @@ Recipe.getInitialProps = async props => {
     Difficulty: difficulty,
     Serves: serves
   };
-
-  console.log(infos);
 
   return {
     recipe: data.recipe,

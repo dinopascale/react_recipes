@@ -30,10 +30,12 @@ router.post('/user/login', async (req, res, next) => {
 
     const token = await user.generateAuthToken();
 
-    res.status(200).json({
-      message: 'Login Success',
-      token
-    });
+    res
+      .status(200)
+      .cookie('token', token, { maxAge: 3600000 })
+      .json({
+        message: 'Login Success'
+      });
   } catch (e) {
     next(e);
   }
@@ -58,7 +60,14 @@ router.post('/user/signup', async (req, res, next) => {
 
 //GET SINGLE USER - EDITABLE IF AUTHOR
 
-router.get('/user/:id', async (req, res, next) => {});
+router.get('/user/:id', async (req, res, next) => {
+  let authorId = new ObjectId(req.params.id);
+  const user = await User.findById(authorId);
+
+  res.status(200).json({
+    user
+  });
+});
 
 //UPDATE SINGLE USER - GUARDED
 

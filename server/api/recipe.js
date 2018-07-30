@@ -73,22 +73,14 @@ router.get('/recipe/:id', async (req, res, next) => {
     const { id } = req.params;
     const obId = new ObjectId(id);
 
-    const recipe = await Recipe.findById(obId).select(
-      '-__v -rateCount -rateValue'
-    );
-
-    if (!recipe) {
-      return res.status(404).json({
-        message: `No recipe with ID: ${id} was found`
-      });
-    }
+    const recipe = await Recipe.findByIdAndGetAuthor(obId);
 
     res.status(200).json({
       recipe: {
-        ...recipe._doc,
+        ...recipe,
         request: {
           methods: ['UPDATE', 'DELETE'],
-          endpoint: req.headers.host + '/api/recipes/' + recipe._doc._id
+          endpoint: req.headers.host + '/api/recipes/' + recipe._id
         }
       }
     });

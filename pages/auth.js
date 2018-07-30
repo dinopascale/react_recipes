@@ -1,9 +1,13 @@
-import Layout from '../frontend/hoc/Layout';
+import { Fragment } from 'react';
+import Head from 'next/head';
 
 const Auth = props => (
-  <Layout title="Recipes">
+  <Fragment>
+    <Head>
+      <title>Auth</title>
+    </Head>
     <h1>Login</h1>
-  </Layout>
+  </Fragment>
 );
 
 export default Auth;

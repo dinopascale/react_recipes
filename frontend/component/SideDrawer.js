@@ -5,11 +5,23 @@ import NavigationElements from '../shared/NavigationElements';
 import Backdrop from './sideDrawer/Backdrop';
 
 export default props => {
+  const ifLink = e => {
+    // INSIDE SIDEDRAWER WE HAVE NAV LINKS IN FORM OF <p> and <button> HTML ELEMENTS.
+    // WITH THIS METHOD, WE CLOSE THE SDRAWER AFTER THESE NAV LINKS WERE CLICKED AND PAGE CHANGE
+
+    if (e.target.tagName === 'P' || e.target.tagName === 'BUTTON') {
+      return props.closed();
+    }
+    return false;
+  };
   return (
     <Fragment>
       <Backdrop show={props.open} clicked={props.closed} />
-      <div className={props.open ? 'side-drawer open' : 'side-drawer close'}>
-        <Header />
+      <div
+        className={props.open ? 'side-drawer open' : 'side-drawer close'}
+        onClick={event => ifLink(event)}
+      >
+        <Header ctaHandler={props.closed} />
         <nav style={{ padding: '0 15px' }}>
           <NavigationElements />
         </nav>

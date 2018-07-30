@@ -1,25 +1,35 @@
+import Link from 'next/link';
+
+import toSlug from '../../utils/toSlug';
+
 export default ({ recipe }) => (
   <div className="recipe-card">
     <div className="recipe-card--header">{recipe.name}</div>
     <div className="recipe-card--image-container">
-      <img className="recipe-card--image" src={recipe.img} />
+      <Link as={`/r/${recipe._id}`} href={`/recipe?id=${recipe._id}`}>
+        <a>
+          <img className="recipe-card--image" src={recipe.img} />
+        </a>
+      </Link>
     </div>
     <div className="recipe-card--info">
       <div className="recipe-card--info--element">
-        <p className="recipe-card--info--element--label">Difficulty</p>
-        {recipe.difficulty}
+        <span className="recipe-card--info--element--label">Difficulty</span>
+        <p className="recipe-card--info--element--info">{recipe.difficulty}</p>
       </div>
       <div className="recipe-card--info--element">
-        <p className="recipe-card--info--element--label">Prep. Time</p>
-        {recipe.preparationTime}
+        <span className="recipe-card--info--element--label">Prep. Time</span>
+        <p className="recipe-card--info--element--info">
+          {recipe.preparationTime}
+        </p>
       </div>
       <div className="recipe-card--info--element">
-        <p className="recipe-card--info--element--label">Cook Time</p>
-        {recipe.cookTime}
+        <span className="recipe-card--info--element--label">Cook Time</span>
+        <p className="recipe-card--info--element--info">{recipe.cookTime}</p>
       </div>
       <div className="recipe-card--info--element">
-        <p className="recipe-card--info--element--label">Tag</p>
-        {recipe.tag}
+        <span className="recipe-card--info--element--label">Tag</span>
+        <p className="recipe-card--info--element--info">{recipe.tag}</p>
       </div>
     </div>
     <style jsx>{`
@@ -38,8 +48,7 @@ export default ({ recipe }) => (
       }
 
       .recipe-card--image-container {
-        // border-top: 1px solid rgba(0, 0, 0, 0.1);
-        // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        cursor: pointer;
         width: 100%;
         text-align: center;
       }
@@ -64,6 +73,11 @@ export default ({ recipe }) => (
         font-weight: bold;
         color: #118ab2;
         margin: 4px 0;
+      }
+
+      .recipe-card--info--element--info {
+        font-size: 15px;
+        margin-top: 5px;
       }
     `}</style>
   </div>

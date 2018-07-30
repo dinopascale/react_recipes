@@ -16,6 +16,10 @@ export default () => (
           text-align: right;
         }
 
+        img {
+          width: 100%;
+        }
+
         @media (min-width: 499px) {
           a {
             text-align: left;

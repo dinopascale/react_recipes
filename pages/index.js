@@ -1,11 +1,16 @@
 import fetch from 'isomorphic-unfetch';
+import { Fragment } from 'react';
+import Head from 'next/head';
 
 import Layout from '../frontend/hoc/Layout';
 import Hero from '../frontend/component/Hero';
 import RecipesList from '../frontend/component/RecipesList';
 
 const Index = props => (
-  <Layout title="Home">
+  <Fragment>
+    <Head>
+      <title>Home</title>
+    </Head>
     <Hero
       title="React Recipes"
       subtitle="Share your Recipes, Get inspired by others, Cook!"
@@ -13,8 +18,7 @@ const Index = props => (
       ctaTitle="Start"
     />
     <section className="most-recent">
-      <h2>Most Recents</h2>
-      {/* {props.recipes.map(recipe => <p>{recipe.name}</p>)} */}
+      <h4>Most Recents</h4>
       <RecipesList recipes={props.recipes} />
     </section>
     <style jsx>{`
@@ -24,12 +28,13 @@ const Index = props => (
         box-sizing: border-box;
       }
 
-      .most-recent h2 {
+      .most-recent h4 {
+        font-size: 20px;
         margin-bottom: 20px;
         color: rgba(0, 0, 0, 0.7);
       }
     `}</style>
-  </Layout>
+  </Fragment>
 );
 
 Index.getInitialProps = async ({ req }) => {

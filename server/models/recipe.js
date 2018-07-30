@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+const User = require('./user');
+
 const recipeSchema = mongoose.Schema({
   name: {
     type: String,
@@ -71,5 +73,25 @@ const recipeSchema = mongoose.Schema({
     }
   ]
 });
+
+recipeSchema.statics.findByIdAndGetAuthor = async function(id) {
+  try {
+    const Recipe = this;
+    const recipe = await Recipe.findById(id).select(
+      '-__v -rateCount -rateValue'
+    );
+
+    if (!recipe) {
+      const e = new Error('No Recipe Found');
+      e.status = 401;
+      throw e;
+    }
+
+    const user = await User.findById(recipe._doc._creator).select('username');
+    return { ...recipe._doc, _creator: user };
+  } catch (e) {
+    throw e;
+  }
+};
 
 module.exports = mongoose.model('Recipe', recipeSchema);

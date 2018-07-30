@@ -26,6 +26,11 @@ app
     server.use('/api', recipeRoutes);
 
     //DYNAMIC ROUTES
+    server.get('/r/:title', (req, res) => {
+      const actualPage = '/recipe';
+      const queryParams = { id: req.params.title };
+      app.render(req, res, actualPage, queryParams);
+    });
 
     //DEFAULT ROUTE
     server.get('*', (req, res) => {

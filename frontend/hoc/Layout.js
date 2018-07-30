@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Head from 'next/head';
 
+import Meta from '../component/Meta';
 import Toolbar from '../component/Toolbar';
 import SideDrawer from '../component/SideDrawer';
 
@@ -22,18 +22,7 @@ class Layout extends React.Component {
   render() {
     return (
       <Fragment>
-        <Head>
-          <title>{this.props.title}</title>
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, width=device-width"
-          />
-          <link
-            href="https://fonts.googleapis.com/css?family=Fredoka+One|Open+Sans"
-            rel="stylesheet"
-          />
-        </Head>
+        <Meta />
         <div className="app-container">
           <Toolbar opened={this.openSideDrawerHandler} />
           <SideDrawer
@@ -44,10 +33,11 @@ class Layout extends React.Component {
         </div>
         <style jsx>{`
           .app-container {
+            height: 100%;
+            width: 100%;
           }
           .content {
             font-family: 'Open Sans', sans-serif;
-            box-sizing: border-box;
           }
         `}</style>
       </Fragment>

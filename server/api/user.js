@@ -34,7 +34,11 @@ router.post('/user/login', async (req, res, next) => {
       .status(200)
       .cookie('token', token, { maxAge: 3600000 })
       .json({
-        message: 'Login Success'
+        message: 'Login Success',
+        userInfo: {
+          username: user.username,
+          avatar: user.avatar
+        }
       });
   } catch (e) {
     next(e);
@@ -58,7 +62,37 @@ router.post('/user/signup', async (req, res, next) => {
   }
 });
 
-//GET SINGLE USER - EDITABLE IF AUTHOR
+//GET MY ACCOUNT
+
+router.get('/user/me', checkAuth, async (req, res, next) => {
+  try {
+    const userId = new ObjectId(res.locals.issuerId);
+    const me = await User.findOne({ _id: userId }).select(
+      '-_id username avatar'
+    );
+
+    if (!me) {
+      return res.status(404).json({
+        message: `No user with ID: ${id} was found`
+      });
+    }
+
+    res.status(200).json({ user: me });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
+//USER LOGOUT
+
+router.post('/user/me/logout', checkAuth, (req, res, next) => {
+  res.cookie('token', '', { expires: new Date(0) }).json({
+    status: 'Ok'
+  });
+});
+
+//GET SINGLE USER
 
 router.get('/user/:id', async (req, res, next) => {
   let authorId = new ObjectId(req.params.id);

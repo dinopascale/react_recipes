@@ -71,7 +71,6 @@ Recipe.getInitialProps = async props => {
   //       withCredentials: true
   //     }
   //   );
-
   //   const data = resp.data;
 
   if (!data.recipe || data.recipe.length === 0) {

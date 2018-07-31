@@ -8,7 +8,6 @@ export default props => {
   const ifLink = e => {
     // INSIDE SIDEDRAWER WE HAVE NAV LINKS IN FORM OF <p> and <button> HTML ELEMENTS.
     // WITH THIS METHOD, WE CLOSE THE SDRAWER AFTER THESE NAV LINKS WERE CLICKED AND PAGE CHANGE
-
     if (e.target.tagName === 'P' || e.target.tagName === 'BUTTON') {
       return props.closed();
     }
@@ -21,9 +20,9 @@ export default props => {
         className={props.open ? 'side-drawer open' : 'side-drawer close'}
         onClick={event => ifLink(event)}
       >
-        <Header ctaHandler={props.closed} />
+        <Header ctaHandler={props.closed} user={props.user} />
         <nav style={{ padding: '0 15px' }}>
-          <NavigationElements />
+          <NavigationElements isAuth={!!props.user} />
         </nav>
       </div>
       <style jsx>{`

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import Meta from '../component/Meta';
 import Toolbar from '../component/Toolbar';
@@ -28,6 +29,7 @@ class Layout extends React.Component {
           <SideDrawer
             open={this.state.showSideDrawer}
             closed={this.closeSideDrawerHandler}
+            user={this.props.userInfo}
           />
           <main className="content">{this.props.children}</main>
         </div>
@@ -45,4 +47,10 @@ class Layout extends React.Component {
   }
 }
 
-export default Layout;
+const mapStateToProps = state => {
+  return {
+    userInfo: state.auth.user
+  };
+};
+
+export default connect(mapStateToProps)(Layout);

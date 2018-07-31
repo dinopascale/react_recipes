@@ -1,19 +1,36 @@
+import { Fragment } from 'react';
+
 import NavigationElement from './navigationElements/NavigationElement';
+import LogoutButton from './navigationElements/LogoutButton';
 
-export default () => (
-  <div className="nav-elements">
-    <NavigationElement to="/recipes" title="Recipes" />
-    <style jsx>{`
-      .nav-elements {
-        display: flex;
-        flex-flow: column;
-      }
+export default props => {
+  let content = null;
 
-      @media (min-width: 499px) {
+  if (props.isAuth) {
+    content = (
+      <Fragment>
+        <NavigationElement to="/ne" title="New Recipe" />
+        <NavigationElement to="/ed" title="Edit Account" />
+        <LogoutButton />
+      </Fragment>
+    );
+  }
+  return (
+    <div className="nav-elements">
+      <NavigationElement to="/recipes" title="See all recipes" />
+      {content}
+      <style jsx>{`
         .nav-elements {
-          flex-flow: row;
+          display: flex;
+          flex-flow: column;
         }
-      }
-    `}</style>
-  </div>
-);
+
+        @media (min-width: 499px) {
+          .nav-elements {
+            flex-flow: row;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};

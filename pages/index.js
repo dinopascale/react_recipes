@@ -2,7 +2,6 @@ import fetch from 'isomorphic-unfetch';
 import { Fragment } from 'react';
 import Head from 'next/head';
 
-import Layout from '../frontend/hoc/Layout';
 import Hero from '../frontend/component/Hero';
 import RecipesList from '../frontend/component/RecipesList';
 

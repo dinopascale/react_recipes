@@ -30,7 +30,6 @@ const jwt = require('jsonwebtoken');
 module.exports = async (req, res, next) => {
   try {
     const { token } = req.cookies;
-    console.log('Cookies from middleware', req.cookies.token);
 
     if (!token) {
       res.locals.issuerId = null;

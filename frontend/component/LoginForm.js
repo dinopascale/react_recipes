@@ -1,5 +1,8 @@
 import React from 'react';
-import fetch from 'isomorphic-unfetch';
+import { connect } from 'react-redux';
+import { withRouter } from 'next/router';
+
+import { tryLogin } from '../../store/actions';
 
 class LoginForm extends React.Component {
   state = {
@@ -13,20 +16,7 @@ class LoginForm extends React.Component {
   };
 
   onSubmitHandler = () => {
-    console.log(this.state);
-    const { email, password } = this.state;
-    console.log();
-    fetch('http://localhost:3000/api/user/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    })
-      .then(resp => resp.json())
-      .then(data => console.log(data));
+    this.props.onSubmit(this.state.email, this.state.password);
   };
 
   render() {
@@ -50,4 +40,13 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = dispatch => {
+  return {
+    onSubmit: (email, password) => dispatch(tryLogin(email, password))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(LoginForm));

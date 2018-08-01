@@ -10,20 +10,10 @@ export default props => {
           className="avatar-container"
           style={{ backgroundImage: `url(${props.user.avatar})` }}
         />
-        {/* <img
-          className="avatar"
-          src={props.user.avatar}
-          alt={props.user.username}
-        /> */}
         <div>
           <h4>Hello, {props.user.username}!</h4>
         </div>
         <style jsx>{`
-          .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-          }
           .avatar-container {
             margin: 0 auto;
             width: 120px;

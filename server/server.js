@@ -7,10 +7,12 @@ const cookieParser = require('cookie-parser');
 const custoErrorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./api/user');
 const recipeRoutes = require('./api/recipe');
+const rateRoutes = require('./api/rate');
 const db = require('./db/db');
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
+
 const app = nextJS({ dev });
 const handle = app.getRequestHandler();
 
@@ -26,6 +28,7 @@ app
     //API ROUTES
     server.use('/api', userRoutes);
     server.use('/api', recipeRoutes);
+    server.use('/api', rateRoutes);
 
     //DYNAMIC ROUTES
     server.get('/r/:title', (req, res) => {

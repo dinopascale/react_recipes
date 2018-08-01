@@ -1,8 +1,5 @@
 import { withRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
-
-import axios from 'axios';
-
 import Head from 'next/head';
 import { Fragment } from 'react';
 

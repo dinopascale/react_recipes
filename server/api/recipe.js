@@ -1,7 +1,10 @@
 const express = require('express');
 const { ObjectId } = require('mongoose').Types;
 
+const User = require('../models/user');
 const Recipe = require('../models/recipe');
+const Rate = require('../models/rate');
+
 const checkAuth = require('../middleware/check-auth');
 const checkAuthor = require('../middleware/check-author');
 
@@ -14,7 +17,9 @@ router.get('/recipes', async (req, res, next) => {
     const num = req.query.num || 4;
     const recipes = await Recipe.find({ sharable: true })
       .limit(+num)
-      .select('name preparationTime cookTime difficulty _creator img tag');
+      .select(
+        'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
+      );
 
     res.status(200).json({
       total: recipes.length,
@@ -38,6 +43,10 @@ router.get('/recipes', async (req, res, next) => {
 
 router.post('/recipe', checkAuth, async (req, res, next) => {
   try {
+    const creator = await User.findOne({ _id: res.locals.issuerId }).select(
+      'avatar'
+    );
+
     const recipe = await new Recipe({
       name: req.body.name,
       preparationTime: req.body.preparationTime,
@@ -45,7 +54,10 @@ router.post('/recipe', checkAuth, async (req, res, next) => {
       serves: req.body.serves,
       difficulty: req.body.difficulty,
       sharable: req.body.sharable,
-      _creator: res.locals.issuerId,
+      _creator: {
+        _id: res.locals.issuerId,
+        avatar: creator._doc.avatar
+      },
       img: req.body.img,
       directions: req.body.directions,
       tag: req.body.tag,
@@ -77,6 +89,7 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
     const recipe = await Recipe.findByIdAndGetAuthor(obId);
 
     let isAuthor = false;
+    let ratedBefore = false;
 
     if (
       res.locals.issuerId &&
@@ -85,10 +98,18 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
       isAuthor = true;
     }
 
+    if (!isAuthor) {
+      ratedBefore = !!(await Rate.find({
+        userId: res.locals.issuerId,
+        recipeId: id
+      }).countDocuments());
+    }
+
     res.status(200).json({
       recipe: {
         ...recipe,
         isAuthor,
+        ratedBefore,
         request: {
           methods: ['UPDATE', 'DELETE'],
           endpoint: req.headers.host + '/api/recipes/' + recipe._id

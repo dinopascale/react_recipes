@@ -6,11 +6,15 @@ export default props => {
   if (props.user) {
     content = (
       <Fragment>
-        <img
+        <div
+          className="avatar-container"
+          style={{ backgroundImage: `url(${props.user.avatar})` }}
+        />
+        {/* <img
           className="avatar"
           src={props.user.avatar}
           alt={props.user.username}
-        />
+        /> */}
         <div>
           <h4>Hello, {props.user.username}!</h4>
         </div>
@@ -19,6 +23,15 @@ export default props => {
             width: 120px;
             height: 120px;
             border-radius: 50%;
+          }
+          .avatar-container {
+            margin: 0 auto;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
           }
         `}</style>
       </Fragment>
@@ -52,7 +65,6 @@ export default props => {
           box-sizing: border-box;
           background-color: #ef476f;
           color: #fff;
-          text-align: center;
         }
       `}</style>
     </div>

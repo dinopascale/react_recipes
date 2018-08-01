@@ -8,6 +8,12 @@ const recipeSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  createdAt: {
+    type: Date
+  },
+  updatedAt: {
+    type: Date
+  },
   preparationTime: {
     type: Number,
     required: true
@@ -72,6 +78,16 @@ const recipeSchema = mongoose.Schema({
       }
     }
   ]
+});
+
+recipeSchema.pre('save', function(next) {
+  this.createdAt = this.createdAt ? this.createdAt : new Date();
+  this.updatedAt = new Date();
+  next();
+});
+
+recipeSchema.pre('update', function() {
+  this.update({}, { $set: { updatedAt: new Date() } });
 });
 
 recipeSchema.statics.findByIdAndGetAuthor = async function(id) {

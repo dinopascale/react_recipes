@@ -2,8 +2,10 @@ import { withRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Head from 'next/head';
 import { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import InfoRow from '../frontend/component/InfoRow';
+import IngredientList from '../frontend/component/IngredientList';
 
 const Recipe = props => (
   <Fragment>
@@ -21,6 +23,12 @@ const Recipe = props => (
     <h1 className="recipe-title">{props.recipe.name}</h1>
     <h5 className="recipe-author">by {props.recipe._creator.username}</h5>
     <InfoRow infos={props.infos} />
+    <IngredientList
+      ingredients={props.recipe.ingredients}
+      authInfo={props.isAuthenticated}
+      isEditable={props.recipe.isAuthor}
+      recipeId={props.recipe._id}
+    />
     <style jsx>{`
       .recipe-image--container {
         margin-top: 30px;
@@ -82,10 +90,18 @@ Recipe.getInitialProps = async props => {
     Serves: serves
   };
 
+  console.log(data.recipe.ingredients);
+
   return {
     recipe: data.recipe,
     infos
   };
 };
 
-export default withRouter(Recipe);
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(Recipe));

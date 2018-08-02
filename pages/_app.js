@@ -4,7 +4,17 @@ import React from 'react';
 import withReduxStore from '../store/withReduxStore';
 import { Provider } from 'react-redux';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faPlus,
+  faTrash,
+  faSave,
+  faBan
+} from '@fortawesome/free-solid-svg-icons';
+
 import Layout from '../frontend/hoc/Layout';
+
+library.add(faPlus, faTrash, faSave, faBan);
 
 class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {

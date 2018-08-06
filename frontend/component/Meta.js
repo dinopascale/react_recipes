@@ -20,9 +20,7 @@ export default props => (
         box-sizing: border-box;
       }
 
-      html,
       body {
-        overflow-x: hidden;
         width: 100%;
         height: 100%;
       }

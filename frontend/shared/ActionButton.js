@@ -8,7 +8,7 @@ export default props => {
         <FontAwesomeIcon icon={props.icon} />
         <style jsx>{`
           .icon {
-            margin-right: 10px !important;
+            margin-bottom: 10px !important;
           }
         `}</style>
       </span>
@@ -18,21 +18,26 @@ export default props => {
     <button
       onClick={props.handleClick}
       style={{
-        backgroundColor: props.bgColor,
-        margin: props.gutter ? '10px' : null,
-        color: props.bgColor ? '#fff' : '#000'
+        color: props.color,
+        margin: props.gutter ? '10px' : null
       }}
     >
       {icon}
-      {props.children}
+      <p className="text">{props.children}</p>
       <style jsx>{`
         button {
-          background: #ffd166;
+          flex: 0 1 30%;
           border: none;
+          background: #fff;
+          padding: 10px;
           border-radius: 3px;
-          padding: 10px 25px;
           font-family: 'Open Sans', sans-serif;
           font-size: 14px;
+          outline: none;
+        }
+        .text {
+          margin-top: 5px;
+          margin-bottom: 0;
         }
       `}</style>
     </button>

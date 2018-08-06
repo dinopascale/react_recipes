@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default props => {
-  let azz;
+  let ctn;
   if (props.isEditMode) {
-    azz = (
+    ctn = (
       <div className="input-field">
         <input
           type="text"
@@ -64,7 +64,7 @@ export default props => {
       </div>
     );
   } else {
-    azz = (
+    ctn = (
       <div>
         <p>{props.name}</p>
         <p>{props.quantity}</p>
@@ -72,5 +72,5 @@ export default props => {
     );
   }
 
-  return azz;
+  return ctn;
 };

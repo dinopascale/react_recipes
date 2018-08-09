@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { tryLogout } from '../../../store/actions';
+import { withRouter } from 'next/router';
 
 class LogoutButton extends React.Component {
   clickHandler = () => {
     this.props.onLogout();
+    this.props.router.push('/');
   };
 
   render() {
@@ -21,4 +23,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   null,
   mapDispatchToProps
-)(LogoutButton);
+)(withRouter(LogoutButton));

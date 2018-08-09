@@ -4,189 +4,142 @@ import fetch from 'isomorphic-unfetch';
 import Head from 'next/head';
 import { connect } from 'react-redux';
 
-import InfoRow from '../frontend/component/InfoRow';
-import RecipeDirections from '../frontend/component/RecipeDirections';
-import RecipeFieldList from '../frontend/component/RecipeFieldList';
+import Editable from '../frontend/shared/Editable';
 
-// class Recipe extends React.Component {
-//   static async getInitialProps(props) {
-//     const baseUrl = props.req
-//       ? `${props.req.protocol}://${props.req.get('Host')}`
-//       : '';
+class Recipe extends React.Component {
+  static async getInitialProps(props) {
+    const baseUrl = props.req
+      ? `${props.req.protocol}://${props.req.get('Host')}`
+      : '';
 
-//     const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`, {
-//       method: 'GET',
-//       credentials: 'include',
-//       headers: props.req ? { cookie: props.req.headers.cookie } : undefined
-//     });
+    const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: props.req ? { cookie: props.req.headers.cookie } : undefined
+    });
 
-//     const data = await res.json();
+    const data = await res.json();
 
-//     if (!data.recipe || data.recipe.length === 0) {
-//       props.res.redirect('/');
-//     }
+    if (!data.recipe || data.recipe.length === 0) {
+      props.res.redirect('/');
+    }
 
-//     const { preparationTime, cookTime, difficulty, serves } = data.recipe;
-//     const infos = {
-//       'Preapartion Time': preparationTime + ' min',
-//       'Cook Time': cookTime + ' min',
-//       Difficulty: difficulty,
-//       Serves: serves
-//     };
+    console.log(data.recipe.difficulty);
 
-//     return {
-//       recipe: data.recipe,
-//       infos
-//     };
-//   }
-
-//   componentDidMount() {
-//     // window.scrollTo(0, 0);
-//     // document.body.focus();
-//   }
-
-//   render() {
-//     return (
-//       <Fragment>
-//         <Head>
-//           <title>{this.props.recipe.name || 'Fantastic Recipe'}</title>
-//         </Head>
-//         <div className="recipe-image--container">
-//           <img
-//             src={this.props.recipe.img}
-//             alt={this.props.recipe.name}
-//             className="recipe-image"
-//           />
-//         </div>
-//         <p>Is Author: {this.props.recipe.isAuthor ? 'Yes' : 'Nope'}</p>
-//         <h1 className="recipe-title">{this.props.recipe.name}</h1>
-//         <h5 className="recipe-author">
-//           by {this.props.recipe._creator.username}
-//         </h5>
-//         <InfoRow infos={this.props.infos} />
-//         <IngredientList
-//           ingredients={this.props.recipe.ingredients}
-//           authInfo={this.props.isAuthenticated}
-//           isEditable={this.props.recipe.isAuthor}
-//           recipeId={this.props.recipe._id}
-//         />
-//         <style jsx>{`
-//           .recipe-image--container {
-//             margin-top: 30px;
-//           }
-
-//           .recipe-image {
-//             width: 100%;
-//             max-width: 600px;
-//           }
-
-//           .recipe-title {
-//             font-family: 'Fredoka One', cursive;
-//             font-size: 28px;
-//             text-align: center;
-//             margin-bottom: 16px;
-//             color: #ef476f;
-//           }
-
-//           .recipe-author {
-//             margin-top: 0;
-//             color: rgba(0, 0, 0, 0.3);
-//             text-align: center;
-//           }
-//         `}</style>
-//       </Fragment>
-//     );
-//   }
-// }
-
-const Recipe = props => (
-  <Fragment>
-    <Head>
-      <title>{props.recipe.name || 'Fantastic Recipe'}</title>
-    </Head>
-    <div className="recipe-image--container">
-      <img
-        src={props.recipe.img}
-        alt={props.recipe.name}
-        className="recipe-image"
-      />
-    </div>
-    <h1 className="recipe-title">{props.recipe.name}</h1>
-    <h5 className="recipe-author">by {props.recipe._creator.username}</h5>
-    <InfoRow infos={props.infos} />
-    <RecipeFieldList
-      data={props.recipe.ingredients}
-      authInfo={props.isAuthenticated}
-      isEditable={props.recipe.isAuthor}
-      recipeId={props.recipe._id}
-      name="ingredients"
-      title="Ingredients"
-    />
-    <RecipeDirections
-      directions={props.recipe.directions}
-      authInfo={props.isAuthenticated}
-      isEditable={props.recipe.isAuthor}
-      recipeId={props.recipe._id}
-    />
-    <style jsx>{`
-      .recipe-image--container {
-        margin-top: 30px;
-      }
-
-      .recipe-image {
-        width: 100%;
-        max-width: 600px;
-      }
-
-      .recipe-title {
-        font-family: 'Fredoka One', cursive;
-        font-size: 28px;
-        text-align: center;
-        margin-bottom: 16px;
-        color: #ef476f;
-      }
-
-      .recipe-author {
-        margin-top: 0;
-        color: rgba(0, 0, 0, 0.3);
-        text-align: center;
-      }
-    `}</style>
-  </Fragment>
-);
-
-Recipe.getInitialProps = async props => {
-  const baseUrl = props.req
-    ? `${props.req.protocol}://${props.req.get('Host')}`
-    : '';
-
-  const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`, {
-    method: 'GET',
-    credentials: 'include',
-    headers: props.req ? { cookie: props.req.headers.cookie } : undefined
-  });
-
-  const data = await res.json();
-
-  if (!data.recipe || data.recipe.length === 0) {
-    props.res.redirect('/');
+    return {
+      recipe: data.recipe
+    };
   }
 
-  const { preparationTime, cookTime, difficulty, serves } = data.recipe;
-  const infos = {
-    'Preapartion Time': preparationTime + ' min',
-    'Cook Time': cookTime + ' min',
-    Difficulty: difficulty,
-    Serves: serves
-  };
+  componentDidMount() {}
 
-  console.log(data.recipe);
+  render() {
+    const endpoint = `/api/recipe/${this.props.recipe._id}`;
+    return (
+      <Fragment>
+        <Head>
+          <title>{this.props.recipe.name || 'Fantastic Recipe'}</title>
+        </Head>
+        <Editable
+          data={this.props.recipe.img}
+          name="img"
+          type="img"
+          bgImage
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <Editable
+          data={this.props.recipe.name}
+          name="name"
+          type="input"
+          style={{
+            fontSize: '32px',
+            color: '#ef476f',
+            textAlign: 'center',
+            fontFamily: '"Fredoka One", cursive',
+            marginTop: '15px'
+          }}
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <h5 className="recipe-author">
+          by {this.props.recipe._creator.username}
+        </h5>
+        <Editable
+          data={this.props.recipe.cookTime}
+          name="cookTime"
+          type="input"
+          withLabel
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <Editable
+          data={this.props.recipe.preparationTime}
+          name="preparationTime"
+          type="input"
+          withLabel
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <Editable
+          data={this.props.recipe.difficulty.value}
+          name="difficulty"
+          type="checkbox"
+          options={this.props.recipe.difficulty.options}
+          withLabel
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <Editable
+          data={this.props.recipe.serves}
+          name="serves"
+          type="input"
+          withLabel
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <Editable
+          data={this.props.recipe.ingredients}
+          name="ingredients"
+          type="input"
+          title="Ingredients"
+          isList
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <Editable
+          data={this.props.recipe.directions}
+          name="directions"
+          type="textarea"
+          title="Directions"
+          auth={this.props.recipe.isAuthor}
+          endpoint={endpoint}
+        />
+        <style jsx>{`
+          .recipe-image--container {
+            margin-top: 30px;
+          }
 
-  return {
-    recipe: data.recipe,
-    infos
-  };
-};
+          .recipe-image {
+            width: 100%;
+            max-width: 600px;
+          }
+
+          .recipe-section-title {
+            padding: 0 15px;
+            margin-bottom: 10px;
+          }
+
+          .recipe-author {
+            margin-top: 0;
+            color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+          }
+        `}</style>
+      </Fragment>
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return {

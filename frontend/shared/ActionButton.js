@@ -8,35 +8,33 @@ export default props => {
         <FontAwesomeIcon icon={props.icon} />
         <style jsx>{`
           .icon {
-            margin-bottom: 10px !important;
+            margin-right: 10px;
           }
         `}</style>
       </span>
     );
   }
   return (
-    <button
-      onClick={props.handleClick}
-      style={{
-        color: props.color,
-        margin: props.gutter ? '10px' : null
-      }}
-    >
+    <button onClick={props.handleClick} style={props.customStyle}>
       {icon}
       <p className="text">{props.children}</p>
       <style jsx>{`
         button {
           flex: 0 1 30%;
+          display: flex;
+          justify-content: center;
+          align-items: baseline;
           border: none;
-          background: #fff;
+          background: transparent;
           padding: 10px;
           border-radius: 3px;
           font-family: 'Open Sans', sans-serif;
           font-size: 14px;
           outline: none;
         }
+
         .text {
-          margin-top: 5px;
+          margin-top: 0px;
           margin-bottom: 0;
         }
       `}</style>

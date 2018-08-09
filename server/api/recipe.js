@@ -90,6 +90,10 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
 
     let isAuthor = false;
     let ratedBefore = false;
+    const difficultyObject = {
+      value: recipe.difficulty,
+      options: ['easy', 'medium', 'hard']
+    };
 
     if (
       res.locals.issuerId &&
@@ -108,6 +112,7 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
     res.status(200).json({
       recipe: {
         ...recipe,
+        difficulty: difficultyObject,
         isAuthor,
         ratedBefore,
         request: {

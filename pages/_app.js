@@ -10,12 +10,13 @@ import {
   faTrash,
   faSave,
   faBan,
-  faEdit
+  faEdit,
+  faEllipsisV
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
 
-library.add(faPlus, faTrash, faSave, faBan, faEdit);
+library.add(faPlus, faTrash, faSave, faBan, faEdit, faEllipsisV);
 
 class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {

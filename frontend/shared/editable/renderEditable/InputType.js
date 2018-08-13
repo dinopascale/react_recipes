@@ -1,62 +1,43 @@
+import Textarea from './inputType/Textarea';
+import Image from './inputType/Image';
+import RadioButton from './inputType/RadioButton';
+import Input from './inputType/Input';
+
 export default props => {
   let input = null;
   switch (props.type) {
     case 'textarea':
       input = (
-        <textarea
-          onChange={props.change}
+        <Textarea
+          change={props.change}
           value={props.value}
           name={props.name}
-          rows="9"
-          cols="40"
+          label={props.label}
         />
       );
       break;
     case 'img':
       input = (
-        <div>
-          <img className="image" src={props.value} />
-          <input
-            type="text"
-            onChange={props.change}
-            name={props.name}
-            value={props.value}
-          />
-          <style jsx>{`
-            .image {
-              width: 100%;
-              min-width: 300px;
-              max-width: 600px;
-            }
-          `}</style>
-        </div>
+        <Image change={props.change} value={props.value} name={props.name} />
       );
       break;
     case 'checkbox':
       input = (
-        <div>
-          {props.options.map(opt => (
-            <div key={opt}>
-              <input
-                type="radio"
-                name={props.name}
-                value={opt}
-                checked={props.value === opt}
-                onChange={props.change}
-              />
-              <span>{opt}</span>
-            </div>
-          ))}
-        </div>
+        <RadioButton
+          change={props.change}
+          options={props.options}
+          name={props.name}
+          value={props.value}
+        />
       );
       break;
     default:
       input = (
-        <input
-          type="text"
-          onChange={props.change}
+        <Input
+          change={props.change}
           value={props.value}
           name={props.name}
+          label={props.label}
         />
       );
   }

@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { connect } from 'react-redux';
 
 import Editable from '../frontend/shared/Editable';
+import RateRecipe from '../frontend/component/RateRecipe';
 
 class Recipe extends React.Component {
   static async getInitialProps(props) {
@@ -23,8 +24,6 @@ class Recipe extends React.Component {
     if (!data.recipe || data.recipe.length === 0) {
       props.res.redirect('/');
     }
-
-    console.log(data.recipe.difficulty);
 
     return {
       recipe: data.recipe
@@ -115,6 +114,16 @@ class Recipe extends React.Component {
           auth={this.props.recipe.isAuthor}
           endpoint={endpoint}
         />
+        <RateRecipe
+          ratedBefore={this.props.recipe.ratedBefore}
+          userRate={this.props.recipe.userRate}
+          rateValue={this.props.recipe.rateValue}
+          rateCount={this.props.recipe.rateCount}
+          isAuth={this.props.isAuthenticated.user}
+          isAuthor={this.props.recipe.isAuthor}
+          id={this.props.recipe._id}
+        />
+        <h1>Comments</h1>
         <style jsx>{`
           .recipe-image--container {
             margin-top: 30px;

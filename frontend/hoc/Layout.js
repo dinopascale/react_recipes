@@ -37,6 +37,7 @@ class Layout extends React.Component {
           .app-container {
             height: 100%;
             width: 100%;
+            overflow-x: hidden;
           }
           .content {
             font-family: 'Open Sans', sans-serif;

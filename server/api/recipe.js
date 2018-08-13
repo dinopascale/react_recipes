@@ -89,6 +89,8 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
     const recipe = await Recipe.findByIdAndGetAuthor(obId);
 
     let isAuthor = false;
+    let rateResult = false;
+    let userRate = false;
     let ratedBefore = false;
     const difficultyObject = {
       value: recipe.difficulty,
@@ -103,10 +105,15 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
     }
 
     if (!isAuthor) {
-      ratedBefore = !!(await Rate.find({
+      rateResult = await Rate.find({
         userId: res.locals.issuerId,
         recipeId: id
-      }).countDocuments());
+      });
+
+      if (!!rateResult.length) {
+        userRate = rateResult[0].value;
+        ratedBefore = !!rateResult.length;
+      }
     }
 
     res.status(200).json({
@@ -115,6 +122,7 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
         difficulty: difficultyObject,
         isAuthor,
         ratedBefore,
+        userRate,
         request: {
           methods: ['UPDATE', 'DELETE'],
           endpoint: req.headers.host + '/api/recipes/' + recipe._id

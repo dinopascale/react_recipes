@@ -36,8 +36,6 @@ router.post('/rate/:id', checkAuth, async (req, res, next) => {
       { new: true }
     );
 
-    console.log(recipe._doc);
-
     res.status(200).json({
       status: 'Ok',
       newRateValue: recipe._doc.rateValue,

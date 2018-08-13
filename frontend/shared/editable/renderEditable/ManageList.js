@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ActionButton from '../../ActionButton';
+import Dropdown from './manageList/Dropdown';
 
 class ManageList extends Component {
   state = {
@@ -71,51 +72,11 @@ class ManageList extends Component {
       );
     }
     if (this.state.isOpen && !this.props.isEditing) {
-      dropdownMenu = (
-        <div className="dropdown">
-          <ul className="dropdown-list">
-            <li
-              onClick={this.addAndCloseDropdown}
-              className="dropdown-list-element"
-            >
-              Add new
-            </li>
-            <li
-              onClick={this.deleteModeAndCloseDropdown}
-              className="dropdown-list-element"
-            >
-              Delete
-            </li>
-          </ul>
-          <style jsx>{`
-            .dropdown {
-              position: absolute;
-              right: 0px;
-              margin-top: 0px;
-              width: 180px;
-              background-color: #eee;
-              border-radius: 2px;
-            }
-
-            .dropdown-list {
-              padding: 0;
-              list-style: none;
-              margin: 0;
-            }
-
-            .dropdown-list-element {
-              padding: 10px 15px;
-              background-color: #eee;
-              cursor: pointer;
-              font-size: 13px;
-            }
-
-            .dropdown-list-element:hover {
-              background-color: #ddd;
-            }
-          `}</style>
-        </div>
-      );
+      const items = [
+        { value: 'Add new', handleClick: this.addAndCloseDropdown },
+        { value: 'Delete', handleClick: this.deleteModeAndCloseDropdown }
+      ];
+      dropdownMenu = <Dropdown items={items} />;
     }
     return (
       <div

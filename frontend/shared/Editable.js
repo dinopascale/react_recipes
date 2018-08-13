@@ -21,7 +21,7 @@ class Editable extends Component {
   transformData = (data, name) => {
     let transformedData = [];
     if (Array.isArray(data) && typeof data === 'object') {
-      transformedData = [...data];
+      transformedData = JSON.parse(JSON.stringify(data));
     } else {
       const obj = {
         [name]: data
@@ -32,6 +32,9 @@ class Editable extends Component {
   };
 
   startEditing = i => event => {
+    event.target.scrollIntoView({
+      behavior: 'smooth'
+    });
     this.setState({
       isEditing: true,
       itemOnEdit: i,
@@ -84,11 +87,11 @@ class Editable extends Component {
     }
   };
 
-  addNew = () => {
+  addNew = event => {
     const newData = this.state.field.slice();
     let empty = {};
     for (let key of Object.keys(newData[0])) {
-      empty[key] = 'New';
+      empty[key] = '';
     }
     newData.push(empty);
     this.setState({
@@ -149,12 +152,16 @@ class Editable extends Component {
   };
 
   render() {
+    let renderContainerClasses = ['render-container'];
+    if (this.props.bgImage) {
+      renderContainerClasses.push('image');
+    }
+    if (this.state.isEditing) {
+      renderContainerClasses.push('editing');
+    }
+
     return (
-      <div
-        className={
-          this.props.bgImage ? 'render-container-image' : 'render-container'
-        }
-      >
+      <div className={renderContainerClasses.join(' ')}>
         <div className="title-container">
           {this.props.title ? <h2>{this.props.title}</h2> : null}
           {this.props.isList && this.props.auth ? (
@@ -172,23 +179,20 @@ class Editable extends Component {
 
         {this.state.field.map((el, index) => (
           <div className="field-container" key={this.props.name + index}>
-            {this.state.isDeleteMode ? (
-              <span
-                className={
-                  this.state.itemsToDelete.includes(index)
-                    ? 'delete-checkbox checked'
-                    : 'delete-checkbox'
-                }
-                onClick={this.addItemToDelete(index)}
-              />
-            ) : null}
             <RenderEditable
               isEditing={this.state.itemOnEdit === index}
               isDeleteMode={this.state.isDeleteMode}
               onStop={this.props.auth ? this.stopEditing : null}
               onStart={
-                this.props.auth && !this.state.isDeleteMode
-                  ? this.startEditing(index)
+                !this.props.auth
+                  ? null
+                  : !this.state.isDeleteMode
+                    ? this.startEditing(index)
+                    : this.addItemToDelete(index)
+              }
+              isToDelete={
+                this.props.auth
+                  ? this.state.itemsToDelete.includes(index)
                   : null
               }
               onChange={this.changeHandler(index)}
@@ -208,8 +212,14 @@ class Editable extends Component {
             padding: 10px 20px;
           }
 
-          .render-container-image {
+          .render-container.image {
+            padding: 0;
             margin-top: 30px;
+          }
+
+          .render-container.image.editing,
+          .render-container.editing {
+            background: #eee;
           }
 
           .title-container {
@@ -222,21 +232,6 @@ class Editable extends Component {
             display: flex;
             flex-flow: row;
             align-items: center;
-          }
-
-          .delete-checkbox {
-            margin-right: 15px;
-            min-width: 16px;
-            min-height: 16px;
-            border: 2px solid #999;
-            border-radius: 50%;
-            transition: all 0.2s ease-in;
-          }
-
-          .delete-checkbox.checked {
-            border: 2px solid #555;
-            border-radius: 3px;
-            background: #ccc;
           }
         `}</style>
       </div>

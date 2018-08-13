@@ -47,8 +47,8 @@ export default ({ recipe }) => (
         <p className="recipe-card--info--element--info">{recipe.cookTime}</p>
       </div>
       <div className="recipe-card--info--element">
-        <span className="recipe-card--info--element--label">Rate</span>
-        <p className="recipe-card--info--element--info" />
+        <span className="recipe-card--info--element--label">Tag</span>
+        <p className="recipe-card--info--element--info">{recipe.tag}</p>
       </div>
     </div>
     <style jsx>{`

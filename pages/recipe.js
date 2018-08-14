@@ -25,6 +25,8 @@ class Recipe extends React.Component {
       props.res.redirect('/');
     }
 
+    console.log(data.recipe);
+
     return {
       recipe: data.recipe
     };
@@ -53,7 +55,7 @@ class Recipe extends React.Component {
           type="input"
           style={{
             fontSize: '32px',
-            color: '#ef476f',
+            color: '#77B5FF',
             textAlign: 'center',
             fontFamily: '"Fredoka One", cursive',
             marginTop: '15px'
@@ -116,7 +118,7 @@ class Recipe extends React.Component {
         />
         <RateRecipe
           ratedBefore={this.props.recipe.ratedBefore}
-          userRate={this.props.recipe.userRate}
+          userRate={this.props.recipe.userRateValue}
           rateValue={this.props.recipe.rateValue}
           rateCount={this.props.recipe.rateCount}
           isAuth={this.props.isAuthenticated.user}

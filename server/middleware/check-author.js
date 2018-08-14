@@ -49,7 +49,6 @@ module.exports = async (req, res, next) => {
     next();
   } catch (e) {
     e.status = 400;
-    // e.message = 'Something go wrongo';
     next(e);
   }
 };

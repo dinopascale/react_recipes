@@ -53,8 +53,8 @@ export default props => {
           padding: 35px 15px;
           font-family: 'Open Sans', sans-serif;
           box-sizing: border-box;
-          background-color: #ef476f;
-          color: #fff;
+          background-color: #ffe4c4;
+          color: #444;
         }
       `}</style>
     </div>

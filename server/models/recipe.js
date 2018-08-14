@@ -47,6 +47,13 @@ const recipeSchema = mongoose.Schema({
     required: true,
     trim: true
   },
+  //   rateCount: {
+  //     type: Number
+  //   },
+  //   rateValue: {
+  //     type: Number
+  //   },
+
   sharable: {
     type: Boolean,
     default: true
@@ -70,14 +77,6 @@ const recipeSchema = mongoose.Schema({
   tag: {
     type: String,
     default: 'Omnivore'
-  },
-  rateCount: {
-    type: Number,
-    default: 0
-  },
-  rateValue: {
-    type: Number,
-    default: 0
   },
   ingredients: [
     {

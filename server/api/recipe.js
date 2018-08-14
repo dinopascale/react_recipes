@@ -3,7 +3,7 @@ const { ObjectId } = require('mongoose').Types;
 
 const User = require('../models/user');
 const Recipe = require('../models/recipe');
-const Rate = require('../models/rate');
+const RecipeRate = require('../models/rate/rateRecipe');
 
 const checkAuth = require('../middleware/check-auth');
 const checkAuthor = require('../middleware/check-author');
@@ -21,17 +21,29 @@ router.get('/recipes', async (req, res, next) => {
         'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
       );
 
+    const promises = recipes.map(async recipe => {
+      const rates = await RecipeRate.find({ recipeId: recipe._id }).select(
+        'value'
+      );
+      const rateCount = rates.length;
+      const rateValue =
+        rates.length === 0
+          ? 0
+          : rates.reduce((sum, rate) => sum + rate.value, 0);
+      return {
+        ...recipe._doc,
+        request: {
+          methods: ['GET'],
+          endpoint: req.headers.host + '/api/recipe/' + recipe._doc._id
+        },
+        rateCount,
+        rateValue
+      };
+    });
+
     res.status(200).json({
       total: recipes.length,
-      results: recipes.map(recipe => {
-        return {
-          ...recipe._doc,
-          request: {
-            methods: ['GET'],
-            endpoint: req.headers.host + '/api/recipe/' + recipe._doc._id
-          }
-        };
-      })
+      results: await Promise.all(promises)
     });
   } catch (e) {
     e.status = 400;
@@ -85,17 +97,17 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
   try {
     const { id } = req.params;
     const obId = new ObjectId(id);
+    let isAuthor = false;
+    let userRateValue = false;
 
     const recipe = await Recipe.findByIdAndGetAuthor(obId);
+    //GET ALL RATES FOR RECIPE
+    const rates = await RecipeRate.find({
+      recipeId: id
+    }).select('value userId');
 
-    let isAuthor = false;
-    let rateResult = false;
-    let userRate = false;
-    let ratedBefore = false;
-    const difficultyObject = {
-      value: recipe.difficulty,
-      options: ['easy', 'medium', 'hard']
-    };
+    const rateValue = rates.reduce((sum, rate) => sum + rate.value, 0);
+    const rateCount = rates.length;
 
     if (
       res.locals.issuerId &&
@@ -104,25 +116,30 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
       isAuthor = true;
     }
 
-    if (!isAuthor) {
-      rateResult = await Rate.find({
-        userId: res.locals.issuerId,
-        recipeId: id
+    //CHECK IF RATED BEFORE
+    if (!isAuthor && rates.length > 0 && res.locals.issuerId) {
+      const userRate = rates.find(rate => {
+        return res.locals.issuerId.equals(rate.userId);
       });
-
-      if (!!rateResult.length) {
-        userRate = rateResult[0].value;
-        ratedBefore = !!rateResult.length;
+      if (userRate) {
+        userRateValue = userRate.value;
       }
     }
+
+    const difficultyObject = {
+      value: recipe.difficulty,
+      options: ['easy', 'medium', 'hard']
+    };
 
     res.status(200).json({
       recipe: {
         ...recipe,
         difficulty: difficultyObject,
         isAuthor,
-        ratedBefore,
-        userRate,
+        rateValue,
+        rateCount,
+        ratedBefore: !!userRateValue,
+        userRateValue,
         request: {
           methods: ['UPDATE', 'DELETE'],
           endpoint: req.headers.host + '/api/recipes/' + recipe._id

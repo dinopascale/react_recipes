@@ -16,7 +16,9 @@ export default ({ recipe }) => (
             <FontAwesomeIcon icon={faStar} />
           </span>
           <span className="recipe-card--header-avg">
-            {recipe.rateCount === 0 ? '0' : recipe.rateValue / recipe.rateCount}
+            {recipe.rateCount === 0
+              ? '0'
+              : (recipe.rateValue / recipe.rateCount).toFixed(1)}
           </span>
           <span className="recipe-card--header-total">
             ({recipe.rateCount})
@@ -62,8 +64,9 @@ export default ({ recipe }) => (
 
       .recipe-card--header {
         padding: 20px;
-        background-color: #ef476f;
-        color: #fff;
+        background-color: #ffe4c4;
+        color: #444;
+        font-weight: bold;
         display: flex;
       }
 
@@ -133,7 +136,7 @@ export default ({ recipe }) => (
       .recipe-card--info--element--label {
         font-size: 13px;
         font-weight: bold;
-        color: #118ab2;
+        color: #77b5ff;
         margin: 4px 0;
       }
 

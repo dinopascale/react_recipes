@@ -36,7 +36,7 @@ class RateRecipe extends Component {
       }
     }, 0);
 
-    const rawResp = await fetch(`/api/rate/${this.props.id}`, {
+    const rawResp = await fetch(`/api/rate/r/${this.props.id}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -50,13 +50,20 @@ class RateRecipe extends Component {
 
     console.log(response);
 
-    this.setState({
+    // this.setState({
+    //   isLoading: false,
+    //   ratedBefore: true,
+    //   rateCount:
+    //   rateValue: response.newRateValue,
+    //   userRate: rate
+    // });
+    this.setState(prevState => ({
       isLoading: false,
       ratedBefore: true,
-      rateCount: response.newRateCount,
-      rateValue: response.newRateValue,
+      rateCount: prevState.rateCount + 1,
+      rateValue: prevState.rateValue + rate,
       userRate: rate
-    });
+    }));
   };
 
   render() {

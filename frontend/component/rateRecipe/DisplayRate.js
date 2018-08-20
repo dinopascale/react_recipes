@@ -1,8 +1,58 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CallToAction from '../../shared/CallToAction';
 
 export default props => {
-  console.log(props);
   const rateAvg = (props.rate / props.count).toFixed(1);
+
+  let content = (
+    <div className="cta-container">
+      <p className="cta-text">Subscribe or Login to rate this recipe!</p>
+      <CallToAction small href="/auth">
+        Go
+      </CallToAction>
+      <style jsx>{`
+        .cta-container {
+          text-align: center;
+          padding: 0 7px;
+          //   position: absolute;
+          //   top: 0;
+          //   left: 0;
+          //   width: 100%;
+          //   height: 100%;
+        }
+
+        .cta-text {
+          font-size: 14px;
+          margin-bottom: 25px;
+        }
+      `}</style>
+    </div>
+  );
+
+  if (props.isAuth) {
+    content = (
+      <span className="icon">
+        <FontAwesomeIcon icon="star" color="#ffd166" />
+        <p className="text-on-icon">{props.userRate}</p>
+        <style jsx>{`
+          .icon {
+            font-size: 76px;
+            position: relative;
+          }
+
+          .text-on-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: 0;
+            font-size: 26px;
+            transform: translate(-50%, -50%);
+          }
+        `}</style>
+      </span>
+    );
+  }
+
   return (
     <div
       className={
@@ -12,10 +62,7 @@ export default props => {
       {!props.isAuthor ? (
         <div className="user-rate">
           <h4 className="label">Your Rate</h4>
-          <span className="icon">
-            <FontAwesomeIcon icon="star" color="#ffd166" />
-            <p className="text-on-icon">{props.userRate}</p>
-          </span>
+          {content}
         </div>
       ) : null}
       <div className="overall-rate">
@@ -61,7 +108,8 @@ export default props => {
           flex-flow: row wrap;
           align-items: flex-start;
           justify-content: center;
-          height: 100%;
+          min-height: 100%;
+          position: relative;
         }
 
         .divider {
@@ -73,7 +121,7 @@ export default props => {
         .label {
           flex: 1 0 100%;
           text-align: center;
-          margin-bottom: 7px;
+          margin-bottom: 0px;
         }
 
         .icon {

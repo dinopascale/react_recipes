@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import Editable from '../frontend/shared/Editable';
 import RateRecipe from '../frontend/component/RateRecipe';
+import CommentList from '../frontend/component/CommentList';
 
 class Recipe extends React.Component {
   static async getInitialProps(props) {
@@ -125,7 +126,10 @@ class Recipe extends React.Component {
           isAuthor={this.props.recipe.isAuthor}
           id={this.props.recipe._id}
         />
-        <h1>Comments</h1>
+        <CommentList
+          recipeId={this.props.recipe._id}
+          isAuth={this.props.isAuthenticated.user}
+        />
         <style jsx>{`
           .recipe-image--container {
             margin-top: 30px;

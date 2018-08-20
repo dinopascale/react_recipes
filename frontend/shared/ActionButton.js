@@ -8,14 +8,20 @@ export default props => {
         <FontAwesomeIcon icon={props.icon} />
         <style jsx>{`
           .icon {
-            margin-right: 10px;
+            // margin-right: 10px;
+            flex: 0 1 100%;
+            pointer-events: none;
           }
         `}</style>
       </span>
     );
   }
   return (
-    <button onClick={props.handleClick} style={props.customStyle}>
+    <button
+      onClick={props.handleClick}
+      style={props.customStyle}
+      name={props.name}
+    >
       {icon}
       <p className="text">{props.children}</p>
       <style jsx>{`

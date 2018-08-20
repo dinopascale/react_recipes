@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
+const CommentRate = require('../models/rate/rateComment');
 
 const options = { discriminatoryKey: 'kind' };
+
 const commentSchema = new mongoose.Schema(
   {
     recipeId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true
     },
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true
+      required: true,
+      ref: 'User'
     },
     text: {
       type: String,
@@ -17,8 +20,7 @@ const commentSchema = new mongoose.Schema(
       maxlength: 400
     },
     createdAt: {
-      type: Date,
-      required: true
+      type: Date
     },
     updatedAt: {
       type: Date
@@ -30,12 +32,26 @@ const commentSchema = new mongoose.Schema(
   options
 );
 
-const Comment = mongoose.model('Comment', commentSchema);
-const Thread = Comment.discriminator(
-  'Thread',
-  new mongoose.Schema({
-    response: [commentSchema]
-  })
-);
+commentSchema.pre('save', function(next) {
+  this.createdAt = this.createdAt ? this.createdAt : new Date();
+  this.updatedAt = new Date();
+  this.totalRate = this.totalRate ? this.totalRate : 0;
+  next();
+});
 
-module.exports = { Comment, Thread };
+commentSchema.pre('update', function() {
+  this.update({}, { $set: { updatedAt: new Date() } });
+});
+
+commentSchema.post('find', async function(comments) {
+  for (let comment of comments) {
+    const rates = await CommentRate.find({ commentId: comment._id }).select(
+      'value'
+    );
+    comment.totalRate = rates.reduce((sum, rate) => sum + rate.value, 0);
+  }
+});
+
+const Comment = mongoose.model('Comment', commentSchema);
+
+module.exports = { Comment, commentSchema };

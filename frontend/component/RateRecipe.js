@@ -48,15 +48,6 @@ class RateRecipe extends Component {
 
     const response = await rawResp.json();
 
-    console.log(response);
-
-    // this.setState({
-    //   isLoading: false,
-    //   ratedBefore: true,
-    //   rateCount:
-    //   rateValue: response.newRateValue,
-    //   userRate: rate
-    // });
     this.setState(prevState => ({
       isLoading: false,
       ratedBefore: true,
@@ -76,6 +67,7 @@ class RateRecipe extends Component {
           count={this.state.rateCount}
           userRate={this.state.userRate}
           isAuthor={this.props.isAuthor}
+          isAuth={this.props.isAuth}
         />
       );
     } else {

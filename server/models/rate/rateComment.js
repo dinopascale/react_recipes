@@ -11,4 +11,4 @@ const CommentRate = Rate.discriminator(
   })
 );
 
-module.exports = moongose.model('CommentRate');
+module.exports = mongoose.model('CommentRate');

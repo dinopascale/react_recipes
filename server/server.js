@@ -8,6 +8,7 @@ const custoErrorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./api/user');
 const recipeRoutes = require('./api/recipe');
 const rateRoutes = require('./api/rate');
+const commentRoutes = require('./api/comment');
 const db = require('./db/db');
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -29,6 +30,7 @@ app
     server.use('/api', userRoutes);
     server.use('/api', recipeRoutes);
     server.use('/api', rateRoutes);
+    server.use('/api', commentRoutes);
 
     //DYNAMIC ROUTES
     server.get('/r/:title', (req, res) => {

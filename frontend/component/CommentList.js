@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+
 import CommentElement from './commentList/CommentElement';
 import FilterRow from './commentList/FilterRow';
 import NewComment from './commentList/NewComment';
+import ActionButton from '../shared/ActionButton';
 
 const sortOptions = [
   {
@@ -19,7 +21,7 @@ class CommentList extends Component {
     list: [],
     loading: false,
     sortBy: 'createdAt',
-    newComment: ''
+    newComment: 'Login to write a comment...'
   };
 
   loadComments = async () => {
@@ -83,11 +85,11 @@ class CommentList extends Component {
 
   onChangeNewComment = event => {
     this.setState({
-      newComment: event.target.value
+      newComment: event.target.innerHTML
     });
   };
 
-  onAddComment = async () => {
+  onSubmitComment = async () => {
     const text = this.state.newComment;
     const rawResponse = await fetch(`/api/thread/${this.props.recipeId}`, {
       method: 'POST',
@@ -110,6 +112,29 @@ class CommentList extends Component {
     }
   };
 
+  onDeleteComment = i => async () => {
+    console.log('qui deleteSelf', this.state.list[i]);
+    const commentToDelete = this.state.list[i];
+    try {
+      const rawResponse = await fetch(`/api/thread/${commentToDelete._id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      const json = await rawResponse.json();
+
+      console.log(json);
+
+      if (json.status) {
+        await this.loadComments();
+      } else {
+        //error handler
+      }
+    } catch (e) {
+      //error
+    }
+  };
+
   selectSortOptions = event => {
     this.setState({
       sortBy: event.target.value
@@ -118,15 +143,14 @@ class CommentList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="comments-section">
         <h2 className="comment-list-title">Comments</h2>
-        {this.props.isAuth ? (
-          <NewComment
-            comment={this.onAddComment}
-            changed={this.onChangeNewComment}
-            value={this.state.newComment}
-          />
-        ) : null}
+        <NewComment
+          comment={this.onSubmitComment}
+          changed={this.onChangeNewComment}
+          value={this.state.newComment}
+          isAuth={this.props.isAuth}
+        />
         {this.state.list.length > 0 ? (
           <FilterRow options={sortOptions} selected={this.selectSortOptions} />
         ) : null}
@@ -136,21 +160,48 @@ class CommentList extends Component {
             <div key={comment._id} className="comment-list">
               <CommentElement
                 comment={comment}
+                deleteSelf={
+                  comment.editable ? this.onDeleteComment(index) : null
+                }
                 rateComment={this.rateComment(index)}
               />
             </div>
           ))}
-        {this.state.list.length === 0 ? (
-          <button onClick={this.loadComments}>Load</button>
-        ) : null}
+        <div className="load-button-container">
+          {this.state.list.length === 0 ? (
+            <ActionButton
+              handleClick={this.loadComments}
+              customStyle={{
+                width: '100%',
+                border: '1px solid rgb(119, 181, 255)',
+                padding: '30px',
+                color: '#fff',
+                fontWeight: 'bold',
+                backgroundColor: 'rgb(119, 181, 255)'
+              }}
+            >
+              Load Comments
+            </ActionButton>
+          ) : null}
+        </div>
         <style jsx>{`
+          .comments-section {
+            background: #ffe4c4;
+            padding: 10px 0;
+          }
+
           .comment-list-title {
-            padding: 0px 20px;
+            padding: 10px 20px;
             margin-bottom: 10px;
+            color: rgb(119, 181, 255);
           }
 
           .comment-list {
             padding: 10px 0;
+          }
+
+          .load-button-container {
+            padding: 20px 20px;
           }
         `}</style>
       </div>

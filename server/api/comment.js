@@ -104,7 +104,7 @@ router.patch('/thread/:id', checkAuth, async (req, res, next) => {
     );
 
     res.status(200).json({
-      status: 'ok',
+      status: 'Ok',
       threadUpdate: update
     });
   } catch (e) {
@@ -113,12 +113,28 @@ router.patch('/thread/:id', checkAuth, async (req, res, next) => {
   }
 });
 
-router.delete(
-  '/thread/:id',
-  checkAuth,
-  checkAuthor,
-  async (req, res, next) => {}
-);
+router.delete('/thread/:id', checkAuth, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const obId = new ObjectId(id);
+
+    const deletedThread = await Thread.findByIdAndRemove(obId);
+
+    if (!deletedThread) {
+      return res.status(404).json({
+        message: `No thread with ID: ${id} was found`
+      });
+    }
+
+    res.status(200).json({
+      status: 'Ok',
+      message: 'Thread Deleted'
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
 
 router.patch('/thread/vote/:id', checkAuth, async (req, res, next) => {});
 

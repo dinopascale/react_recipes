@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'next/router';
 
 import RenderEditable from './editable/RenderEditable';
 import ManageList from './editable/renderEditable/ManageList';
@@ -86,6 +87,8 @@ class Editable extends Component {
       this.setState({ isEditing: true });
     }
   };
+
+  deleteSelf = async () => {};
 
   addNew = event => {
     const newData = this.state.field.slice();
@@ -195,6 +198,7 @@ class Editable extends Component {
                   ? this.state.itemsToDelete.includes(index)
                   : null
               }
+              deleteSelf={this.props.deleteSelf}
               onChange={this.changeHandler(index)}
               onSave={this.props.auth ? this.saveEdit : null}
               type={this.props.type}
@@ -239,4 +243,4 @@ class Editable extends Component {
   }
 }
 
-export default Editable;
+export default withRouter(Editable);

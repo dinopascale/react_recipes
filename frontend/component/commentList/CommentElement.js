@@ -2,7 +2,7 @@ import Editable from '../../shared/Editable';
 import dateIntervale from '../../utils/dateIntervale';
 import RateComment from './commentElement/RateComment';
 
-export default ({ comment, rateComment }) => (
+export default ({ comment, rateComment, deleteSelf }) => (
   <div className="comment-element">
     <div className="user-row">
       <div
@@ -22,6 +22,7 @@ export default ({ comment, rateComment }) => (
       type="textarea"
       auth={comment.editable}
       endpoint={`/api/thread/${comment._id}`}
+      deleteSelf={deleteSelf}
     />
     <RateComment
       totalRate={comment.totalRate}
@@ -30,8 +31,10 @@ export default ({ comment, rateComment }) => (
     />
     <style jsx>{`
       .comment-element {
-        border-top: 1px solid #eee;
         padding: 20px 0 10px 0;
+        margin: 0 20px;
+        background: #fff;
+        border-radius: 5px;
       }
 
       .user-row {

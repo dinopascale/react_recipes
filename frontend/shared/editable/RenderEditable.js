@@ -59,6 +59,7 @@ export default props => {
         <ControlRow
           save={props.onSave}
           exit={props.onStop}
+          deleteSelf={props.deleteSelf}
           delete={props.onDelete}
           isList={props.isList && !props.withLabel}
         />

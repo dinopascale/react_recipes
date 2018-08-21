@@ -14,7 +14,9 @@ import {
   faEllipsisV,
   faStar,
   faLongArrowAltUp,
-  faLongArrowAltDown
+  faLongArrowAltDown,
+  faCaretDown,
+  faComment
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
@@ -28,7 +30,9 @@ library.add(
   faEllipsisV,
   faStar,
   faLongArrowAltUp,
-  faLongArrowAltDown
+  faLongArrowAltDown,
+  faCaretDown,
+  faComment
 );
 
 class MyApp extends App {

@@ -213,7 +213,7 @@ class Editable extends Component {
         ))}
         <style jsx>{`
           .render-container {
-            padding: 10px 20px;
+            padding: 20px;
           }
 
           .render-container.image {

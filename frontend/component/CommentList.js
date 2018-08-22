@@ -188,6 +188,7 @@ class CommentList extends Component {
           .comments-section {
             background: #ffe4c4;
             padding: 10px 0;
+            margin-top: 20px;
           }
 
           .comment-list-title {

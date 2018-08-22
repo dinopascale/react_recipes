@@ -14,11 +14,6 @@ export default props => {
         .cta-container {
           text-align: center;
           padding: 0 7px;
-          //   position: absolute;
-          //   top: 0;
-          //   left: 0;
-          //   width: 100%;
-          //   height: 100%;
         }
 
         .cta-text {
@@ -80,7 +75,7 @@ export default props => {
       <style jsx>{`
         .rating-container,
         .rating-container.author {
-          padding: 10px 20px;
+          padding: 20px;
           display: flex;
           flex-flow: row nowrap;
           align-items: baseline;

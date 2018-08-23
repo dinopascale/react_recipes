@@ -1,6 +1,7 @@
 import Editable from '../../shared/Editable';
 import dateIntervale from '../../utils/dateIntervale';
-import RateComment from './commentElement/RateComment';
+import RateComment from './threadElement/RateComment';
+import CommentList from './threadElement/CommentList';
 
 export default ({ comment, rateComment, deleteSelf }) => (
   <div className="comment-element">
@@ -24,10 +25,18 @@ export default ({ comment, rateComment, deleteSelf }) => (
       endpoint={`/api/thread/${comment._id}`}
       deleteSelf={deleteSelf}
     />
-    <RateComment
-      totalRate={comment.totalRate}
-      rateComment={rateComment}
-      userRate={comment.userRate}
+    <div>
+      <RateComment
+        totalRate={comment.totalRate}
+        rateComment={rateComment}
+        userRate={comment.userRate}
+      />
+    </div>
+    <CommentList
+      apiId={comment._id}
+      baseURL="/api/comment"
+      type="comments"
+      auth={comment.editable}
     />
     <style jsx>{`
       .comment-element {

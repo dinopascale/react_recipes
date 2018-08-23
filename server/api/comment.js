@@ -34,7 +34,7 @@ router.post('/thread/:recipeId', checkAuth, async (req, res, next) => {
   }
 });
 
-router.get('/threads/:recipeId', checkAuthor, async (req, res, next) => {
+router.get('/thread/:recipeId', checkAuthor, async (req, res, next) => {
   try {
     const recipeId = new ObjectId(req.params.recipeId);
     const issuer = res.locals.issuerId;
@@ -170,7 +170,7 @@ router.post('/comment/:threadId', checkAuth, async (req, res, next) => {
   }
 });
 
-router.get('/comments/:threadId', checkAuthor, async (req, res, next) => {
+router.get('/comment/:threadId', checkAuthor, async (req, res, next) => {
   try {
     const threadId = new ObjectId(req.params.threadId);
     const issuer = res.locals.issuerId;

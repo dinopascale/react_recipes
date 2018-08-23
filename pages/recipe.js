@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import Editable from '../frontend/shared/Editable';
 import RateRecipe from '../frontend/component/RateRecipe';
-import CommentList from '../frontend/component/CommentList';
+import ThreadList from '../frontend/component/ThreadList';
 
 class Recipe extends React.Component {
   static async getInitialProps(props) {
@@ -126,8 +126,10 @@ class Recipe extends React.Component {
           isAuthor={this.props.recipe.isAuthor}
           id={this.props.recipe._id}
         />
-        <CommentList
-          recipeId={this.props.recipe._id}
+        <ThreadList
+          apiId={this.props.recipe._id}
+          baseURL="/api/thread"
+          type="threads"
           isAuth={this.props.isAuthenticated.user}
         />
         <style jsx>{`

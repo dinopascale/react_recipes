@@ -16,11 +16,12 @@ export default withRouter(props => {
           />
           <div
             contentEditable={auth}
-            html={props.value}
-            onChange={props.changed}
-            onInput={props.changed}
+            dangerouslySetInnerHTML={{ __html: props.value }}
+            onBlur={props.changed}
             className="new-comment"
-            placeholder={'Write a comment...'}
+            placeholder={
+              auth ? 'Write a comment...' : 'Login to write a comment'
+            }
           />
         </div>
         <div className="action-row">

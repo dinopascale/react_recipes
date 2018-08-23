@@ -88,8 +88,6 @@ class Editable extends Component {
     }
   };
 
-  deleteSelf = async () => {};
-
   addNew = event => {
     const newData = this.state.field.slice();
     let empty = {};

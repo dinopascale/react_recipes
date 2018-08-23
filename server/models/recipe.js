@@ -47,13 +47,6 @@ const recipeSchema = mongoose.Schema({
     required: true,
     trim: true
   },
-  //   rateCount: {
-  //     type: Number
-  //   },
-  //   rateValue: {
-  //     type: Number
-  //   },
-
   sharable: {
     type: Boolean,
     default: true

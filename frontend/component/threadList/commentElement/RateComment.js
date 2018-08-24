@@ -35,6 +35,7 @@ export default props => {
           display: flex;
           justify-content: flex-end;
           align-items: center;
+          flex: 1 0 50%;
         }
 
         .total {

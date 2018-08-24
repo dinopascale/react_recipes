@@ -7,6 +7,7 @@ import ManageList from './editable/renderEditable/ManageList';
 class Editable extends Component {
   state = {
     field: [],
+    prevField: [],
     isEditing: false,
     itemOnEdit: null,
     isDeleteMode: false,
@@ -33,20 +34,23 @@ class Editable extends Component {
   };
 
   startEditing = i => event => {
+    const prevField = JSON.parse(JSON.stringify(this.state.field));
     event.target.scrollIntoView({
       behavior: 'smooth'
     });
     this.setState({
       isEditing: true,
       itemOnEdit: i,
-      isDeleteMode: false
+      isDeleteMode: false,
+      prevField
     });
   };
 
   stopEditing = () => {
+    const prevField = JSON.parse(JSON.stringify(this.state.prevField));
     this.setState({
       isEditing: false,
-      field: this.transformData(this.props.data, this.props.name),
+      field: prevField,
       itemOnEdit: null
     });
   };
@@ -75,10 +79,10 @@ class Editable extends Component {
       });
 
       const result = await rawResponse.json();
+      console.log(result);
       if (result.error) {
         this.setState({
-          isEditing: false,
-          dataList: JSON.parse(JSON.stringify(this.props.data))
+          isEditing: false
         });
       } else {
         this.setState({ isEditing: false, itemOnEdit: null });

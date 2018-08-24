@@ -1,9 +1,8 @@
 import Editable from '../../shared/Editable';
 import dateIntervale from '../../utils/dateIntervale';
-import RateComment from './threadElement/RateComment';
-import CommentList from './threadElement/CommentList';
+import RateComment from './commentElement/RateComment';
 
-export default ({ comment, rateComment, deleteSelf }) => (
+export default ({ comment, rateComment, deleteSelf, showResponses }) => (
   <div className="comment-element">
     <div className="user-row">
       <div
@@ -25,19 +24,18 @@ export default ({ comment, rateComment, deleteSelf }) => (
       endpoint={`/api/thread/${comment._id}`}
       deleteSelf={deleteSelf}
     />
-    <div>
+    <div className="action-row">
+      {showResponses ? (
+        <div className="ciao" onClick={showResponses}>
+          Show conversation
+        </div>
+      ) : null}
       <RateComment
         totalRate={comment.totalRate}
         rateComment={rateComment}
         userRate={comment.userRate}
       />
     </div>
-    <CommentList
-      apiId={comment._id}
-      baseURL="/api/comment"
-      type="comments"
-      auth={comment.editable}
-    />
     <style jsx>{`
       .comment-element {
         padding: 20px 0 10px 0;
@@ -69,6 +67,18 @@ export default ({ comment, rateComment, deleteSelf }) => (
 
       .user-name {
         margin-bottom: 5px;
+      }
+
+      .action-row {
+        display: flex;
+        align-items: center;
+      }
+
+      .ciao {
+        flex: 1 0 50%;
+        padding-left: 20px;
+        color: #aaa;
+        font-size: 13px;
       }
 
       .rates {

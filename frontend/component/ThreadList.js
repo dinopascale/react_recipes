@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
-import CommentElement from './threadList/ThreadElement';
+import CommentElement from './threadList/CommentElement';
 import FilterRow from './threadList/FilterRow';
 import NewComment from './threadList/NewComment';
 import ActionButton from '../shared/ActionButton';
 import withFilter from '../hoc/withFilter';
 import withCommentAPI from '../hoc/withCommentAPI';
+import CommentList from './threadList/CommentList';
 
 const sortOptions = [
   {
@@ -19,121 +20,19 @@ const sortOptions = [
 ];
 
 class ThreadList extends Component {
-  //   state = {
-  // list: [],
-  // loading: false
-  // newComment: 'Login to write a comment...'
-  //   };
+  state = {
+    conversationsShowed: []
+  };
 
-  //   loadComments = async () => {
-  //     this.setState({
-  //       loading: true
-  //     });
-  //     const rawResponse = await fetch(`/api/threads/${this.props.recipeId}`, {
-  //       method: 'GET',
-  //       credentials: 'include'
-  //     });
-
-  //     const json = await rawResponse.json();
-
-  //     console.log(json);
-
-  //     this.setState({
-  //       list: json.threads.map(thread => {
-  //         return {
-  //           ...thread,
-  //           createdAt: new Date(thread.createdAt),
-  //           updatedAt: new Date(thread.updatedAt)
-  //         };
-  //       }),
-  //       loading: false
-  //     });
-  //   };
-
-  //   rateComment = i => async event => {
-  //     const value = event.target.name === 'up' ? 1 : -1;
-  //     const comment = JSON.parse(JSON.stringify(this.state.list[i]));
-  //     const rawResponse = await fetch(`/api/rate/c/${comment._id}`, {
-  //       method: comment.ratedBefore ? 'PATCH' : 'POST',
-  //       credentials: 'include',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ value })
-  //     });
-
-  //     const json = await rawResponse.json();
-
-  //     if (json.status) {
-  //       const newList = this.state.list.map((comment, index) => {
-  //         if (index === i) {
-  //           return {
-  //             ...comment,
-  //             userRate: value,
-  //             totalRate: (comment.totalRate - comment.userRate || 0) + value,
-  //             ratedBefore: true
-  //           };
-  //         }
-  //         return comment;
-  //       });
-
-  //       this.setState({ list: newList });
-  //     } else {
-  //       //error handler
-  //     }
-  //   };
-
-  //   onChangeNewComment = event => {
-  //     this.setState({
-  //       newComment: event.target.innerHTML
-  //     });
-  //   };
-
-  //   onSubmitComment = async () => {
-  //     const text = this.state.newComment;
-  //     const rawResponse = await fetch(`/api/thread/${this.props.recipeId}`, {
-  //       method: 'POST',
-  //       credentials: 'include',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ text })
-  //     });
-
-  //     const json = await rawResponse.json();
-  //     if (json.status) {
-  //       this.setState({
-  //         newComment: ''
-  //       });
-  //       await this.loadComments();
-  //     } else {
-  //       //error handler
-  //     }
-  //   };
-
-  //   onDeleteComment = i => async () => {
-  //     const commentToDelete = this.state.list[i];
-  //     try {
-  //       const rawResponse = await fetch(`/api/thread/${commentToDelete._id}`, {
-  //         method: 'DELETE',
-  //         credentials: 'include'
-  //       });
-
-  //       const json = await rawResponse.json();
-
-  //       console.log(json);
-
-  //       if (json.status) {
-  //         await this.loadComments();
-  //       } else {
-  //         //error handler
-  //       }
-  //     } catch (e) {
-  //       //error
-  //     }
-  //   };
+  showResponseList = i => () => {
+    console.log('qui', i);
+    const showNewConversation = [...this.state.conversationsShowed];
+    showNewConversation.push(i);
+    console.log(showNewConversation);
+    this.setState({
+      conversationsShowed: showNewConversation
+    });
+  };
 
   render() {
     return (
@@ -156,7 +55,16 @@ class ThreadList extends Component {
                 comment={comment}
                 deleteSelf={comment.editable ? this.props.delete(index) : null}
                 rateComment={this.props.rate(index)}
+                showResponses={this.showResponseList(index)}
               />
+              {this.state.conversationsShowed.includes(index) ? (
+                <CommentList
+                  apiId={comment._id}
+                  baseURL="/api/comment"
+                  type="comments"
+                  auth={this.props.isAuth}
+                />
+              ) : null}
             </div>
           ))}
         <div className="load-button-container">

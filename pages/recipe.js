@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { withRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Head from 'next/head';
+import ErrorPage from './_error';
 import { connect } from 'react-redux';
 
 import Editable from '../frontend/shared/Editable';
@@ -10,33 +11,49 @@ import ThreadList from '../frontend/component/ThreadList';
 
 class Recipe extends React.Component {
   static async getInitialProps(props) {
-    const baseUrl = props.req
-      ? `${props.req.protocol}://${props.req.get('Host')}`
-      : '';
+    try {
+      const baseUrl = props.req
+        ? `${props.req.protocol}://${props.req.get('Host')}`
+        : '';
 
-    const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: props.req ? { cookie: props.req.headers.cookie } : undefined
-    });
+      const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: props.req ? { cookie: props.req.headers.cookie } : undefined
+      });
 
-    const data = await res.json();
+      if (res.status !== 200) {
+        const e = new Error(res.statusText);
+        e.status = res.status;
+        throw e;
+      }
 
-    if (!data.recipe || data.recipe.length === 0) {
-      props.res.redirect('/');
+      const data = await res.json();
+
+      if (!data.recipe || data.recipe.length === 0) {
+        props.res.redirect('/');
+      }
+
+      console.log(data.recipe);
+
+      return {
+        recipe: data.recipe
+      };
+    } catch (e) {
+      return { error: e };
     }
-
-    console.log(data.recipe);
-
-    return {
-      recipe: data.recipe
-    };
   }
 
   componentDidMount() {}
 
   render() {
-    const endpoint = `/api/recipe/${this.props.recipe._id}`;
+    const { error, recipe } = this.props;
+    if (error) {
+      return <ErrorPage statusCode={error.status} />;
+    }
+
+    const endpoint = recipe ? `/api/recipe/${this.props.recipe._id}` : null;
+
     return (
       <Fragment>
         <Head>

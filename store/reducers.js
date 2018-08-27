@@ -1,16 +1,28 @@
 import { actionTypes } from './actions';
 
-export const initialState = {
-  auth: {
-    user: null,
-    loading: false,
-    errorMex: ''
+const initialState = {
+  user: null,
+  loading: false
+};
+
+export const errorMessage = (state = null, action) => {
+  switch (action.type) {
+    case actionTypes.LOGIN_FAIL:
+    case actionTypes.NEW_ERROR_MESSAGE:
+      return action.payload;
+    case actionTypes.LOGIN_SUCCESS:
+    case actionTypes.LOGOUT_SUCCESS:
+      return null;
+    default:
+      return state;
   }
 };
 
-export const auth = (state = initialState.auth, action) => {
+// export const auth = (state = initialState.auth, action) => {
+export const auth = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.TRY_LOGIN:
+    case actionTypes.TRY_LOGOUT:
       return {
         ...state,
         loading: true
@@ -27,13 +39,7 @@ export const auth = (state = initialState.auth, action) => {
       return {
         ...state,
         loading: false,
-        errorMex: action.payload,
         user: null
-      };
-    case actionTypes.TRY_LOGOUT:
-      return {
-        ...state,
-        loading: true
       };
     default:
       return state;

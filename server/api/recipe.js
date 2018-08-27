@@ -177,9 +177,12 @@ router.patch('/recipe/:id', checkAuth, async (req, res, next) => {
       throw e;
     }
 
-    const result = await recipeToUpdate.update({
-      $set: updateFields
-    });
+    const result = await recipeToUpdate.update(
+      {
+        $set: updateFields
+      },
+      { runValidators: true }
+    );
 
     res.status(200).json({
       message: 'Recipe Updated!',

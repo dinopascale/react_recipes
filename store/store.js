@@ -2,23 +2,24 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 
-import { auth, initialState } from './reducers';
+import { auth, errorMessage } from './reducers';
 
 const appReducer = combineReducers({
-  auth
+  auth,
+  errorMessage
 });
 
-const rootReducer = (state = initialState, action) => {
+const rootReducer = (state, action) => {
   if (action.type === 'LOGOUT_SUCCESS') {
     state = undefined;
   }
   return appReducer(state, action);
 };
 
-export function initStore(initState = initialState) {
+export function initStore(state = {}) {
   return createStore(
     rootReducer,
-    initState,
+    state,
     composeWithDevTools(applyMiddleware(thunkMiddleware))
   );
 }

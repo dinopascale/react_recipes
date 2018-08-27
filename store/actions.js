@@ -7,54 +7,78 @@ export const actionTypes = {
   LOGIN_FAIL: 'LOGIN_FAIL',
   TRY_LOGOUT: 'TRY_LOGOUT',
   LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
-  LOGOUT_FAIL: 'LOGOUT_FAIL'
+  LOGOUT_FAIL: 'LOGOUT_FAIL',
+  NEW_ERROR_MESSAGE: 'NEW_ERROR_MESSAGE'
 };
 
 //MIDDLEWARES
 
-export const tryLogin = (email, password) => dispatch => {
-  return fetch('/api/user/login', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
-  })
-    .then(resp => resp.json(), error => error.json())
-    .then(json => {
-      if (json.userInfo) {
-        dispatch({
-          type: actionTypes.LOGIN_SUCCESS,
-          payload: json.userInfo
-        });
-        Router.push('/');
-      } else {
-        dispatch({
-          type: actionTypes.LOGIN_FAIL,
-          payload: json.error.message
-        });
-      }
+export const tryLogin = (email, password) => async dispatch => {
+  try {
+    const rawResponse = await fetch('/api/user/login', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
     });
+
+    if (rawResponse.status !== 200) {
+      console.log(rawResponse.statusText, rawResponse.status);
+      const e = new Error(rawResponse.statusText);
+      e.status = rawResponse.status;
+      throw e;
+    }
+
+    const json = await rawResponse.json();
+
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: json.userInfo
+    });
+    Router.push('/');
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOGIN_FAIL,
+      payload: e.message
+    });
+  }
 };
 
-export const tryLogout = () => dispatch => {
-  return fetch('/api/user/me/logout', {
-    method: 'POST',
-    credentials: 'include'
-  })
-    .then(resp => resp.json(), error => error.json())
-    .then(json => {
-      if (json.status === 'Ok') {
-        dispatch({
-          type: actionTypes.LOGOUT_SUCCESS
-        });
-      } else {
-        dispatch({
-          type: actionTypes.LOGOUT_FAIL,
-          payload: json.message
-        });
-      }
+export const tryLogout = () => async dispatch => {
+  try {
+    const rawResponse = await fetch('/api/user/me/logout', {
+      method: 'POST',
+      credentials: 'include'
     });
+
+    if (rawResponse.status !== 200) {
+      console.log(rawResponse.statusText, rawResponse.status);
+      const e = new Error(rawResponse.statusText);
+      e.status = rawResponse.status;
+      throw e;
+    }
+
+    const json = await rawResponse.json();
+
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: json.userInfo
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOGIN_FAIL,
+      payload: e.message
+    });
+  }
+};
+
+export const createErrorMessage = message => dispatch => {
+  console.log('nel thunk');
+  return dispatch({
+    type: actionTypes.NEW_ERROR_MESSAGE,
+    payload: message
+  });
 };

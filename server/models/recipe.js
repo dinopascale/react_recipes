@@ -76,11 +76,19 @@ const recipeSchema = mongoose.Schema({
       _id: false,
       name: {
         type: String,
-        required: true
+        required: true,
+        validate: {
+          validator: validator.isAlphanumeric,
+          message: '{VALUE} must contain only letters and numbers'
+        }
       },
       quantity: {
         type: String,
-        required: true
+        required: true,
+        validate: {
+          validator: validator.isAlphanumeric,
+          message: '{VALUE} must contain only letters and numbers'
+        }
       }
     }
   ]

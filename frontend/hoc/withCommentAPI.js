@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import apiCall from '../utils/apiCall';
+import { createErrorMessage } from '../../store/actions';
 
 const withCommentAPI = WrappedComponent => {
   class HOC extends React.Component {
@@ -14,30 +17,32 @@ const withCommentAPI = WrappedComponent => {
         loading: true
       });
 
+      const endpoint = `${this.props.baseURL}/${this.props.apiId}`;
+
       const options = {
         method: 'GET',
         credentials: 'include'
       };
 
-      const json = await apiCall(
-        `${this.props.baseURL}/${this.props.apiId}`,
-        options
+      await apiCall(
+        endpoint,
+        options,
+        json => {
+          this.setState({
+            loading: false,
+            list: json[this.props.type].map(el => {
+              return {
+                ...el,
+                createdAt: new Date(el.createdAt),
+                updatedAt: new Date(el.updatedAt)
+              };
+            })
+          });
+        },
+        error => {
+          this.props.onError(error.message);
+        }
       );
-
-      if (json.status) {
-        this.setState({
-          loading: false,
-          list: json[this.props.type].map(el => {
-            return {
-              ...el,
-              createdAt: new Date(el.createdAt),
-              updatedAt: new Date(el.updatedAt)
-            };
-          })
-        });
-      } else {
-        console.log(json);
-      }
     };
 
     createNewElement = event => {
@@ -48,6 +53,9 @@ const withCommentAPI = WrappedComponent => {
 
     submitNewElement = async () => {
       const text = this.state.newElement;
+
+      const endpoint = `${this.props.baseURL}/${this.props.apiId}`;
+
       const options = {
         method: 'POST',
         credentials: 'include',
@@ -58,23 +66,26 @@ const withCommentAPI = WrappedComponent => {
         body: JSON.stringify({ text })
       };
 
-      const json = await apiCall(
-        `${this.props.baseURL}/${this.props.apiId}`,
-        options
+      await apiCall(
+        endpoint,
+        options,
+        async () => {
+          this.setState({
+            newElement: ''
+          });
+          await this.loadData();
+        },
+        error => {
+          this.props.onError(error.message);
+        }
       );
-      if (json.status) {
-        this.setState({
-          newElement: ''
-        });
-        await this.loadData();
-      } else {
-        console.log(json);
-      }
     };
 
     rateElement = i => async event => {
       const value = event.target.name === 'up' ? 1 : -1;
       const element = JSON.parse(JSON.stringify(this.state.list[i]));
+
+      const endpoint = `/api/rate/c/${element._id}`;
 
       const options = {
         method: element.ratedBefore ? 'PATCH' : 'POST',
@@ -86,44 +97,47 @@ const withCommentAPI = WrappedComponent => {
         body: JSON.stringify({ value })
       };
 
-      const json = await apiCall(`/api/rate/c/${element._id}`, options);
+      await apiCall(
+        endpoint,
+        options,
+        () => {
+          const newList = this.state.list.map((element, index) => {
+            if (index === i) {
+              return {
+                ...element,
+                userRate: value,
+                totalRate: (element.totalRate - element.userRate || 0) + value,
+                ratedBefore: true
+              };
+            }
+            return element;
+          });
 
-      if (json.status) {
-        const newList = this.state.list.map((element, index) => {
-          if (index === i) {
-            return {
-              ...element,
-              userRate: value,
-              totalRate: (element.totalRate - element.userRate || 0) + value,
-              ratedBefore: true
-            };
-          }
-          return element;
-        });
-
-        this.setState({ list: newList });
-      } else {
-        //error handler
-      }
+          this.setState({ list: newList });
+        },
+        error => {
+          this.props.onError(error.message);
+        }
+      );
     };
 
     deleteElement = i => async () => {
       const elementToDelete = this.state.list[i];
+
+      const endpoint = `${this.props.baseURL}/${elementToDelete._id}`;
+
       const options = {
         method: 'DELETE',
         credentials: 'include'
       };
-      try {
-        const json = await apiCall(
-          `${this.props.baseURL}/${elementToDelete._id}`,
-          options
-        );
-        if (json.status) {
-          await this.loadData();
-        } else {
-          console.log(json);
+      await apiCall(
+        endpoint,
+        options,
+        async () => await this.loadData(),
+        error => {
+          this.props.onError(error.message);
         }
-      } catch (e) {}
+      );
     };
 
     render() {
@@ -143,7 +157,16 @@ const withCommentAPI = WrappedComponent => {
     }
   }
 
-  return HOC;
+  const mapDispatchToProps = dispatch => {
+    return {
+      onError: message => dispatch(createErrorMessage(message))
+    };
+  };
+
+  return connect(
+    null,
+    mapDispatchToProps
+  )(HOC);
 };
 
 export default withCommentAPI;

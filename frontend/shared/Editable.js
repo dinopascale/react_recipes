@@ -81,8 +81,10 @@ class Editable extends Component {
       const result = await rawResponse.json();
       console.log(result);
       if (result.error) {
+        const prevField = JSON.parse(JSON.stringify(this.state.prevField));
         this.setState({
-          isEditing: false
+          isEditing: false,
+          field: prevField
         });
       } else {
         this.setState({ isEditing: false, itemOnEdit: null });

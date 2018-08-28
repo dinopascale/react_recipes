@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
+import { connect } from 'react-redux';
 
 import RenderEditable from './editable/RenderEditable';
 import ManageList from './editable/renderEditable/ManageList';
+import apiCall from '../utils/apiCall';
+import { createErrorMessage } from '../../store/actions';
 
 class Editable extends Component {
   state = {
@@ -67,28 +70,33 @@ class Editable extends Component {
     const value = this.props.isList
       ? this.state.field
       : this.state.field[0][this.props.name];
-    try {
-      const rawResponse = await fetch(this.props.endpoint, {
-        method: 'PATCH',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ [this.props.name]: value })
-      });
 
-      const result = await rawResponse.json();
-      console.log(result);
-      if (result.error) {
-        const prevField = JSON.parse(JSON.stringify(this.state.prevField));
-        this.setState({
-          isEditing: false,
-          field: prevField
-        });
-      } else {
-        this.setState({ isEditing: false, itemOnEdit: null });
-      }
+    const endpoint = this.props.endpoint;
+    const options = {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ [this.props.name]: value })
+    };
+    try {
+      await apiCall(
+        endpoint,
+        options,
+        () => {
+          this.setState({ isEditing: false, itemOnEdit: null });
+        },
+        error => {
+          this.props.onError({ status: error.status, message: error.message });
+          const prevField = JSON.parse(JSON.stringify(this.state.prevField));
+          this.setState({
+            isEditing: false,
+            field: prevField
+          });
+        }
+      );
     } catch (e) {
       this.setState({ isEditing: true });
     }
@@ -222,7 +230,6 @@ class Editable extends Component {
 
           .render-container.image {
             padding: 0;
-            margin-top: 30px;
           }
 
           .render-container.image.editing,
@@ -247,4 +254,13 @@ class Editable extends Component {
   }
 }
 
-export default withRouter(Editable);
+const mapDispatchToProps = dispatch => {
+  return {
+    onError: error => dispatch(createErrorMessage(error))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(Editable));

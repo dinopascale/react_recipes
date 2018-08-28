@@ -54,7 +54,7 @@ class ThreadList extends Component {
               <CommentElement
                 comment={comment}
                 deleteSelf={comment.editable ? this.props.delete(index) : null}
-                rateComment={this.props.rate(index)}
+                rateComment={this.props.isAuth ? this.props.rate(index) : null}
                 showResponses={this.showResponseList(index)}
               />
               {this.state.conversationsShowed.includes(index) ? (

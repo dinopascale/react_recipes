@@ -64,7 +64,7 @@ userSchema.statics.findByCredentials = async function(email, password) {
     const user = await User.findOne({ email });
 
     if (!user) {
-      const e = new Error('Auth Failed, no user');
+      const e = new Error(`No user with email ${email}`);
       e.status = 401;
       throw e;
     }
@@ -74,7 +74,7 @@ userSchema.statics.findByCredentials = async function(email, password) {
     if (passwordCompare) {
       return user;
     } else {
-      const e = new Error('Auth failed');
+      const e = new Error('Password incorrect');
       e.status = 401;
       throw e;
     }

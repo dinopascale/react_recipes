@@ -15,6 +15,7 @@ const Toolbar = props => (
         justify-content: space-between;
         flex: 1 0 0;
         padding: 10px 20px;
+        background-color: #ffe4c4;
       }
 
       .desktop-only {

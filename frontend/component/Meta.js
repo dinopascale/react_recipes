@@ -20,17 +20,19 @@ export default props => (
         box-sizing: border-box;
       }
 
-      body {
+      ${props.isScrollable
+        ? `body {
         width: 100%;
         height: 100%;
         overflow-x: hidden;
-      }
-
-      body {
-        margin: 0;
-      }
-
-      h1,
+        margin:0;
+      }`
+        : `body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin:0;
+        }`} h1,
       h2,
       h3 {
         font-family: 'Fredoka One', cursive;
@@ -38,7 +40,8 @@ export default props => (
 
       h4,
       h5,
-      h6 {
+      h6,
+      p {
         font-family: 'Open Sans', sans-serif;
       }
     `}</style>

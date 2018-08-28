@@ -23,10 +23,16 @@ router.get('/users', async (req, res, next) => {
 
 router.post('/user/login', async (req, res, next) => {
   try {
-    const user = await User.findByCredentials(
-      req.body.email,
-      req.body.password
-    );
+    const { email, password } = req.body;
+    console.log(email, password);
+
+    if (!email.trim() || !password.trim()) {
+      const e = new Error('Email and Password are required');
+      e.status = 401;
+      throw e;
+    }
+
+    const user = await User.findByCredentials(email, password);
 
     const token = await user.generateAuthToken();
 

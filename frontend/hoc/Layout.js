@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 
+import { actionTypes } from '../../store/actions';
 import Meta from '../component/Meta';
 import Toolbar from '../component/Toolbar';
 import SideDrawer from '../component/SideDrawer';
+import Modal from '../component/Modal';
+import Spinner from '../component/Spinner';
 
 class Layout extends React.Component {
   state = {
@@ -23,8 +26,15 @@ class Layout extends React.Component {
   render() {
     return (
       <Fragment>
-        <Meta />
-        <div className="app-container">
+        {this.props.loading ? <Spinner /> : null}
+        <Meta
+          isScrollable={!(this.state.showSideDrawer || this.props.modal.isOpen)}
+        />
+        <div
+          className={
+            this.props.loading ? 'app-container blurred' : 'app-container'
+          }
+        >
           <Toolbar opened={this.openSideDrawerHandler} />
           <SideDrawer
             open={this.state.showSideDrawer}
@@ -32,19 +42,30 @@ class Layout extends React.Component {
             user={this.props.userInfo}
           />
           <main className="content">{this.props.children}</main>
+          <Modal
+            close={this.props.closeModal}
+            isOpen={this.props.modal.isOpen}
+            error={this.props.errMessage}
+            isSuccess={this.props.modal.isSuccess}
+          />
+          <style jsx>{`
+            .app-container {
+              height: 100%;
+              width: 100%;
+              overflow-x: hidden;
+              position: relative;
+            }
+
+            .app-container.blurred {
+              filter: blur(2px);
+            }
+            .content {
+              font-family: 'Open Sans', sans-serif;
+              max-width: 800px;
+              margin: 0 auto;
+            }
+          `}</style>
         </div>
-        <style jsx>{`
-          .app-container {
-            height: 100%;
-            width: 100%;
-            overflow-x: hidden;
-          }
-          .content {
-            font-family: 'Open Sans', sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-          }
-        `}</style>
       </Fragment>
     );
   }
@@ -52,8 +73,20 @@ class Layout extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    userInfo: state.auth.user
+    userInfo: state.auth.user,
+    modal: state.modal,
+    errMessage: state.errorMessage,
+    loading: state.loading
   };
 };
 
-export default connect(mapStateToProps)(Layout);
+const mapDispatchToProps = dispatch => {
+  return {
+    closeModal: () => dispatch({ type: actionTypes.HIDE_MODAL })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Layout);

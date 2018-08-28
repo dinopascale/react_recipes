@@ -16,7 +16,10 @@ import {
   faLongArrowAltUp,
   faLongArrowAltDown,
   faCaretDown,
-  faComment
+  faComment,
+  faExclamation,
+  faCheckCircle,
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
@@ -32,7 +35,10 @@ library.add(
   faLongArrowAltUp,
   faLongArrowAltDown,
   faCaretDown,
-  faComment
+  faComment,
+  faExclamation,
+  faCheckCircle,
+  faSpinner
 );
 
 class MyApp extends App {

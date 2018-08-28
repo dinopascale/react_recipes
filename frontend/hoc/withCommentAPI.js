@@ -40,7 +40,7 @@ const withCommentAPI = WrappedComponent => {
           });
         },
         error => {
-          this.props.onError(error.message);
+          this.props.onError({ status: error.status, message: error.message });
         }
       );
     };
@@ -76,7 +76,7 @@ const withCommentAPI = WrappedComponent => {
           await this.loadData();
         },
         error => {
-          this.props.onError(error.message);
+          this.props.onError({ status: error.status, message: error.message });
         }
       );
     };
@@ -116,7 +116,7 @@ const withCommentAPI = WrappedComponent => {
           this.setState({ list: newList });
         },
         error => {
-          this.props.onError(error.message);
+          this.props.onError({ status: error.status, message: error.message });
         }
       );
     };
@@ -135,7 +135,7 @@ const withCommentAPI = WrappedComponent => {
         options,
         async () => await this.loadData(),
         error => {
-          this.props.onError(error.message);
+          this.props.onError({ status: error.status, message: error.message });
         }
       );
     };
@@ -156,10 +156,9 @@ const withCommentAPI = WrappedComponent => {
       );
     }
   }
-
   const mapDispatchToProps = dispatch => {
     return {
-      onError: message => dispatch(createErrorMessage(message))
+      onError: error => dispatch(createErrorMessage(error))
     };
   };
 

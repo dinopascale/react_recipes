@@ -17,7 +17,7 @@ class CommentList extends Component {
             <CommentElement
               comment={comment}
               deleteSelf={comment.editable ? this.props.delete(index) : null}
-              rateComment={this.props.rate(index)}
+              rateComment={this.props.auth ? this.props.rate(index) : null}
             />
           </div>
         ))}

@@ -47,14 +47,13 @@ const Index = props => {
 
 Index.getInitialProps = async ({ req }) => {
   try {
-    const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
-
     if (req) {
       try {
         const { db } = req;
         const recipes = await db.models['Recipe']
           .find({ sharable: true })
           .limit(4)
+          .populate('_creator', 'avatar username')
           .select(
             'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
           );
@@ -84,7 +83,7 @@ Index.getInitialProps = async ({ req }) => {
       }
     }
 
-    const res = await fetch(`${baseUrl}/api/recipes`);
+    const res = await fetch(`/api/recipes`);
 
     if (res.status !== 200) {
       const e = new Error(res.statusText);

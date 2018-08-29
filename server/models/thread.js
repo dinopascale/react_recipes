@@ -58,7 +58,6 @@ threadSchema.post('remove', async function(removed) {
   const ratesToDelete = await CommentRate.deleteMany({
     commentId: removed._id
   });
-  console.log('CustomComment', CommentRate);
 });
 
 module.exports = mongoose.model('Thread', threadSchema);

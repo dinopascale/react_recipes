@@ -1,24 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const { ObjectId } = require('mongoose').Types;
 
 const User = require('./user');
-
-const creatorSchema = mongoose.Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
-  avatar: {
-    type: String,
-    trim: true,
-    default:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/240px-Placeholder_no_text.svg.png',
-    validate: {
-      validator: validator.isURL,
-      message: '{VALUE} is not a URL'
-    }
-  }
-});
 
 const recipeSchema = mongoose.Schema({
   name: {
@@ -51,7 +35,7 @@ const recipeSchema = mongoose.Schema({
     type: Boolean,
     default: true
   },
-  _creator: creatorSchema,
+  _creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   img: {
     type: String,
     trim: true,
@@ -107,18 +91,17 @@ recipeSchema.pre('update', function() {
 recipeSchema.statics.findByIdAndGetAuthor = async function(id) {
   try {
     const Recipe = this;
-    const recipe = await Recipe.findById(id).select('-__v');
+    const obId = new ObjectId(id);
+    const recipe = await Recipe.findOne({ _id: obId })
+      .populate('_creator', 'username')
+      .select('-__v');
 
     if (!recipe) {
       const e = new Error('No Recipe Found');
       e.status = 401;
       throw e;
     }
-
-    const user = await User.findById(recipe._doc._creator._id).select(
-      'username'
-    );
-    return { ...recipe._doc, _creator: user };
+    return { ...recipe._doc };
   } catch (e) {
     throw e;
   }

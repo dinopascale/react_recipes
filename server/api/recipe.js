@@ -17,6 +17,7 @@ router.get('/recipes', async (req, res, next) => {
     const num = req.query.num || 4;
     const recipes = await Recipe.find({ sharable: true })
       .limit(+num)
+      .populate('_creator', 'avatar username')
       .select(
         'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
       );
@@ -96,11 +97,10 @@ router.post('/recipe', checkAuth, async (req, res, next) => {
 router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const obId = new ObjectId(id);
     let isAuthor = false;
     let userRateValue = false;
 
-    const recipe = await Recipe.findByIdAndGetAuthor(obId);
+    const recipe = await Recipe.findByIdAndGetAuthor(id);
     //GET ALL RATES FOR RECIPE
     const rates = await RecipeRate.find({
       recipeId: id

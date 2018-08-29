@@ -12,34 +12,72 @@ import ThreadList from '../frontend/component/ThreadList';
 class Recipe extends React.Component {
   static async getInitialProps(props) {
     try {
-      const baseUrl = props.req
-        ? `${props.req.protocol}://${props.req.get('Host')}`
-        : '';
+      //SSR - THROUGH MONGOOSE
+      if (props.req) {
+        const { _id } = props.res.locals.issuerId || null;
+        const recipeId = props.query.id;
+        const { db } = props.req;
+        let userRateValue = false;
 
-      const res = await fetch(`${baseUrl}/api/recipe/${props.query.id}`, {
+        const recipe = await db.models['Recipe'].findByIdAndGetAuthor(recipeId);
+
+        const rates = await db.models['RecipeRate']
+          .find({ recipeId: recipeId })
+          .select('value userId');
+        const rateValue = rates.reduce((sum, rate) => sum + rate.value, 0);
+        const rateCount = rates.length;
+
+        const isAuthor = _id && _id.equals(recipe._creator._id);
+
+        if (!isAuthor && rates.length > 0 && _id) {
+          const userRate = rates.find(rate => _id.equals(rate.userId));
+          userRateValue = userRate ? userRate.value : false;
+        }
+
+        const difficultyObject = {
+          value: recipe.difficulty,
+          options: ['easy', 'medium', 'hard']
+        };
+
+        return {
+          recipe: {
+            ...recipe,
+            difficulty: difficultyObject,
+            isAuthor,
+            rateValue,
+            rateCount,
+            ratedBefore: !!userRateValue,
+            userRateValue
+          }
+        };
+      }
+
+      //CSR - FETCH THROUGH API
+      const response = await fetch(`/api/recipe/${props.query.id}`, {
         method: 'GET',
         credentials: 'include',
         headers: props.req ? { cookie: props.req.headers.cookie } : undefined
       });
 
-      if (res.status !== 200) {
-        const e = new Error(res.statusText);
-        e.status = res.status;
+      if (response.status !== 200) {
+        const e = new Error(response.statusText);
+        e.status = response.status;
         throw e;
       }
 
-      const data = await res.json();
+      const data = await response.json();
 
       if (!data.recipe || data.recipe.length === 0) {
         props.res.redirect('/');
       }
 
-      console.log(data.recipe);
+      //   console.log(data.recipe);
 
       return {
         recipe: data.recipe
       };
     } catch (e) {
+      console.log(e);
       return { error: e };
     }
   }

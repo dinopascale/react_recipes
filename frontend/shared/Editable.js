@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import RenderEditable from './editable/RenderEditable';
 import ManageList from './editable/renderEditable/ManageList';
 import apiCall from '../utils/apiCall';
-import { createErrorMessage } from '../../store/actions';
+import { createErrorMessage, successAndCloseModal } from '../../store/actions';
 
 class Editable extends Component {
   state = {
@@ -86,6 +86,7 @@ class Editable extends Component {
         endpoint,
         options,
         () => {
+          this.props.onSuccess();
           this.setState({ isEditing: false, itemOnEdit: null });
         },
         error => {
@@ -256,6 +257,7 @@ class Editable extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSuccess: () => dispatch(successAndCloseModal()),
     onError: error => dispatch(createErrorMessage(error))
   };
 };

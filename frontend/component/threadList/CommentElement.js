@@ -27,7 +27,7 @@ export default ({ comment, rateComment, deleteSelf, showResponses }) => (
     <div className="action-row">
       {showResponses ? (
         <div className="ciao" onClick={showResponses}>
-          Show conversation
+          Respond
         </div>
       ) : null}
       <RateComment

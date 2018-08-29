@@ -112,7 +112,6 @@ const withCommentAPI = WrappedComponent => {
             }
             return element;
           });
-
           this.setState({ list: newList });
         },
         error => {

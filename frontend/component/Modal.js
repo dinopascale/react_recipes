@@ -16,11 +16,17 @@ export default ({ isOpen, error, close, isSuccess }) => (
         >
           {isSuccess ? 'Great!' : 'Oh snap!'}
         </h2>
-        <p className="modal-info">
-          An error {error ? error.status : null} has occured while processing
-          your request. Our servers says:{' '}
-          <span className="error-mex">{error ? error.message : null}</span>
-        </p>
+        {error ? (
+          <p className="modal-info">
+            An error {error ? error.status : null} has occured while processing
+            your request. Our servers says:{' '}
+            <span className="error-mex">{error ? error.message : null}</span>
+          </p>
+        ) : (
+          <p className="modal-info">
+            Your operation has been successfully elaborated
+          </p>
+        )}
         {error ? (
           <div className="dismiss-row" onClick={close}>
             Dismiss

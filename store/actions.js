@@ -80,6 +80,18 @@ export const tryLogout = () => async dispatch => {
   }
 };
 
+export const successAndCloseModal = () => dispatch => {
+  dispatch({
+    type: actionTypes.SHOW_MODAL,
+    modalType: true
+  });
+  setTimeout(() => {
+    dispatch({
+      type: actionTypes.HIDE_MODAL
+    });
+  }, 1400);
+};
+
 export const createErrorMessage = error => dispatch => {
   return dispatch({
     type: actionTypes.NEW_ERROR_MESSAGE,

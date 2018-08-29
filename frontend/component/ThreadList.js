@@ -7,6 +7,7 @@ import ActionButton from '../shared/ActionButton';
 import withFilter from '../hoc/withFilter';
 import withCommentAPI from '../hoc/withCommentAPI';
 import CommentList from './threadList/CommentList';
+import Spinner from '../component/Spinner';
 
 const sortOptions = [
   {
@@ -25,7 +26,6 @@ class ThreadList extends Component {
   };
 
   showResponseList = i => () => {
-    console.log('qui', i);
     const showNewConversation = [...this.state.conversationsShowed];
     showNewConversation.push(i);
     console.log(showNewConversation);
@@ -47,41 +47,55 @@ class ThreadList extends Component {
         {this.props.list.length > 0 ? (
           <FilterRow options={sortOptions} selected={this.props.sorted} />
         ) : null}
-        {this.props.list
-          .sort((a, b) => b[this.props.sortBy] - a[this.props.sortBy])
-          .map((comment, index) => (
-            <div key={comment._id} className="comment-list">
-              <CommentElement
-                comment={comment}
-                deleteSelf={comment.editable ? this.props.delete(index) : null}
-                rateComment={this.props.isAuth ? this.props.rate(index) : null}
-                showResponses={this.showResponseList(index)}
-              />
-              {this.state.conversationsShowed.includes(index) ? (
-                <CommentList
-                  apiId={comment._id}
-                  baseURL="/api/comment"
-                  type="comments"
-                  auth={this.props.isAuth}
+        {this.props.loading ? (
+          <Spinner />
+        ) : (
+          this.props.list
+            .sort((a, b) => b[this.props.sortBy] - a[this.props.sortBy])
+            .map((comment, index) => (
+              <div key={comment._id} className="comment-list">
+                <CommentElement
+                  comment={comment}
+                  deleteSelf={
+                    comment.editable ? this.props.delete(index) : null
+                  }
+                  rateComment={
+                    this.props.isAuth ? this.props.rate(index) : null
+                  }
+                  showResponses={this.showResponseList(index)}
                 />
-              ) : null}
-            </div>
-          ))}
+                {this.state.conversationsShowed.includes(index) ? (
+                  <CommentList
+                    apiId={comment._id}
+                    baseURL="/api/comment"
+                    type="comments"
+                    auth={this.props.isAuth}
+                  />
+                ) : null}
+              </div>
+            ))
+        )}
         <div className="load-button-container">
           {this.props.list.length === 0 ? (
-            <ActionButton
-              handleClick={this.props.load}
-              customStyle={{
-                width: '100%',
-                border: '1px solid rgb(119, 181, 255)',
-                padding: '30px',
-                color: '#fff',
-                fontWeight: 'bold',
-                backgroundColor: 'rgb(119, 181, 255)'
-              }}
-            >
-              Load Comments
-            </ActionButton>
+            this.props.listLoaded ? (
+              <p className="no-comments">
+                No comments for this recipe! Be the first to write one!
+              </p>
+            ) : (
+              <ActionButton
+                handleClick={this.props.load}
+                customStyle={{
+                  width: '100%',
+                  border: '1px solid rgb(119, 181, 255)',
+                  padding: '30px',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                  backgroundColor: 'rgb(119, 181, 255)'
+                }}
+              >
+                Load Comments
+              </ActionButton>
+            )
           ) : null}
         </div>
         <style jsx>{`
@@ -103,6 +117,15 @@ class ThreadList extends Component {
 
           .load-button-container {
             padding: 20px 20px;
+          }
+
+          .no-comments {
+            margin: 0;
+            padding: 20px 5px;
+            font-size: 18px;
+            color: #777;
+            text-align: center;
+            line-height: 1.5;
           }
         `}</style>
       </div>

@@ -9,7 +9,7 @@ export default props => {
   if (props.isAuth) {
     content = (
       <Fragment>
-        <NavigationElement to="/ne" title="New Recipe" />
+        <NavigationElement to="/new_recipe" title="New Recipe" />
         <NavigationElement to="/ed" title="Edit Account" />
         <LogoutButton />
       </Fragment>

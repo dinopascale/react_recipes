@@ -49,6 +49,41 @@ Index.getInitialProps = async ({ req }) => {
   try {
     const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
 
+    if (req) {
+      try {
+        const { db } = req;
+        const recipes = await db.models['Recipe']
+          .find({ sharable: true })
+          .limit(4)
+          .select(
+            'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
+          );
+
+        const promises = recipes.map(async recipe => {
+          const rates = await db.models['RecipeRate']
+            .find({ recipeId: recipe._id })
+            .select('value');
+          const rateCount = rates.length;
+          const rateValue =
+            rates.length === 0
+              ? 0
+              : rates.reduce((sum, rate) => sum + rate.value, 0);
+          return {
+            ...recipe._doc,
+            rateCount,
+            rateValue
+          };
+        });
+
+        return {
+          recipes: await Promise.all(promises)
+        };
+      } catch (e) {
+        console.log(e);
+        return e;
+      }
+    }
+
     const res = await fetch(`${baseUrl}/api/recipes`);
 
     if (res.status !== 200) {

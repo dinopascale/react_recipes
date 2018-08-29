@@ -9,7 +9,8 @@ const withCommentAPI = WrappedComponent => {
     state = {
       list: [],
       newElement: '',
-      loading: false
+      loading: false,
+      listLoaded: false
     };
 
     loadData = async () => {
@@ -30,6 +31,7 @@ const withCommentAPI = WrappedComponent => {
         json => {
           this.setState({
             loading: false,
+            listLoaded: true,
             list: json[this.props.type].map(el => {
               return {
                 ...el,
@@ -145,6 +147,7 @@ const withCommentAPI = WrappedComponent => {
           load={this.loadData}
           list={this.state.list}
           loading={this.state.loading}
+          listLoaded={this.state.listLoaded}
           new={this.state.newElement}
           createNew={this.createNewElement}
           submitNew={this.submitNewElement}

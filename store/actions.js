@@ -1,6 +1,3 @@
-import Router from 'next/router';
-import fetch from 'isomorphic-unfetch';
-
 export const actionTypes = {
   TRY_LOGIN: 'TRY_LOGIN',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -17,66 +14,26 @@ export const actionTypes = {
 
 //MIDDLEWARES
 
-export const tryLogin = (email, password) => async dispatch => {
+export const callApi = (
+  endpoint,
+  options,
+  successCallBack,
+  failCallBack
+) => async dispatch => {
   try {
     dispatch({ type: actionTypes.START_LOADING });
-    const rawResponse = await fetch('/api/user/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
-
+    const rawResponse = await fetch(endpoint, options);
     const json = await rawResponse.json();
-
     if (rawResponse.status !== 200) {
-      const e = new Error(json.error.message);
+      const e = new Error(json.error.message || rawResponse.statusText);
       e.status = rawResponse.status;
       throw e;
     }
-
-    dispatch({
-      type: actionTypes.LOGIN_SUCCESS,
-      payload: json.userInfo
-    });
-    Router.push('/');
+    dispatch({ type: actionTypes.STOP_LODADING });
+    successCallBack(json);
   } catch (e) {
-    dispatch({
-      type: actionTypes.LOGIN_FAIL,
-      payload: { message: e.message, status: e.status }
-    });
-  }
-};
-
-export const tryLogout = () => async dispatch => {
-  try {
-    dispatch({ type: actionTypes.START_LOADING });
-    const rawResponse = await fetch('/api/user/me/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
-
-    if (rawResponse.status !== 200) {
-      console.log(rawResponse.statusText, rawResponse.status);
-      const e = new Error(rawResponse.statusText);
-      e.status = rawResponse.status;
-      throw e;
-    }
-
-    const json = await rawResponse.json();
-
-    dispatch({
-      type: actionTypes.LOGOUT_SUCCESS,
-      payload: json.userInfo
-    });
-  } catch (e) {
-    dispatch({
-      type: actionTypes.LOGIN_FAIL,
-      payload: e.message
-    });
+    dispatch({ type: actionTypes.STOP_LODADING });
+    failCallBack(e);
   }
 };
 
@@ -89,12 +46,43 @@ export const successAndCloseModal = () => dispatch => {
     dispatch({
       type: actionTypes.HIDE_MODAL
     });
-  }, 1400);
+  }, 2000);
 };
 
-export const createErrorMessage = error => dispatch => {
-  return dispatch({
+//Action creator
+
+export const successLogin = userInfo => {
+  return {
+    type: actionTypes.LOGIN_SUCCESS,
+    payload: userInfo
+  };
+};
+
+export const failLogin = error => {
+  const { message, status } = error;
+  return {
+    type: actionTypes.LOGIN_FAIL,
+    payload: { message, status }
+  };
+};
+
+export const successLogout = userInfo => {
+  return {
+    type: actionTypes.LOGOUT_SUCCESS,
+    payload: userInfo
+  };
+};
+
+export const failLogout = error => {
+  return {
+    type: actionTypes.LOGOUT_FAIL,
+    payload: error.message
+  };
+};
+
+export const createErrorMessage = error => {
+  return {
     type: actionTypes.NEW_ERROR_MESSAGE,
     payload: error
-  });
+  };
 };

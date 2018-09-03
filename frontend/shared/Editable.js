@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 
 import RenderEditable from './editable/RenderEditable';
 import ManageList from './editable/renderEditable/ManageList';
-import apiCall from '../utils/apiCall';
-import { createErrorMessage, successAndCloseModal } from '../../store/actions';
+import {
+  createErrorMessage,
+  successAndCloseModal,
+  callApi
+} from '../../store/actions';
 
 class Editable extends Component {
   state = {
@@ -82,7 +85,7 @@ class Editable extends Component {
       body: JSON.stringify({ [this.props.name]: value })
     };
     try {
-      await apiCall(
+      await this.props.callApi(
         endpoint,
         options,
         () => {
@@ -258,7 +261,9 @@ class Editable extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     onSuccess: () => dispatch(successAndCloseModal()),
-    onError: error => dispatch(createErrorMessage(error))
+    onError: error => dispatch(createErrorMessage(error)),
+    callApi: (endpoint, options, onSuccess, onFail) =>
+      dispatch(callApi(endpoint, options, onSuccess, onFail))
   };
 };
 

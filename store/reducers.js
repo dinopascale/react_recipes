@@ -30,6 +30,7 @@ export const loading = (state = null, action) => {
     case actionTypes.LOGOUT_SUCCESS:
     case actionTypes.LOGOUT_FAIL:
     case actionTypes.LOGIN_FAIL:
+    case actionTypes.STOP_LODADING:
       return false;
     default:
       return state;

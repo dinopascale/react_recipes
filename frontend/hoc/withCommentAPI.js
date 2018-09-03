@@ -1,23 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import apiCall from '../utils/apiCall';
-import { createErrorMessage } from '../../store/actions';
+import { createErrorMessage, callApi } from '../../store/actions';
 
 const withCommentAPI = WrappedComponent => {
   class HOC extends React.Component {
     state = {
       list: [],
       newElement: '',
-      loading: false,
       listLoaded: false
     };
 
     loadData = async () => {
-      this.setState({
-        loading: true
-      });
-
       const endpoint = `${this.props.baseURL}/${this.props.apiId}`;
 
       const options = {
@@ -25,12 +19,11 @@ const withCommentAPI = WrappedComponent => {
         credentials: 'include'
       };
 
-      await apiCall(
+      await this.props.callApi(
         endpoint,
         options,
         json => {
           this.setState({
-            loading: false,
             listLoaded: true,
             list: json[this.props.type].map(el => {
               return {
@@ -68,7 +61,7 @@ const withCommentAPI = WrappedComponent => {
         body: JSON.stringify({ text })
       };
 
-      await apiCall(
+      await this.props.callApi(
         endpoint,
         options,
         async () => {
@@ -99,7 +92,7 @@ const withCommentAPI = WrappedComponent => {
         body: JSON.stringify({ value })
       };
 
-      await apiCall(
+      await this.props.callApi(
         endpoint,
         options,
         () => {
@@ -131,7 +124,7 @@ const withCommentAPI = WrappedComponent => {
         method: 'DELETE',
         credentials: 'include'
       };
-      await apiCall(
+      await this.props.callApi(
         endpoint,
         options,
         async () => await this.loadData(),
@@ -146,7 +139,6 @@ const withCommentAPI = WrappedComponent => {
         <WrappedComponent
           load={this.loadData}
           list={this.state.list}
-          loading={this.state.loading}
           listLoaded={this.state.listLoaded}
           new={this.state.newElement}
           createNew={this.createNewElement}
@@ -160,6 +152,8 @@ const withCommentAPI = WrappedComponent => {
   }
   const mapDispatchToProps = dispatch => {
     return {
+      callApi: (endpoint, options, onSuccess, onFail) =>
+        dispatch(callApi(endpoint, options, onSuccess, onFail)),
       onError: error => dispatch(createErrorMessage(error))
     };
   };

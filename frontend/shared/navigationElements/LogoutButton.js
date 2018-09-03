@@ -1,12 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { tryLogout } from '../../../store/actions';
 import { withRouter } from 'next/router';
 
+import { callApi, successLogout, failLogout } from '../../../store/actions';
+import apiEndpoints from '../../utils/apiEndpoints';
+
 class LogoutButton extends React.Component {
-  clickHandler = () => {
-    this.props.onLogout();
-    this.props.router.push('/');
+  clickHandler = async () => {
+    const { logoutSuccess, logoutFail, callApi } = this.props;
+    const { endpoint, options } = apiEndpoints.logout;
+    await callApi(
+      endpoint,
+      options,
+      () => {
+        logoutSuccess();
+      },
+      error => {
+        logoutFail(error);
+      }
+    );
   };
 
   render() {
@@ -16,6 +28,10 @@ class LogoutButton extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
+    callApi: (endpoint, options, onSuccess, onFail) =>
+      dispatch(callApi(endpoint, options, onSuccess, onFail)),
+    logoutSuccess: () => dispatch(successLogout()),
+    logoutFail: error => dispatch(failLogout(error)),
     onLogout: () => dispatch(tryLogout())
   };
 };

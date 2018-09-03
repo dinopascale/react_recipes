@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 
+import { callApi, successLogin, failLogin } from '../../store/actions';
 import { tryLogin } from '../../store/actions';
 
 class LoginForm extends React.Component {
@@ -15,8 +16,31 @@ class LoginForm extends React.Component {
     this.setState({ [name]: e.target.value });
   };
 
-  onSubmitHandler = () => {
-    this.props.onSubmit(this.state.email, this.state.password);
+  onSubmitHandler = async () => {
+    // this.props.onSubmit(this.state.email, this.state.password);
+    const { email, password } = this.state;
+    const endpoint = '/api/user/login';
+    const options = {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    };
+
+    this.props.callApi(
+      endpoint,
+      options,
+      json => {
+        this.props.loginSuccess(json.userInfo);
+        this.props.router.push('/');
+      },
+      error => {
+        this.props.loginFail(error);
+      }
+    );
   };
 
   render() {
@@ -42,7 +66,11 @@ class LoginForm extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmit: (email, password) => dispatch(tryLogin(email, password))
+    // onSubmit: (email, password) => dispatch(tryLogin(email, password))
+    loginSuccess: userInfo => dispatch(successLogin(userInfo)),
+    loginFail: error => dispatch(failLogin(error)),
+    callApi: (endpoint, options, onSuccess, onFail) =>
+      dispatch(callApi(endpoint, options, onSuccess, onFail))
   };
 };
 

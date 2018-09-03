@@ -92,6 +92,20 @@ router.post('/recipe', checkAuth, async (req, res, next) => {
   }
 });
 
+//GET SCHEMA FOR RECIPE
+
+router.get('/s/recipe', checkAuth, async (req, res, next) => {
+  try {
+    const schema = Recipe.getSchema();
+    res.status(200).json({
+      schema
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
 //GET SINGLE RECIPE BY ID - ADD "EDITABLE" FIELD IF AUTHOR
 
 router.get('/recipe/:id', checkAuthor, async (req, res, next) => {

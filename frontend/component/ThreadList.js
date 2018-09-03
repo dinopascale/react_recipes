@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
+import withCommentAPI from '../hoc/withCommentAPI';
+import withFilter from '../hoc/withFilter';
+
 import CommentElement from './threadList/CommentElement';
 import FilterRow from './threadList/FilterRow';
 import NewComment from './threadList/NewComment';
 import ActionButton from '../shared/ActionButton';
-import withFilter from '../hoc/withFilter';
-import withCommentAPI from '../hoc/withCommentAPI';
 import CommentList from './threadList/CommentList';
-import Spinner from '../component/Spinner';
 
 const sortOptions = [
   {
@@ -47,34 +47,26 @@ class ThreadList extends Component {
         {this.props.list.length > 0 ? (
           <FilterRow options={sortOptions} selected={this.props.sorted} />
         ) : null}
-        {this.props.loading ? (
-          <Spinner />
-        ) : (
-          this.props.list
-            .sort((a, b) => b[this.props.sortBy] - a[this.props.sortBy])
-            .map((comment, index) => (
-              <div key={comment._id} className="comment-list">
-                <CommentElement
-                  comment={comment}
-                  deleteSelf={
-                    comment.editable ? this.props.delete(index) : null
-                  }
-                  rateComment={
-                    this.props.isAuth ? this.props.rate(index) : null
-                  }
-                  showResponses={this.showResponseList(index)}
+        {this.props.list
+          .sort((a, b) => b[this.props.sortBy] - a[this.props.sortBy])
+          .map((comment, index) => (
+            <div key={comment._id} className="comment-list">
+              <CommentElement
+                comment={comment}
+                deleteSelf={comment.editable ? this.props.delete(index) : null}
+                rateComment={this.props.isAuth ? this.props.rate(index) : null}
+                showResponses={this.showResponseList(index)}
+              />
+              {this.state.conversationsShowed.includes(index) ? (
+                <CommentList
+                  apiId={comment._id}
+                  baseURL="/api/comment"
+                  type="comments"
+                  auth={this.props.isAuth}
                 />
-                {this.state.conversationsShowed.includes(index) ? (
-                  <CommentList
-                    apiId={comment._id}
-                    baseURL="/api/comment"
-                    type="comments"
-                    auth={this.props.isAuth}
-                  />
-                ) : null}
-              </div>
-            ))
-        )}
+              ) : null}
+            </div>
+          ))}
         <div className="load-button-container">
           {this.props.list.length === 0 ? (
             this.props.listLoaded ? (

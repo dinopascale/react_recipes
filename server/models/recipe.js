@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { ObjectId } = require('mongoose').Types;
 
-const User = require('./user');
+const DIFFICULTIES = ['easy', 'medium', 'hard'];
+const TAG = ['Omnivore', 'Vegetarian', 'Vegan'];
 
 const recipeSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    match: [/^[a-zA-Z0-9\' ]+$/, 'No special symbol allowed']
   },
   createdAt: {
     type: Date
@@ -17,19 +19,24 @@ const recipeSchema = mongoose.Schema({
   },
   preparationTime: {
     type: Number,
-    required: true
+    required: true,
+    default: '0'
   },
   cookTime: {
     type: Number,
-    required: true
+    required: true,
+    default: '0'
   },
   serves: {
-    type: Number
+    type: Number,
+    default: '0'
   },
   difficulty: {
     type: String,
     required: true,
-    trim: true
+    default: 'easy',
+    trim: true,
+    enum: DIFFICULTIES
   },
   sharable: {
     type: Boolean,
@@ -39,6 +46,7 @@ const recipeSchema = mongoose.Schema({
   img: {
     type: String,
     trim: true,
+    alias: 'url',
     default:
       'https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg',
     validate: {
@@ -49,11 +57,13 @@ const recipeSchema = mongoose.Schema({
   directions: {
     type: String,
     trim: true,
-    minlength: 100
+    minlength: 100,
+    required: true
   },
   tag: {
     type: String,
-    default: 'Omnivore'
+    default: 'Omnivore',
+    enum: TAG
   },
   ingredients: [
     {
@@ -78,6 +88,29 @@ const recipeSchema = mongoose.Schema({
   ]
 });
 
+const filterSchema = obj => {
+  return Object.keys(obj)
+    .filter(
+      key => !['createdAt', 'updatedAt', '_creator', '_id', '__v'].includes(key)
+    )
+    .map(key => {
+      return {
+        name: obj[key].path,
+        instance: obj[key].instance,
+        default: obj[key].options.default || null,
+        validationRules: {
+          required: obj[key].options.required || null,
+          minlength: obj[key].options.minlength || null,
+          regExp: obj[key].options.match
+            ? [obj[key].options.match[0].toString(), obj[key].options.match[1]]
+            : null
+        },
+        enum: obj[key].options.enum || null,
+        subSchema: obj[key].schema ? filterSchema(obj[key].schema.paths) : null
+      };
+    });
+};
+
 recipeSchema.pre('save', function(next) {
   this.createdAt = this.createdAt ? this.createdAt : new Date();
   this.updatedAt = new Date();
@@ -87,6 +120,11 @@ recipeSchema.pre('save', function(next) {
 recipeSchema.pre('update', function() {
   this.update({}, { $set: { updatedAt: new Date() } });
 });
+
+recipeSchema.statics.getSchema = function() {
+  const Recipe = this;
+  return filterSchema(Recipe.schema.paths);
+};
 
 recipeSchema.statics.findByIdAndGetAuthor = async function(id) {
   try {

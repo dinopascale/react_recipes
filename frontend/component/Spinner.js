@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default ({ isLoading }) => (
+export default ({ isLoading, type }) => (
   <div className="spinner-container">
     <div className="spinner">
       <span className="spin">
@@ -9,11 +9,11 @@ export default ({ isLoading }) => (
     </div>
     <style jsx>{`
       .spinner-container {
-        position: fixed;
+        position: ${type !== 'contain' ? 'fixed' : 'absolute'};
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: ${type !== 'contain' ? '100vw' : '100%'};
+        height: ${type !== 'contain' ? '100vh' : '100%'};
         background-color: rgba(255, 255, 255, 0.8);
         z-index: 1001;
       }

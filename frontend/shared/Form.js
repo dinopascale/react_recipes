@@ -15,12 +15,19 @@ class Form extends Component {
     return prop.reduce((frm, field) => {
       frm[field.name] = {
         name: field.name,
-        value: field.default,
+        value: field.subSchema
+          ? [this.transformPropToForm(field.subSchema)]
+          : field.default,
         enum: field.enum,
+        instance: field.instance,
         isPristine: true,
         isInvalid: true,
+        subSchema: field.subSchema,
         errorMessage: null,
-        rules: field.validationRules
+        rules:
+          field.name === 'img'
+            ? { ...field.validationRules, isUrl: true }
+            : field.validationRules
       };
       return frm;
     }, {});
@@ -35,6 +42,8 @@ class Form extends Component {
     }
 
     const { endpoint, options, successModal, errorModal } = this.props;
+
+    //we need to add body to options
     await this.props.callApi(
       endpoint,
       options,
@@ -48,99 +57,133 @@ class Form extends Component {
     console.log('Is Form Valid?', resultsValidation);
   };
 
-  handleInputChange = event => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+  handleInputChange = field => (event, data) => {
+    let value = null;
+    if (event) {
+      const target = event.target;
+      value = target.type === 'checkbox' ? target.checked : target.value;
+    } else {
+      value = data;
+    }
 
     this.setState({
-      [name]: {
-        ...this.state[name],
+      [field]: {
+        ...this.state[field],
         value
       }
     });
   };
 
-  handleInputBlur = event => {
-    const target = event.target;
-    const name = target.name;
-
-    const field = { ...this.state[name] };
-    this.validateSingle(field);
+  handleInputBlur = field => (event, data) => {
+    const fieldToValidate = { ...this.state[field] };
+    let result = data ? data : this.validateSingle(fieldToValidate);
+    this.setState({
+      [field]: {
+        ...this.state[field],
+        ...result
+      }
+    });
   };
 
   validateSingle = field => {
-    let result = {
+    const fieldToValidate = { ...field };
+
+    const dirtyAndValid = {
       isInvalid: false,
       isPristine: false,
       errorMessage: null
     };
 
-    //We filter only for the rules that apply for field
-    const rules = Object.keys(field.rules).filter(rule => field.rules[rule]);
+    const dirtyAndInvalid = {
+      isInvalid: true,
+      isPristine: false,
+      errorMessage: null
+    };
 
-    //if no rules we return true
+    const rules = Object.keys(fieldToValidate.rules).filter(
+      rule => fieldToValidate.rules[rule]
+    );
+
     if (rules.length === 0) {
-      this.setState({
-        [field.name]: {
-          ...this.state[field.name],
-          ...result
-        }
-      });
-      return true;
+      return {
+        ...fieldToValidate,
+        ...dirtyAndValid
+      };
     }
 
     const valueToTest = !field.value ? '' : field.value;
 
-    //A for loop for all the rules. We break from validation if a test fail
     for (let rule of rules) {
       const test =
         rule === 'regExp'
           ? new RegExp(field.rules[rule][0].replace(/[/]/g, ''))
           : field.rules[rule];
       const isValid = validationRules[rule](valueToTest, test);
+
       if (!isValid) {
         const errorMessage =
           rule === 'regExp'
             ? field.rules[rule][1]
             : validationError[rule](field.rules[rule]);
-        result = {
-          isInvalid: true,
-          isPristine: false,
+        return {
+          ...fieldToValidate,
+          ...dirtyAndInvalid,
           errorMessage
         };
-        this.setState({
-          [field.name]: {
-            ...this.state[field.name],
-            ...result
-          }
-        });
-        return false;
       }
-      console.log('result for ', rule, ':', isValid);
     }
 
-    //if the value is valid we set the field props to valid and return true
-    this.setState({
-      [field.name]: {
-        ...this.state[field.name],
-        ...result
-      }
-    });
-
-    return true;
+    return {
+      ...fieldToValidate,
+      ...dirtyAndValid
+    };
   };
 
   validateAll = form => {
-    return Object.keys(form)
+    // return Object.keys(form)
+    //   .map(field => {
+    //     console.log('-----', field, '-----');
+    //     const singleFieldResult = this.validateSingle(form[field]);
+    //     console.log('final result: ', singleFieldResult);
+    //     console.log('--------------------------');
+    //     return singleFieldResult;
+    //   })
+    //   .every(validator => validator);
+  };
+
+  validateChunk = chunk => {
+    return chunk
       .map(field => {
-        console.log('-----', field, '-----');
-        const singleFieldResult = this.validateSingle(form[field]);
-        console.log('final result: ', singleFieldResult);
-        console.log('--------------------------');
-        return singleFieldResult;
+        const result = this.validateSingle(field);
+        return !result.isInvalid;
       })
-      .every(validator => validator);
+      .every(validateResult => validateResult);
+  };
+
+  //dynamic operation on Form
+
+  addNewField = field => event => {
+    event.preventDefault();
+    const subSchema = this.transformPropToForm(field.subSchema);
+
+    const value = [...field.value];
+    value.push(subSchema);
+    this.setState({
+      [field.name]: {
+        ...this.state[field.name],
+        value
+      }
+    });
+  };
+
+  deleteField = field => (event, index) => {
+    const value = field.value.filter((subfield, i) => i !== index);
+    this.setState({
+      [field.name]: {
+        ...this.state[field.name],
+        value
+      }
+    });
   };
 
   componentWillMount() {
@@ -150,7 +193,9 @@ class Form extends Component {
     });
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(this.state);
+  }
 
   render() {
     return (
@@ -159,7 +204,11 @@ class Form extends Component {
           this.state,
           this.handleInputChange,
           this.handleInputBlur,
-          this.handleSubmit
+          this.handleSubmit,
+          this.validateSingle,
+          this.validateChunk,
+          this.addNewField,
+          this.deleteField
         )}
       </div>
     );

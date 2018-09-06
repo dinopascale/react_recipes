@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ImgDynamicSrc from './singleInput/ImgDinamycSrc';
 
-export default ({ field, change, blur, type }) => (
+export default ({ field, change, blur, type, width }) => (
   <div className="form-group">
     <div className="form-field">
       <label className="form-label" htmlFor={field.name}>
@@ -9,6 +10,9 @@ export default ({ field, change, blur, type }) => (
           {field.rules.required ? '- Required' : '- Optional'}
         </span>
       </label>
+      {type !== 'img' ? null : (
+        <ImgDynamicSrc imgURL={field.value} key={field.value} />
+      )}
       <input
         className={[
           'form-input',
@@ -18,12 +22,13 @@ export default ({ field, change, blur, type }) => (
               ? 'dirty invalid'
               : 'dirty valid'
         ].join(' ')}
-        type={type}
+        type={type === 'img' ? 'text' : type}
         name={field.name}
         value={field.value || ''}
         id={field.name}
         onChange={change}
         onBlur={blur}
+        spellCheck="false"
       />
       {field.isPristine ? null : (
         <span
@@ -40,10 +45,23 @@ export default ({ field, change, blur, type }) => (
     ) : null}
     <style jsx>{`
       .form-group {
-        width: 100%;
+        width: ${width || '100%'};
         display: flex;
         flex-flow: column;
         margin-bottom: 20px;
+      }
+
+      .form-img-preview {
+        width:100%;
+        min-height: 250px;  
+        max-height: 300px;
+        background-image: url('${field.value}'), url('/static/no-img.png');
+        background-color: #ffe4c4;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        margin: 6px 0 10px 0;
+        border-radius: 8px;
       }
 
       .form-field {
@@ -70,7 +88,8 @@ export default ({ field, change, blur, type }) => (
       }
 
       .form-input {
-        flex: 0 0 55%;
+        width: 100%;
+        flex: 0 0 75%;
         padding: 5px 8px;
         font-family: 'Open Sans', sans-serif;
         font-size: 15px;
@@ -89,7 +108,7 @@ export default ({ field, change, blur, type }) => (
       .form-input:focus,
       .form-input.dirty {
         background: #77b5ff;
-        flex: 0 0 85%;
+        flex: 0 0 90%;
       }
 
       .form-input.valid {

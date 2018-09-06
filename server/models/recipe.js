@@ -9,7 +9,7 @@ const recipeSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
-    match: [/^[a-zA-Z0-9\' ]+$/, 'No special symbol allowed']
+    match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
   },
   createdAt: {
     type: Date
@@ -47,8 +47,7 @@ const recipeSchema = mongoose.Schema({
     type: String,
     trim: true,
     alias: 'url',
-    default:
-      'https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg',
+    default: 'http://pngimg.com/uploads/pasta/pasta_PNG63.png',
     validate: {
       validator: validator.isURL,
       message: '{VALUE} is not a URL'
@@ -71,18 +70,12 @@ const recipeSchema = mongoose.Schema({
       name: {
         type: String,
         required: true,
-        validate: {
-          validator: validator.isAlphanumeric,
-          message: '{VALUE} must contain only letters and numbers'
-        }
+        match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
       },
       quantity: {
         type: String,
         required: true,
-        validate: {
-          validator: validator.isAlphanumeric,
-          message: '{VALUE} must contain only letters and numbers'
-        }
+        match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
       }
     }
   ]

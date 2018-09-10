@@ -60,7 +60,7 @@ export default props => (
         height: 18px;
         border: 1px solid #fff;
         border-radius: 100%;
-        background: #fff;
+        background: ${props.checkBg ? props.checkBg : '#fff'};
       }
 
       [type='radio']:checked + .option:after,
@@ -68,7 +68,7 @@ export default props => (
         content: '';
         width: 12px;
         height: 12px;
-        background: #118ab2;
+        background: ${props.checkedColor ? props.checkedColor : '#77b5ff'};
         position: absolute;
         top: 4px;
         left: 4px;

@@ -55,12 +55,13 @@ class NewRecipe extends Component {
             validateSingle,
             validateChunk,
             addNewField,
-            deleteField
+            deleteField,
+            formToAPI
           ) => (
             <Steps
               validateChunk={validateChunk}
               max="5"
-              render={(steps, goNext, goBack) => (
+              render={(steps, goNext, goBack, jumpBack) => (
                 <NewRecipeForm
                   form={state}
                   changed={onChange}
@@ -72,6 +73,9 @@ class NewRecipe extends Component {
                   steps={steps}
                   next={goNext}
                   back={goBack}
+                  jump={jumpBack}
+                  dataToApi={formToAPI}
+                  max="5"
                 />
               )}
             />

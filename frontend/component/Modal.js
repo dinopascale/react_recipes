@@ -42,7 +42,7 @@ export default ({ isOpen, error, close, isSuccess }) => (
         width: 100vw;
         height: 100vh;
         background-color: rgba(0, 0, 0, 0.6);
-        z-index: 99;
+        z-index: 300;
       }
 
       .modal-container {

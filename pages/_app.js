@@ -19,7 +19,8 @@ import {
   faComment,
   faExclamation,
   faCheckCircle,
-  faSpinner
+  faSpinner,
+  faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
@@ -38,7 +39,8 @@ library.add(
   faComment,
   faExclamation,
   faCheckCircle,
-  faSpinner
+  faSpinner,
+  faPaperPlane
 );
 
 class MyApp extends App {

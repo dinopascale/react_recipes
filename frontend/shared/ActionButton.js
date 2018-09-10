@@ -21,6 +21,7 @@ export default props => {
       onClick={props.handleClick}
       style={props.customStyle}
       name={props.name}
+      type="button"
     >
       {icon}
       {props.children ? (

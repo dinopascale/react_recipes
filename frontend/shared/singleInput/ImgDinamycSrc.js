@@ -35,13 +35,14 @@ class ImgDynamicSrc extends Component {
           .img-container {
             position: relative;
             width: 100%;
-            min-height: 200px;
+            height: 150px;
             margin: 6px 0 10px 0;
           }
 
           .img-container img {
-            width: 100%;
             height: 100%;
+            margin: 0 auto;
+            display: block;
             border-radius: 8px;
           }
         `}</style>

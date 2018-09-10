@@ -2,11 +2,11 @@ import SingleInput from '../shared/SingleInput';
 import SingleTextarea from '../shared/SingleTextarea';
 import ArrayOfInputs from '../shared/ArrayOfInputs';
 import Step from '../shared/steps/Step';
-
-const dictInstanceToType = {
-  String: 'text',
-  Number: 'number'
-};
+import ProgressRow from '../shared/steps/ProgressRow';
+import RecapInfoForm from '../shared/RecapInfoForm';
+import SingleRadioButton from '../shared/SingleRadioButton';
+import ToggleSwitch from '../shared/ToggleSwitch';
+import ActionButton from '../shared/ActionButton';
 
 export default ({
   form,
@@ -17,13 +17,35 @@ export default ({
   steps,
   next,
   back,
+  jump,
   addNew,
-  deleteField
+  max,
+  deleteField,
+  dataToApi
 }) => {
   return (
-    <form onSubmit={submitted} className="new-recipe-form">
+    <form className="new-recipe-form">
+      <ProgressRow steps={max} actual={steps.activeStep} jumpBack={jump} />
+      {steps.activeStep === 4 ? (
+        <ActionButton
+          customStyle={{
+            position: 'fixed',
+            width: '56px',
+            height: '56px',
+            border: 'none',
+            bottom: '16px',
+            right: '16px',
+            zIndex: '200',
+            borderRadius: '50%',
+            backgroundColor: '#77b5ff',
+            color: '#fff'
+          }}
+          handleClick={submitted}
+          icon="paper-plane"
+        />
+      ) : null}
       <Step
-        fields={[form.img]}
+        fields={[form.img, form.name]}
         next={next}
         back={back}
         active={steps.activeStep === 0}
@@ -35,20 +57,24 @@ export default ({
           blur={blurred(form.img.name)}
           type="img"
         />
-      </Step>
-      <Step
-        fields={[form.name, form.preparationTime, form.cookTime, form.serves]}
-        next={next}
-        back={back}
-        active={steps.activeStep === 1}
-        error={steps.errorMessage}
-      >
         <SingleInput
           field={form.name}
           change={changed(form.name.name)}
           blur={blurred(form.name.name)}
           type="text"
         />
+        <ToggleSwitch
+          field={form.sharable}
+          change={changed(form.sharable.name)}
+        />
+      </Step>
+      <Step
+        fields={[form.preparationTime, form.cookTime, form.serves]}
+        next={next}
+        back={back}
+        active={steps.activeStep === 1}
+        error={steps.errorMessage}
+      >
         <SingleInput
           field={form.preparationTime}
           change={changed(form.preparationTime.name)}
@@ -67,6 +93,11 @@ export default ({
           blur={blurred(form.serves.name)}
           type="number"
         />
+        <SingleRadioButton
+          field={form.difficulty}
+          change={changed(form.difficulty.name)}
+        />
+        <SingleRadioButton field={form.tag} change={changed(form.tag.name)} />
       </Step>
       <Step
         fields={[form.directions]}
@@ -82,7 +113,7 @@ export default ({
         />
       </Step>
       <Step
-        fields={form.ingredients.value}
+        fields={[form.ingredients]}
         next={next}
         back={back}
         active={steps.activeStep === 3}
@@ -97,12 +128,22 @@ export default ({
           deleteField={deleteField(form.ingredients)}
         />
       </Step>
-      {/* <button type="submit">Send</button> */}
+      <Step active={steps.activeStep === 4}>
+        <RecapInfoForm
+          formData={form}
+          actualStep={steps.activeStep}
+          max={max}
+          transformData={dataToApi}
+        />
+      </Step>
       <style jsx>{`
         .new-recipe-form {
           padding: 20px;
           position: relative;
+          display: flex;
+          align-items: center;
           width: 100%;
+          background-color: #f1f2f6;
           min-height: calc(100vh - 70px);
           overflow-x: hidden;
         }

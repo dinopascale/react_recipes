@@ -4,15 +4,16 @@ import ImgDynamicSrc from './singleInput/ImgDinamycSrc';
 export default ({ field, change, blur, type, width }) => (
   <div className="form-group">
     <div className="form-field">
+      {type !== 'img' ? null : (
+        <ImgDynamicSrc imgURL={field.value} key={field.value} />
+      )}
       <label className="form-label" htmlFor={field.name}>
         {field.name}{' '}
         <span className="form-label-req">
           {field.rules.required ? '- Required' : '- Optional'}
         </span>
       </label>
-      {type !== 'img' ? null : (
-        <ImgDynamicSrc imgURL={field.value} key={field.value} />
-      )}
+
       <input
         className={[
           'form-input',
@@ -51,19 +52,6 @@ export default ({ field, change, blur, type, width }) => (
         margin-bottom: 20px;
       }
 
-      .form-img-preview {
-        width:100%;
-        min-height: 250px;  
-        max-height: 300px;
-        background-image: url('${field.value}'), url('/static/no-img.png');
-        background-color: #ffe4c4;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        margin: 6px 0 10px 0;
-        border-radius: 8px;
-      }
-
       .form-field {
         position: relative;
         display: flex;
@@ -89,8 +77,8 @@ export default ({ field, change, blur, type, width }) => (
 
       .form-input {
         width: 100%;
-        flex: 0 0 75%;
-        padding: 5px 8px;
+        flex: 0 0 90%;
+        padding: 10px 8px;
         font-family: 'Open Sans', sans-serif;
         font-size: 15px;
         color: #fff;

@@ -47,7 +47,7 @@ class TextareaAutoresize extends Component {
             overflow: hidden;
             resize: none;
             width: 100%;
-            padding: 9px 8px;
+            padding: 10px 8px;
             font-family: 'Open Sans', sans-serif;
             font-size: 15px;
             color: #fff;

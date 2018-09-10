@@ -33,20 +33,35 @@ class Form extends Component {
     }, {});
   };
 
-  handleSubmit = async event => {
-    event.preventDefault();
-    const form = JSON.parse(JSON.stringify(this.state));
-    const resultsValidation = this.validateAll(form);
+  extractNestedInfo = array => {
+    return array.map(el => {
+      return Object.keys(el).reduce((obj, key) => {
+        obj[key] = el[key].value;
+        return obj;
+      }, {});
+    });
+  };
 
-    if (!resultsValidation) {
-    }
+  formToAPI = () => {
+    const form = { ...this.state };
+    return Object.keys(form).reduce((obj, fieldName) => {
+      obj[fieldName] = form[fieldName].subSchema
+        ? this.extractNestedInfo(form[fieldName].value)
+        : form[fieldName].value;
+      return obj;
+    }, {});
+  };
+
+  handleSubmit = async (event, data) => {
+    event.preventDefault();
+    const form = this.formToAPI();
 
     const { endpoint, options, successModal, errorModal } = this.props;
 
-    //we need to add body to options
+    const optionsWithBody = { ...options, body: JSON.stringify(form) };
     await this.props.callApi(
       endpoint,
-      options,
+      optionsWithBody,
       () => {
         successModal();
       },
@@ -54,14 +69,16 @@ class Form extends Component {
         errorModal(error);
       }
     );
-    console.log('Is Form Valid?', resultsValidation);
   };
 
   handleInputChange = field => (event, data) => {
     let value = null;
     if (event) {
       const target = event.target;
-      value = target.type === 'checkbox' ? target.checked : target.value;
+      value =
+        target.tagName === 'LABEL'
+          ? target.previousSibling.value
+          : target.value;
     } else {
       value = data;
     }
@@ -69,7 +86,8 @@ class Form extends Component {
     this.setState({
       [field]: {
         ...this.state[field],
-        value
+        value:
+          this.state[field].instance === 'Boolean' ? value === 'true' : value
       }
     });
   };
@@ -154,8 +172,32 @@ class Form extends Component {
   validateChunk = chunk => {
     return chunk
       .map(field => {
-        const result = this.validateSingle(field);
-        return !result.isInvalid;
+        if (field.subSchema) {
+          const generalValidity = [];
+          const singleValue = field.value.map(subfield => {
+            return Object.keys(subfield).reduce((obj, key) => {
+              obj[key] = { ...this.validateSingle(subfield[key]) };
+              generalValidity.push(!obj[key].isInvalid);
+              return obj;
+            }, {});
+          });
+          this.setState({
+            [field.name]: {
+              ...this.state[field.name],
+              value: singleValue
+            }
+          });
+          return generalValidity.every(validationRes => validationRes);
+        } else {
+          const result = this.validateSingle(field);
+          this.setState({
+            [field.name]: {
+              ...this.state[field.name],
+              ...result
+            }
+          });
+          return !result.isInvalid;
+        }
       })
       .every(validateResult => validateResult);
   };
@@ -208,7 +250,8 @@ class Form extends Component {
           this.validateSingle,
           this.validateChunk,
           this.addNewField,
-          this.deleteField
+          this.deleteField,
+          this.formToAPI
         )}
       </div>
     );

@@ -5,6 +5,7 @@ class Steps extends Component {
     activeStep: 0,
     errorMessage: null
   };
+
   goNext = fields => event => {
     event.preventDefault();
     let activeStep =
@@ -12,32 +13,19 @@ class Steps extends Component {
         ? this.state.activeStep
         : this.state.activeStep + 1;
 
-    //first validate chunk
     const fieldsToValidate = [...fields];
-    let chunks = [];
-    if (!fieldsToValidate[0].rules) {
-      for (let field of fieldsToValidate) {
-        Object.values(field).forEach(el => {
-          chunks.push(el);
-        });
-      }
-    } else {
-      chunks = fieldsToValidate;
-    }
-
-    console.log(chunks);
-
-    const result = this.props.validateChunk(chunks);
+    const result = this.props.validateChunk(fieldsToValidate);
 
     if (result) {
-      this.setState({
-        activeStep,
-        errorMessage: null
-      });
+      setTimeout(() => {
+        this.setState({
+          activeStep,
+          errorMessage: null
+        });
+      }, 200);
     } else {
       this.setState({
-        errorMessage:
-          'It seems that there is some field invalid! Correct them and proceed with your recipe'
+        errorMessage: "Seems that something it's not correct"
       });
     }
   };
@@ -50,8 +38,22 @@ class Steps extends Component {
     });
   };
 
+  jumpBack = number => event => {
+    console.log('called');
+    if (number >= this.state.activeStep) {
+      return false;
+    }
+    this.setState({
+      activeStep: number
+    });
+  };
+
   render() {
-    return <div>{this.props.render(this.state, this.goNext, this.goBack)}</div>;
+    return (
+      <div>
+        {this.props.render(this.state, this.goNext, this.goBack, this.jumpBack)}
+      </div>
+    );
   }
 }
 

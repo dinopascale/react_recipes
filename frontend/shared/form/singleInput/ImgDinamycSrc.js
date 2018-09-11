@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Spinner from '../../component/Spinner';
+import Spinner from '../../../component/Spinner';
 
 class ImgDynamicSrc extends Component {
   state = {

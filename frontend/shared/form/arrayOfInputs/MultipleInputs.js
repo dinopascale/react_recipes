@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import SingleInput from './SingleInput';
-import ActionButton from './ActionButton';
+import SingleInput from '../SingleInput';
+import ActionButton from '../../ActionButton';
 
 class MultipleInputs extends Component {
   render() {

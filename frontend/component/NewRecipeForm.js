@@ -1,11 +1,11 @@
-import SingleInput from '../shared/SingleInput';
-import SingleTextarea from '../shared/SingleTextarea';
-import ArrayOfInputs from '../shared/ArrayOfInputs';
-import Step from '../shared/steps/Step';
-import ProgressRow from '../shared/steps/ProgressRow';
-import RecapInfoForm from '../shared/RecapInfoForm';
-import SingleRadioButton from '../shared/SingleRadioButton';
-import ToggleSwitch from '../shared/ToggleSwitch';
+import SingleInput from '../shared/form/SingleInput';
+import SingleTextarea from '../shared/form/SingleTextarea';
+import ArrayOfInputs from '../shared/form/ArrayOfInputs';
+import Step from '../shared/form/steps/Step';
+import ProgressRow from '../shared/form/steps/ProgressRow';
+import RecapInfoForm from '../shared/form/RecapInfoForm';
+import SingleRadioButton from '../shared/form/SingleRadioButton';
+import ToggleSwitch from '../shared/form/ToggleSwitch';
 import ActionButton from '../shared/ActionButton';
 
 export default ({

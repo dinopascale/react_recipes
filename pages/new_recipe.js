@@ -4,8 +4,8 @@ import Head from 'next/head';
 import apiCall from '../frontend/utils/apiCall';
 import Form from '../frontend/shared/Form';
 import NewRecipeForm from '../frontend/component/NewRecipeForm';
+import Steps from '../frontend/shared/form/Steps';
 import apiEndpoints from '../frontend/utils/apiEndpoints';
-import Steps from '../frontend/shared/Steps';
 
 class NewRecipe extends Component {
   static async getInitialProps(props) {

@@ -157,18 +157,6 @@ class Form extends Component {
     };
   };
 
-  validateAll = form => {
-    // return Object.keys(form)
-    //   .map(field => {
-    //     console.log('-----', field, '-----');
-    //     const singleFieldResult = this.validateSingle(form[field]);
-    //     console.log('final result: ', singleFieldResult);
-    //     console.log('--------------------------');
-    //     return singleFieldResult;
-    //   })
-    //   .every(validator => validator);
-  };
-
   validateChunk = chunk => {
     return chunk
       .map(field => {
@@ -233,10 +221,6 @@ class Form extends Component {
     this.setState({
       ...form
     });
-  }
-
-  componentDidMount() {
-    console.log(this.state);
   }
 
   render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-import MultipleInputs from './MultipleInputs';
+import MultipleInputs from './arrayOfInputs/MultipleInputs';
 
 class ArrayOfInputs extends Component {
   refsCollection = {};

@@ -52,7 +52,7 @@ class Layout extends React.Component {
             .app-container {
               height: 100%;
               width: 100%;
-              overflow-x: hidden;
+              overflow: hidden;
               position: relative;
             }
 
@@ -61,7 +61,9 @@ class Layout extends React.Component {
             }
             .content {
               font-family: 'Open Sans', sans-serif;
-              max-width: 800px;
+              //   max-width: 800px;
+              height: 100%;
+              background-color: #ff7f50;
               margin: 0 auto;
             }
           `}</style>

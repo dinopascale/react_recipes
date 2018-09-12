@@ -19,7 +19,7 @@ export default ({ steps, actual, jumpBack }) => {
       <style jsx>{`
         .container {
           position: absolute;
-          top: 40px;
+          top: 20px;
           left: 50%;
           width: 90%;
           transform: translate(-50%, 0);

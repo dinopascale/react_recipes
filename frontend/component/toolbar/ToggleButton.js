@@ -21,7 +21,7 @@ export default props => (
         width: 90%;
         border-radius: 40px;
         height: 2px;
-        background-color: #000;
+        background-color: #fff;
       }
 
       @media (min-width: 499px) {

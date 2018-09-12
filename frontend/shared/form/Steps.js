@@ -49,10 +49,11 @@ class Steps extends Component {
   };
 
   render() {
-    return (
-      <div>
-        {this.props.render(this.state, this.goNext, this.goBack, this.jumpBack)}
-      </div>
+    return this.props.render(
+      this.state,
+      this.goNext,
+      this.goBack,
+      this.jumpBack
     );
   }
 }

@@ -224,20 +224,16 @@ class Form extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.props.render(
-          this.state,
-          this.handleInputChange,
-          this.handleInputBlur,
-          this.handleSubmit,
-          this.validateSingle,
-          this.validateChunk,
-          this.addNewField,
-          this.deleteField,
-          this.formToAPI
-        )}
-      </div>
+    return this.props.render(
+      this.state,
+      this.handleInputChange,
+      this.handleInputBlur,
+      this.handleSubmit,
+      this.validateSingle,
+      this.validateChunk,
+      this.addNewField,
+      this.deleteField,
+      this.formToAPI
     );
   }
 }

@@ -20,7 +20,7 @@ export default ({ active, next, back, error, fields, children }) => (
       .step {
         padding: 20px 20px 5px 20px;
         position: absolute;
-        top: 110px;
+        top: 80px;
         left: 50%;
         width: 90%;
         border-radius: 4px;

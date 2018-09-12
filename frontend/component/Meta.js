@@ -6,7 +6,7 @@ export default props => (
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <link
-        href="https://fonts.googleapis.com/css?family=Fredoka+One|Open+Sans"
+        href="https://fonts.googleapis.com/css?family=Montserrat:700|Open+Sans"
         rel="stylesheet"
       />
       <link
@@ -18,6 +18,14 @@ export default props => (
     <style jsx global>{`
       * {
         box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+      }
+
+      #__next {
+        height: 100%;
       }
 
       ${props.isScrollable
@@ -35,7 +43,7 @@ export default props => (
         }`} h1,
       h2,
       h3 {
-        font-family: 'Fredoka One', cursive;
+        font-family: 'Montserrat', sans-serif;
       }
 
       h4,

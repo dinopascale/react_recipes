@@ -32,17 +32,12 @@ class NewRecipe extends Component {
     return { schema };
   }
 
-  componentDidMount() {
-    console.log(this.props.schema);
-  }
-
   render() {
     return (
-      <div>
+      <div style={{ height: '100%' }}>
         <Head>
-          <title>New Recipe</title>
+          <title>New Recipe | React Recipes</title>
         </Head>
-        {/* New Recipe */}
         <Form
           endpoint={apiEndpoints.newRecipe.endpoint}
           options={apiEndpoints.newRecipe.options}

@@ -1,104 +1,169 @@
-import fetch from 'isomorphic-unfetch';
-import { Fragment } from 'react';
 import Head from 'next/head';
+import { withRouter } from 'next/router';
+import React, { Fragment } from 'react';
+
 import ErrorPage from './_error';
+import ActionButton from '../frontend/shared/ActionButton';
 
-import Hero from '../frontend/component/Hero';
-import RecipesList from '../frontend/component/RecipesList';
-
-const Index = props => {
-  const { error } = props;
-
-  if (error) {
-    return <ErrorPage statusCode={error.status} />;
-  }
-
-  return (
-    <Fragment>
-      <Head>
-        <title>Home</title>
-      </Head>
-      <Hero
-        title="React Recipes"
-        subtitle="Share your Recipes, Get inspired by others, Cook!"
-        ctaLink="/recipes"
-        ctaTitle="Start"
-      />
-      <section className="most-recent">
-        <h4>Most Recents</h4>
-        <RecipesList recipes={props.recipes} />
-      </section>
-      <style jsx>{`
-        .most-recent {
-          width: 100%;
-          padding: 50px 25px 0 25px;
-          box-sizing: border-box;
-        }
-
-        .most-recent h4 {
-          font-size: 20px;
-          margin-bottom: 20px;
-          color: rgba(0, 0, 0, 0.7);
-        }
-      `}</style>
-    </Fragment>
-  );
+const styleButton = {
+  width: '100%',
+  maxWidth: '300px',
+  maxHeight: '36px',
+  backgroundColor: '#ecf284',
+  fontWeight: 'bold',
+  lineHeight: '14px',
+  marginBottom: '20px',
+  borderRadius: '4px',
+  cursor: 'pointer'
 };
 
-Index.getInitialProps = async ({ req }) => {
-  try {
-    if (req) {
-      try {
-        const { db } = req;
-        const recipes = await db.models['Recipe']
-          .find({ sharable: true })
-          .limit(4)
-          .populate('_creator', 'avatar username')
-          .select(
-            'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
-          );
+class Index extends React.Component {
+  navigateToAuth = () => {
+    this.props.router.push('/auth');
+  };
 
-        const promises = recipes.map(async recipe => {
-          const rates = await db.models['RecipeRate']
-            .find({ recipeId: recipe._id })
-            .select('value');
-          const rateCount = rates.length;
-          const rateValue =
-            rates.length === 0
-              ? 0
-              : rates.reduce((sum, rate) => sum + rate.value, 0);
-          return {
-            ...recipe._doc,
-            rateCount,
-            rateValue
-          };
-        });
+  render() {
+    const { error } = this.props;
 
-        return {
-          recipes: await Promise.all(promises)
-        };
-      } catch (e) {
-        console.log(e);
-        return e;
-      }
+    if (error) {
+      return <ErrorPage statusCode={error.status} />;
     }
 
-    const res = await fetch(`/api/recipes`);
+    return (
+      <Fragment>
+        <Head>
+          <title>Home</title>
+        </Head>
+        <div className="landing">
+          <section className="title-action">
+            <h1 className="title">React Recipes</h1>
+            <h3 className="subtitle">
+              Share your recipes. Get inspired.
+              <br /> Cook!
+            </h3>
+            <ActionButton
+              customStyle={styleButton}
+              handleClick={this.navigateToAuth}
+            >
+              Enter
+            </ActionButton>
+            <ActionButton
+              customStyle={styleButton}
+              handleClick={this.navigateToAuth}
+            >
+              Register
+            </ActionButton>
+          </section>
+        </div>
+        <style jsx>{`
+          .landing {
+            height: 100%;
+            position: relative;
+          }
 
-    if (res.status !== 200) {
-      const e = new Error(res.statusText);
-      e.status = res.status;
-      throw e;
-    }
+          .title-action {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 30px;
+            text-align: center;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+          }
 
-    const data = await res.json();
+          .title {
+            font-size: 48px;
+            margin: 10px 0;
+            color: #fff;
+          }
 
-    return {
-      recipes: data.results
-    };
-  } catch (e) {
-    return { error: e };
+          .subtitle {
+            font-size: 16px;
+            font-weight: 200;
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 18px;
+          }
+
+          .most-recent {
+            width: 100%;
+            padding: 50px 25px 0 25px;
+            box-sizing: border-box;
+          }
+
+          .most-recent h4 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: rgba(0, 0, 0, 0.7);
+          }
+        `}</style>
+      </Fragment>
+    );
   }
-};
+}
 
-export default Index;
+// Index.getInitialProps = async ({ req }) => {
+//   try {
+//     if (req) {
+//       try {
+//         const { db } = req;
+//         const recipes = await db.models['Recipe']
+//           .find({ sharable: true })
+//           .limit(4)
+//           .populate('_creator', 'avatar username')
+//           .select(
+//             'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
+//           );
+
+//         const promises = recipes.map(async recipe => {
+//           const rates = await db.models['RecipeRate']
+//             .find({ recipeId: recipe._id })
+//             .select('value');
+//           const rateCount = rates.length;
+//           const rateValue =
+//             rates.length === 0
+//               ? 0
+//               : rates.reduce((sum, rate) => sum + rate.value, 0);
+//           return {
+//             ...recipe._doc,
+//             rateCount,
+//             rateValue
+//           };
+//         });
+
+//         return {
+//           recipes: await Promise.all(promises)
+//         };
+//       } catch (e) {
+//         console.log(e);
+//         return e;
+//       }
+//     }
+
+//     const res = await fetch(`/api/recipes`);
+
+//     if (res.status !== 200) {
+//       const e = new Error(res.statusText);
+//       e.status = res.status;
+//       throw e;
+//     }
+
+//     const data = await res.json();
+
+//     return {
+//       recipes: data.results
+//     };
+//   } catch (e) {
+//     return { error: e };
+//   }
+// };
+
+export default withRouter(Index);

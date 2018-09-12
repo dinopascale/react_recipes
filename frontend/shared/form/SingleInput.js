@@ -78,7 +78,7 @@ export default ({ field, change, blur, type, width }) => (
       .form-input {
         width: 100%;
         flex: 0 0 90%;
-        padding: 10px 8px;
+        padding: 5px 8px;
         font-family: 'Open Sans', sans-serif;
         font-size: 15px;
         color: #fff;

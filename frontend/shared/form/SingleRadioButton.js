@@ -81,7 +81,7 @@ export default ({ field, change, type }) => {
             color: #77b5ff;
             flex-grow: 1;
             text-align: center;
-            font-size: 15px;
+            font-size: 12px;
             transition: all .15s ease-in;
         }
       `}</style>

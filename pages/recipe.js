@@ -14,7 +14,7 @@ class Recipe extends React.Component {
     try {
       //SSR - THROUGH MONGOOSE
       if (props.req) {
-        const { _id } = props.res.locals.issuerId || null;
+        const _id = props.res.locals.issuerId || null;
         const recipeId = props.query.id;
         const { db } = props.req;
         let userRateValue = false;

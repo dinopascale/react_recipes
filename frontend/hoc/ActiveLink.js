@@ -17,13 +17,13 @@ const ActiveLink = ({ children, router, href }) => {
         a {
           font-family: 'Open Sans', sans-serif;
           text-decoration: none;
-          color: #000;
+          color: #fff;
           flex: 1 0 0;
           transition: all 0.3s ease-out;
         }
         a:hover,
         a:focus {
-          color: #999;
+          color: #ecf284;
         }
         .active {
           color: #118ab2;
@@ -31,7 +31,7 @@ const ActiveLink = ({ children, router, href }) => {
         }
         a.active:hover,
         a.active:focus {
-          color: #0e7192;
+          color: #ecf284;
         }
       `}</style>
     </a>

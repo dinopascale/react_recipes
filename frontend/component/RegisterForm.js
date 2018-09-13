@@ -3,7 +3,7 @@ import apiEndpoints from '../utils/apiEndpoints';
 import SingleInput from '../shared/form/SingleInput';
 import ActionButton from '../shared/ActionButton';
 
-const loginButton = {
+const registerButton = {
   padding: '10px 30px',
   fontWeight: 'bold',
   marginTop: '40px',
@@ -11,16 +11,22 @@ const loginButton = {
   background: 'rgb(236, 242, 132)'
 };
 
-const LoginForm = ({ schema, submitSucceeded, submitFailed }) => {
+const RegisterForm = ({ schema, submitSucceeded, submitFailed }) => {
   return (
     <Form
-      endpoint={apiEndpoints.login.endpoint}
-      options={apiEndpoints.login.options}
+      endpoint={apiEndpoints.register.endpoint}
+      options={apiEndpoints.register.options}
       submitSuccess={submitSucceeded}
       submitFail={submitFailed}
       data={schema}
       render={(state, onChange, onBlur, onSubmit, formToAPI) => (
         <form className="form-login">
+          <SingleInput
+            field={state.username}
+            change={onChange(state.username.name)}
+            blur={onBlur(state.username.name)}
+            type="text"
+          />
           <SingleInput
             field={state.email}
             change={onChange(state.email.name)}
@@ -33,8 +39,8 @@ const LoginForm = ({ schema, submitSucceeded, submitFailed }) => {
             blur={onBlur(state.password.name)}
             type="password"
           />
-          <ActionButton handleClick={onSubmit} customStyle={loginButton}>
-            Login
+          <ActionButton handleClick={onSubmit} customStyle={registerButton}>
+            Register
           </ActionButton>
           <style jsx>{`
             .form-login {
@@ -47,4 +53,4 @@ const LoginForm = ({ schema, submitSucceeded, submitFailed }) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

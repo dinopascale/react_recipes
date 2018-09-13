@@ -15,7 +15,9 @@ const fetchOptions = {
 
 const apiEndpoints = {
   newRecipe: { endpoint: '/api/recipe', options: fetchOptions.POST },
-  logout: { endpoint: '/api/user/me/logout', options: fetchOptions.POST }
+  logout: { endpoint: '/api/user/me/logout', options: fetchOptions.POST },
+  login: { endpoint: '/api/user/login', options: fetchOptions.POST },
+  register: { endpoint: '/api/user/signup', options: fetchOptions.POST }
 };
 
 export default apiEndpoints;

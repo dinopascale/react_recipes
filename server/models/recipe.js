@@ -80,7 +80,7 @@ const recipeSchema = mongoose.Schema({
   ]
 });
 
-const filterSchema = obj => {
+const filterRecipeSchema = obj => {
   return Object.keys(obj)
     .filter(
       key => !['createdAt', 'updatedAt', '_creator', '_id', '__v'].includes(key)
@@ -98,7 +98,9 @@ const filterSchema = obj => {
             : null
         },
         enum: obj[key].options.enum || null,
-        subSchema: obj[key].schema ? filterSchema(obj[key].schema.paths) : null
+        subSchema: obj[key].schema
+          ? filterRecipeSchema(obj[key].schema.paths)
+          : null
       };
     });
 };
@@ -115,7 +117,7 @@ recipeSchema.pre('update', function() {
 
 recipeSchema.statics.getSchema = function() {
   const Recipe = this;
-  return filterSchema(Recipe.schema.paths);
+  return filterRecipeSchema(Recipe.schema.paths);
 };
 
 recipeSchema.statics.findByIdAndGetAuthor = async function(id) {

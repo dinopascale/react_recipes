@@ -18,8 +18,12 @@ const styleButton = {
 };
 
 class Index extends React.Component {
-  navigateToAuth = () => {
-    this.props.router.push('/auth');
+  navigateToLogin = () => {
+    this.props.router.push('/auth/login');
+  };
+
+  navigateToRegister = () => {
+    this.props.router.push('/auth/register');
   };
 
   render() {
@@ -43,13 +47,13 @@ class Index extends React.Component {
             </h3>
             <ActionButton
               customStyle={styleButton}
-              handleClick={this.navigateToAuth}
+              handleClick={this.navigateToLogin}
             >
               Enter
             </ActionButton>
             <ActionButton
               customStyle={styleButton}
-              handleClick={this.navigateToAuth}
+              handleClick={this.navigateToRegister}
             >
               Register
             </ActionButton>

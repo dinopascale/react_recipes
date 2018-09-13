@@ -35,7 +35,7 @@ export default props => {
     content = (
       <Fragment>
         <h4>Ready to share your next recipe?</h4>
-        <CallToAction href="/auth" small>
+        <CallToAction href="/auth/login" small>
           Login
         </CallToAction>
         <style jsx>{`

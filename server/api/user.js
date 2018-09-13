@@ -61,7 +61,13 @@ router.post('/user/signup', async (req, res, next) => {
 
     const token = await user.generateAuthToken();
 
-    res.status(200).json({ message: 'User Subs', user, token });
+    res
+      .status(200)
+      .cookie('token', token, { maxAge: 3600000 })
+      .json({
+        message: 'User Subs',
+        userInfo: { username: user.username, avatar: user.avatar }
+      });
   } catch (e) {
     e.status = 400;
     next(e);
@@ -130,6 +136,20 @@ router.delete('/user/:id', checkAuth, checkAuthor, async (req, res, next) => {
 
     res.status(200).json({
       message: 'User Deleted'
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
+//getSchema
+
+router.get('/s/user', async (req, res, next) => {
+  try {
+    const schema = User.getSchema();
+    res.status(200).json({
+      schema
     });
   } catch (e) {
     e.status = 400;

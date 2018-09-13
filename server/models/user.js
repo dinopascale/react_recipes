@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
     trim: true,
-    minlength: [6, 'Your password must be at least six characters long']
+    minlength: 6
   },
   bio: {
     type: String,
@@ -42,6 +42,29 @@ const userSchema = mongoose.Schema({
   }
 });
 
+const filterUserSchema = obj => {
+  return Object.keys(obj)
+    .filter(key => ['username', 'email', 'password'].includes(key))
+    .map(key => {
+      return {
+        name: obj[key].path,
+        instance: obj[key].instance,
+        default: obj[key].options.default || null,
+        validationRules: {
+          required: obj[key].options.required || null,
+          minlength: obj[key].options.minlength || null,
+          regExp: obj[key].options.match
+            ? [obj[key].options.match[0].toString(), obj[key].options.match[1]]
+            : null
+        },
+        enum: obj[key].options.enum || null,
+        subSchema: obj[key].schema
+          ? filterUserSchema(obj[key].schema.paths)
+          : null
+      };
+    });
+};
+
 userSchema.methods.generateAuthToken = async function() {
   try {
     const user = this;
@@ -56,6 +79,11 @@ userSchema.methods.generateAuthToken = async function() {
   } catch (e) {
     throw e;
   }
+};
+
+userSchema.statics.getSchema = function() {
+  const User = this;
+  return filterUserSchema(User.schema.paths);
 };
 
 userSchema.statics.findByCredentials = async function(email, password) {

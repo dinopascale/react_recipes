@@ -5,6 +5,7 @@ import {
   successAndCloseModal,
   createErrorMessage
 } from '../../store/actions';
+
 import { validationRules, validationError } from '../utils/validationRules';
 import { connect } from 'react-redux';
 
@@ -24,10 +25,14 @@ class Form extends Component {
         isInvalid: true,
         subSchema: field.subSchema,
         errorMessage: null,
-        rules:
-          field.name === 'img'
-            ? { ...field.validationRules, isUrl: true }
-            : field.validationRules
+        rules: {
+          ...field.validationRules,
+          isUrl: field.name === 'img',
+          isEmail: field.name === 'email'
+        }
+        //   field.name === 'img'
+        //     ? { ...field.validationRules, isUrl: true }
+        //     : field.validationRules
       };
       return frm;
     }, {});
@@ -56,17 +61,24 @@ class Form extends Component {
     event.preventDefault();
     const form = this.formToAPI();
 
-    const { endpoint, options, successModal, errorModal } = this.props;
+    const {
+      endpoint,
+      options,
+      successModal,
+      errorModal,
+      submitSuccess,
+      submitFail
+    } = this.props;
 
     const optionsWithBody = { ...options, body: JSON.stringify(form) };
     await this.props.callApi(
       endpoint,
       optionsWithBody,
-      () => {
-        successModal();
+      json => {
+        submitSuccess ? submitSuccess(json) : successModal();
       },
       error => {
-        errorModal(error);
+        submitFail ? submitFail(error) : errorModal(error);
       }
     );
   };
@@ -218,6 +230,7 @@ class Form extends Component {
 
   componentWillMount() {
     const form = this.transformPropToForm(this.props.data);
+    console.log(form);
     this.setState({
       ...form
     });

@@ -8,7 +8,8 @@ export default props => {
   const ifLink = e => {
     // INSIDE SIDEDRAWER WE HAVE NAV LINKS IN FORM OF <p> and <button> HTML ELEMENTS.
     // WITH THIS METHOD, WE CLOSE THE SDRAWER AFTER THESE NAV LINKS WERE CLICKED AND PAGE CHANGE
-    if (e.target.tagName === 'P' || e.target.tagName === 'BUTTON') {
+    const tag = e.target.tagName;
+    if (tag === 'A' || tag === 'BUTTON' || tag === 'P') {
       return props.closed();
     }
     return false;

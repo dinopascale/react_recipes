@@ -20,7 +20,11 @@ import {
   faExclamation,
   faCheckCircle,
   faSpinner,
-  faPaperPlane
+  faPaperPlane,
+  faUserCircle,
+  faPlusCircle,
+  faSignOutAlt,
+  faGlobe
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
@@ -40,7 +44,11 @@ library.add(
   faExclamation,
   faCheckCircle,
   faSpinner,
-  faPaperPlane
+  faPaperPlane,
+  faUserCircle,
+  faPlusCircle,
+  faSignOutAlt,
+  faGlobe
 );
 
 class MyApp extends App {

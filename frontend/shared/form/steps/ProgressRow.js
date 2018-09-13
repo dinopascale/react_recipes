@@ -50,7 +50,7 @@ export default ({ steps, actual, jumpBack }) => {
           line-height: 30px;
           display: block;
           border-radius: 50%;
-          background-color: #77b5ff;
+          background-color: #10aeb2;
           transition: all 0.3s ease-in;
         }
 
@@ -59,7 +59,7 @@ export default ({ steps, actual, jumpBack }) => {
           height: 2px;
           content: '';
           position: absolute;
-          background-color: #77b5ff;
+          background-color: #10aeb2;
           top: 15px;
           left: -50%;
           z-index: -1;

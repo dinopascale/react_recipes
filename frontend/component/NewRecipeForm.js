@@ -37,7 +37,7 @@ export default ({
             right: '16px',
             zIndex: '200',
             borderRadius: '50%',
-            backgroundColor: '#77b5ff',
+            backgroundColor: '#10aeb2',
             color: '#fff'
           }}
           handleClick={submitted}

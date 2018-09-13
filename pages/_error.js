@@ -37,7 +37,7 @@ export default class Error extends React.Component {
           .error-title {
             text-align: center;
             font-size: 64px;
-            color: #77b5ff;
+            color: #10aeb2;
           }
 
           .error-message {

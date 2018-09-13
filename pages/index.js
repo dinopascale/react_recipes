@@ -32,7 +32,7 @@ class Index extends React.Component {
     return (
       <Fragment>
         <Head>
-          <title>Home</title>
+          <title>Home | React Recipes</title>
         </Head>
         <div className="landing">
           <section className="title-action">
@@ -55,8 +55,12 @@ class Index extends React.Component {
             </ActionButton>
           </section>
         </div>
+        {/* <div className="explore">
+          <p>... or just search for some recipes!</p>
+        </div> */}
         <style jsx>{`
           .landing {
+            // height: calc(100% - 60px);
             height: 100%;
             position: relative;
           }
@@ -79,8 +83,11 @@ class Index extends React.Component {
 
           .title {
             font-size: 48px;
-            margin: 10px 0;
+            margin: 0 0 30px 0;
+            padding: 15px 0;
             color: #fff;
+            border-top: 6px solid;
+            border-bottom: 6px solid;
           }
 
           .subtitle {
@@ -93,17 +100,19 @@ class Index extends React.Component {
             font-size: 18px;
           }
 
-          .most-recent {
-            width: 100%;
-            padding: 50px 25px 0 25px;
-            box-sizing: border-box;
+          .explore {
+            background: #10aeb2;
+            height: 60px;
+            bottom: 0;
+            // transform: translateY(40px);
+            transition: transform 0.3s 1s ease-in;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
 
-          .most-recent h4 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: rgba(0, 0, 0, 0.7);
-          }
+          @keyframes;
         `}</style>
       </Fragment>
     );

@@ -54,7 +54,7 @@ class TextareaAutoresize extends Component {
             line-height: 1.5;
             border: none;
             border-radius: 3px;
-            background: #77b5ff;
+            background: #10aeb2;
             outline: none;
             transition: all 0.1s linear;
           }

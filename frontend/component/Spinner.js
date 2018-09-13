@@ -19,7 +19,7 @@ export default ({ isLoading, type }) => (
       }
 
       .spinner {
-        color: #77b5ff;
+        color: #10aeb2;
         font-size: 90px;
         height: 100%;
         display: flex;

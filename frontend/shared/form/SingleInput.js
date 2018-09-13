@@ -84,7 +84,7 @@ export default ({ field, change, blur, type, width }) => (
         color: #fff;
         border: none;
         border-radius: 3px;
-        background: #77b5ff;
+        background: #10aeb2;
         outline: none;
         transition: all 0.1s linear;
       }
@@ -95,7 +95,7 @@ export default ({ field, change, blur, type, width }) => (
 
       .form-input:focus,
       .form-input.dirty {
-        background: #77b5ff;
+        background: #10aeb2;
         flex: 0 0 90%;
       }
 

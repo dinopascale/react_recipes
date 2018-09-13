@@ -1,6 +1,13 @@
 import { withRouter } from 'next/router';
 
-const ActiveLink = ({ children, router, href }) => {
+const ActiveLink = ({
+  children,
+  router,
+  href,
+  color,
+  activeColor,
+  focusColor
+}) => {
   const handleClick = e => {
     e.preventDefault();
     router.push(href);
@@ -17,16 +24,17 @@ const ActiveLink = ({ children, router, href }) => {
         a {
           font-family: 'Open Sans', sans-serif;
           text-decoration: none;
-          color: #fff;
+          color: ${color || '#fff'};
           flex: 1 0 0;
+          cursor: pointer;
           transition: all 0.3s ease-out;
         }
         a:hover,
         a:focus {
-          color: #ecf284;
+          color: ${focusColor || '#555'};
         }
         .active {
-          color: #118ab2;
+          color: ${activeColor || '#000'};
           font-weight: bold;
         }
         a.active:hover,

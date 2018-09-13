@@ -68,7 +68,7 @@ export default props => (
         content: '';
         width: 12px;
         height: 12px;
-        background: ${props.checkedColor ? props.checkedColor : '#77b5ff'};
+        background: ${props.checkedColor ? props.checkedColor : '#10aeb2'};
         position: absolute;
         top: 4px;
         left: 4px;

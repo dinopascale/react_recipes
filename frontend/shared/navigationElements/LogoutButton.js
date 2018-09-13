@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { callApi, successLogout, failLogout } from '../../../store/actions';
 import apiEndpoints from '../../utils/apiEndpoints';
@@ -22,7 +23,31 @@ class LogoutButton extends React.Component {
   };
 
   render() {
-    return <button onClick={this.clickHandler}>Logout</button>;
+    return (
+      <button className="logout" onClick={this.clickHandler}>
+        <p>
+          <span>
+            <FontAwesomeIcon icon="sign-out-alt" />
+          </span>
+          Logout
+        </p>
+        <style jsx>{`
+          .logout {
+            margin-top: 20px;
+            background: transparent;
+            border: none;
+            color: #555;
+            font-size: 16px;
+            text-align: left;
+            padding: 0;
+          }
+
+          .logout span {
+            margin-right: 10px;
+          }
+        `}</style>
+      </button>
+    );
   }
 }
 

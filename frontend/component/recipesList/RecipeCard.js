@@ -136,7 +136,7 @@ export default ({ recipe }) => (
       .recipe-card--info--element--label {
         font-size: 13px;
         font-weight: bold;
-        color: #77b5ff;
+        color: #10aeb2;
         margin: 4px 0;
       }
 

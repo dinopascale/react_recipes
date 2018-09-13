@@ -54,7 +54,7 @@ export default ({ field, change, type }) => {
         .radio-group {
           display: flex;
           flex-flow: row nowrap;
-          border: 2px solid #77b5ff;
+          border: 2px solid #10aeb2;
           border-radius: 3px;
           margin-top: 4px;
           width: 90%;
@@ -68,17 +68,17 @@ export default ({ field, change, type }) => {
 
         .option:checked + .option-label {
             color: #fff;
-            background-color:#77b5ff;
+            background-color:#10aeb2;
         }
 
         .option-label + .option + .option-label {
-            border-left: solid 2px #77b5ff;
+            border-left: solid 2px #10aeb2;
           }
 
         .option-label {
             cursor-pointer;
             padding: 8px 0px;
-            color: #77b5ff;
+            color: #10aeb2;
             flex-grow: 1;
             text-align: center;
             font-size: 12px;

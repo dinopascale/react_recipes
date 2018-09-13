@@ -9,15 +9,19 @@ export default props => {
   if (props.isAuth) {
     content = (
       <Fragment>
-        <NavigationElement to="/new_recipe" title="New Recipe" />
-        <NavigationElement to="/ed" title="Edit Account" />
+        <NavigationElement
+          to="/new_recipe"
+          title="New Recipe"
+          icon="plus-circle"
+        />
+        <NavigationElement to="/ed" title="Edit Account" icon="user-circle" />
         <LogoutButton />
       </Fragment>
     );
   }
   return (
     <div className="nav-elements">
-      <NavigationElement to="/recipes" title="See all recipes" />
+      <NavigationElement to="/recipes" title="See all recipes" icon="globe" />
       {content}
       <style jsx>{`
         .nav-elements {

@@ -111,7 +111,7 @@ class Recipe extends React.Component {
           type="input"
           style={{
             fontSize: '32px',
-            color: '#77B5FF',
+            color: '#10aeb2',
             textAlign: 'center',
             fontFamily: '"Fredoka One", cursive',
             marginTop: '15px'

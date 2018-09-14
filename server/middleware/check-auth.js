@@ -24,9 +24,7 @@ module.exports = (req, res, next) => {
     res.locals.issuerId = decoded.userId;
     next();
   } catch (e) {
-    if (!e.message) {
-      e.message = 'Auth Failed';
-    }
-    next(e);
+    res.locals.issuerId = null;
+    next();
   }
 };

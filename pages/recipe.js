@@ -71,18 +71,13 @@ class Recipe extends React.Component {
         props.res.redirect('/');
       }
 
-      //   console.log(data.recipe);
-
       return {
         recipe: data.recipe
       };
     } catch (e) {
-      console.log(e);
       return { error: e };
     }
   }
-
-  componentDidMount() {}
 
   render() {
     const { error, recipe } = this.props;

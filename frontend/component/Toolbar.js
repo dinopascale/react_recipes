@@ -5,7 +5,7 @@ import ToggleButton from './toolbar/ToggleButton';
 const Toolbar = props => (
   <div className="navbar">
     <ToggleButton openSideDrawer={props.opened} />
-    <Logo />
+    <Logo isAuth={props.isAuth} />
     <nav className="desktop-only">
       <NavigationElements />
     </nav>

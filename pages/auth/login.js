@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head';
 import Link from 'next/link';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 
 import { callApi, successLogin, failLogin } from '../../store/actions';
 import LoginForm from '../../frontend/component/LoginForm';
@@ -14,16 +14,27 @@ class Login extends Component {
       const schema = db.models['User'].getSchema();
       return { schema };
     }
+
+    if (props.reduxStore.getState().auth.user) {
+      Router.push('/recipes');
+    }
   }
 
   async componentDidMount() {
+    const { router, callApi, isAuth } = this.props;
+    router.prefetch('/recipes');
+
+    // if (isAuth) {
+    //   router.push('/recipes');
+    // }
+
     const endpoint = '/api/s/user';
     const options = {
       method: 'GET',
       credentials: 'include'
     };
 
-    await this.props.callApi(
+    await callApi(
       endpoint,
       options,
       json =>
@@ -45,8 +56,9 @@ class Login extends Component {
   };
 
   loggedInAndPushToRecipes = json => {
-    this.props.loginSuccess(json.userInfo);
-    this.props.router.push('/recipes');
+    const { loginSuccess, router } = this.props;
+    loginSuccess(json.userInfo);
+    router.push('/recipes');
   };
 
   render() {
@@ -61,7 +73,7 @@ class Login extends Component {
             <h1 className="form-auth-title">Login</h1>
             <p className="form-auth-subtitle">
               or{' '}
-              <Link href="/auth/register">
+              <Link prefetch href="/auth/register">
                 <span className="auth-link">create a new account</span>
               </Link>
             </p>
@@ -123,6 +135,12 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isAuth: !!state.auth.user
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     loginSuccess: userInfo => dispatch(successLogin(userInfo)),
@@ -133,6 +151,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withRouter(Login));

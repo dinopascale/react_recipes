@@ -22,8 +22,13 @@ export default class Error extends React.Component {
           .error-page {
             width: 100vw;
             max-width: 800px;
-            height: calc(100vh - 70px);
+            height: 100%;
             padding: 40px 20px;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+            background: #10aeb2;
           }
 
           .error-img {
@@ -35,16 +40,17 @@ export default class Error extends React.Component {
           }
 
           .error-title {
+            margin: 0 0 20px 0;
             text-align: center;
             font-size: 64px;
-            color: #10aeb2;
+            color: #fff;
           }
 
           .error-message {
             margin: 0;
             font-size: 18px;
             text-align: center;
-            color: #888;
+            color: #fff;
             line-height: 1.5;
           }
         `}</style>

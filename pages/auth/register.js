@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head';
 import Link from 'next/link';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 
 import { callApi, successLogin, failLogin } from '../../store/actions';
 import RegisterForm from '../../frontend/component/RegisterForm';
@@ -14,6 +14,10 @@ class Register extends Component {
       const schema = db.models['User'].getSchema();
       return { schema };
     }
+
+    if (props.reduxStore.getState().auth.user) {
+      Router.push('/recipes');
+    }
   }
 
   async componentDidMount() {
@@ -23,7 +27,10 @@ class Register extends Component {
       credentials: 'include'
     };
 
-    await this.props.callApi(
+    const { router, callApi } = this.props;
+    router.prefetch('/recipes');
+
+    await callApi(
       endpoint,
       options,
       json =>
@@ -45,9 +52,9 @@ class Register extends Component {
   };
 
   registerInAndPushToRecipes = json => {
-    console.log(json);
-    this.props.loginSuccess(json.userInfo);
-    this.props.router.push('/recipes');
+    const { loginSuccess, router } = this.props;
+    loginSuccess(json.userInfo);
+    router.push('/recipes');
   };
 
   render() {
@@ -62,7 +69,7 @@ class Register extends Component {
             <h1 className="form-auth-title">Register</h1>
             <p className="form-auth-subtitle">
               or{' '}
-              <Link href="/auth/login">
+              <Link prefetch href="/auth/login">
                 <span className="auth-link">use your account</span>
               </Link>
             </p>
@@ -123,6 +130,12 @@ class Register extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isAuth: !!state.auth.user
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     loginSuccess: userInfo => dispatch(successLogin(userInfo)),
@@ -133,6 +146,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withRouter(Register));

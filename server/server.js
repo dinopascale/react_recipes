@@ -11,7 +11,7 @@ const recipeRoutes = require('./api/recipe');
 const rateRoutes = require('./api/rate');
 const commentRoutes = require('./api/comment');
 const checkAuthor = require('./middleware/check-author');
-// const db = require('./db/db');
+const checkAuth = require('./middleware/check-auth');
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -52,6 +52,37 @@ app
             const queryParams = { id: req.params.title };
             app.render(req, res, actualPage, queryParams);
           });
+
+          server.get('/new_recipe', checkAuth, (req, res) => {
+            if (!res.locals.issuerId) {
+              res.redirect(301, '/auth/login');
+            }
+            app.render(req, res, '/new_recipe');
+          });
+
+          server.get('/auth/login', checkAuth, (req, res) => {
+            if (res.locals.issuerId) {
+              res.redirect(301, '/recipes');
+            }
+            app.render(req, res, '/auth/login');
+          });
+
+          server.get('/auth/register', checkAuth, (req, res) => {
+            if (res.locals.issuerId) {
+              res.redirect(301, '/recipes');
+            }
+            app.render(req, res, '/auth/register');
+          });
+
+          server.get('/', checkAuth, (req, res) => {
+            console.log('alla pagina iniziale');
+            if (res.locals.issuerId) {
+              res.redirect(301, '/recipes');
+            }
+            app.render(req, res, '/');
+          });
+
+          
 
           //DEFAULT ROUTE
           server.get('*', (req, res) => {

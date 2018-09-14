@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
 import Link from 'next/link';
 
-export default () => (
+export default ({ isAuth }) => (
   <Fragment>
-    <Link href="/">
+    <Link prefetch href={isAuth ? '/recipes' : '/'}>
       <a>
         <img src="/static/chef.png" alt="React Recipes Logo" />
       </a>

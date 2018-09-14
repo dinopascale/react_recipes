@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { withRouter } from 'next/router';
 import React, { Fragment } from 'react';
 
@@ -18,13 +19,16 @@ const styleButton = {
 };
 
 class Index extends React.Component {
-  navigateToLogin = () => {
-    this.props.router.push('/auth/login');
+  navigateTo = path => () => {
+    const { router } = this.props;
+    router.push(path);
   };
 
-  navigateToRegister = () => {
-    this.props.router.push('/auth/register');
-  };
+  componentDidMount() {
+    const { router } = this.props;
+    router.prefetch('/auth/login');
+    router.prefetch('/auth/register');
+  }
 
   render() {
     const { error } = this.props;
@@ -47,13 +51,14 @@ class Index extends React.Component {
             </h3>
             <ActionButton
               customStyle={styleButton}
-              handleClick={this.navigateToLogin}
+              handleClick={this.navigateTo('/auth/login')}
             >
               Enter
             </ActionButton>
+
             <ActionButton
               customStyle={styleButton}
-              handleClick={this.navigateToRegister}
+              handleClick={this.navigateTo('/auth/register')}
             >
               Register
             </ActionButton>

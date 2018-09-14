@@ -35,7 +35,10 @@ class Layout extends React.Component {
             this.props.loading ? 'app-container blurred' : 'app-container'
           }
         >
-          <Toolbar opened={this.openSideDrawerHandler} />
+          <Toolbar
+            opened={this.openSideDrawerHandler}
+            isAuth={!!this.props.userInfo}
+          />
           <SideDrawer
             open={this.state.showSideDrawer}
             closed={this.closeSideDrawerHandler}

@@ -4,7 +4,11 @@ export default ({ isLoading, type }) => (
   <div className="spinner-container">
     <div className="spinner">
       <span className="spin">
-        <FontAwesomeIcon icon="spinner" />
+        <FontAwesomeIcon
+          icon="spinner"
+          id="spinning"
+          style={{ transform: type === 'contain' ? 'scale(.7)' : 'scale(1)' }}
+        />
       </span>
     </div>
     <style jsx>{`

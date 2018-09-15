@@ -19,7 +19,7 @@ router.get('/recipes', async (req, res, next) => {
       .limit(+num)
       .populate('_creator', 'avatar username')
       .select(
-        'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
+        'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
       );
 
     const promises = recipes.map(async recipe => {

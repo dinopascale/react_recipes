@@ -24,7 +24,10 @@ import {
   faUserCircle,
   faPlusCircle,
   faSignOutAlt,
-  faGlobe
+  faGlobe,
+  faGem,
+  faClock,
+  faHeart
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
@@ -48,7 +51,10 @@ library.add(
   faUserCircle,
   faPlusCircle,
   faSignOutAlt,
-  faGlobe
+  faGlobe,
+  faGem,
+  faClock,
+  faHeart
 );
 
 class MyApp extends App {

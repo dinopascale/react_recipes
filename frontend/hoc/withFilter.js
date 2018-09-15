@@ -6,9 +6,9 @@ const withFilter = (WrappedComponent, defaultValue) => {
       sortBy: defaultValue
     };
 
-    selectSortOptions = event => {
+    selectSortOptions = (event, option) => {
       this.setState({
-        sortBy: event.target.value
+        sortBy: option || event.target.value
       });
     };
 

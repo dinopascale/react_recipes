@@ -68,6 +68,7 @@ class Layout extends React.Component {
               height: 100%;
               background-color: #ff7f50;
               margin: 0 auto;
+              overflow-y: auto;
             }
           `}</style>
         </div>

@@ -5,6 +5,7 @@ import { withRouter } from 'next/router';
 
 import ActionButton from '../frontend/shared/ActionButton';
 import GreetUser from '../frontend/component/GreetUser';
+import RecipesList from '../frontend/component/RecipesList';
 
 const styleButton = {
   maxWidth: '300px',
@@ -26,10 +27,10 @@ class Recipes extends React.Component {
           const { db } = req;
           const recipes = await db.models['Recipe']
             .find({ sharable: true })
-            .limit(4)
+            .limit(6)
             .populate('_creator', 'avatar username')
             .select(
-              'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
+              'name preparationTime cookTime difficulty _creator img tag createdAt'
             );
           const promises = recipes.map(async recipe => {
             const rates = await db.models['RecipeRate']
@@ -43,7 +44,8 @@ class Recipes extends React.Component {
             return {
               ...recipe._doc,
               rateCount,
-              rateValue
+              rateValue,
+              avgRate: rateCount !== 0 ? +(rateValue / rateCount).toFixed(2) : 0
             };
           });
           return {
@@ -55,7 +57,7 @@ class Recipes extends React.Component {
         }
       }
 
-      const response = await fetch(`/api/recipes`);
+      const response = await fetch(`/api/recipes?num=6`);
 
       if (response.status !== 200) {
         const e = new Error(res.statusText);
@@ -64,7 +66,15 @@ class Recipes extends React.Component {
       }
       const data = await response.json();
       return {
-        recipes: data.results
+        recipes: data.results.map(recipe => {
+          return {
+            ...recipe,
+            avgRate:
+              recipe.rateCount !== 0
+                ? +(recipe.rateValue / recipe.rateCount).toFixed(2)
+                : 0
+          };
+        })
       };
     } catch (e) {
       return { error: e };
@@ -117,7 +127,8 @@ class Recipes extends React.Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, recipes } = this.props;
+    console.log(recipes);
     return (
       <Fragment>
         <Head>
@@ -125,11 +136,20 @@ class Recipes extends React.Component {
         </Head>
         <div className="recipes-container">
           {user ? this.renderGreetToUser() : this.renderCallToAction()}
+          <hr className="divider" />
+          <RecipesList recipes={recipes} />
           <style jsx>{`
             .recipes-container {
               width: 100%;
-              height: 100%;
+              min-height: 100%;
               padding: 90px 20px 40px 20px;
+              overflow-y: scroll;
+            }
+
+            .divider {
+              border: 1px solid;
+              color: #fff;
+              margin: 40px 0 20px 0;
             }
           `}</style>
         </div>

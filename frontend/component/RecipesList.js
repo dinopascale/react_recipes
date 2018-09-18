@@ -3,7 +3,7 @@ import DropdownList from '../hoc/DropdownList';
 import RecipeCard from './recipesList/RecipeCard';
 import FilterListRow from './recipesList/FilterListRow';
 
-const RecipesList = ({ recipes, byDate, byRate, sortBy }) => {
+const RecipesList = ({ recipes, getRecipes, sortBy }) => {
   return (
     <div className="recipes-list-container">
       <DropdownList
@@ -13,8 +13,7 @@ const RecipesList = ({ recipes, byDate, byRate, sortBy }) => {
             toggleShow={toggleShow}
             close={close}
             sortBy={sortBy}
-            sortByDate={byDate}
-            sortByRate={byRate}
+            getRecipes={getRecipes}
           />
         )}
       />

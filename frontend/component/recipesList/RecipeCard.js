@@ -224,6 +224,12 @@ export default ({ recipe }) => (
         font-size: 10px;
         margin-left: 5px;
       }
+
+      @media (min-width: 499px) {
+        .recipe-card {
+            flex: 0 0 30%;
+        }
+      }
     `}</style>
     </div>
   </Link>

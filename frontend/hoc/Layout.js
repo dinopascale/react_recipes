@@ -26,7 +26,7 @@ class Layout extends React.Component {
   render() {
     return (
       <Fragment>
-        {this.props.loading ? <Spinner /> : null}
+        {/* {this.props.loading ? <Spinner /> : null} */}
         <Meta
           isScrollable={!(this.state.showSideDrawer || this.props.modal.isOpen)}
         />
@@ -69,7 +69,6 @@ class Layout extends React.Component {
               background-color: #ff7f50;
               margin: 0 auto;
               overflow-y: auto;
-              padding-bottom: 10px;
             }
           `}</style>
         </div>

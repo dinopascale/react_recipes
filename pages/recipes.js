@@ -21,6 +21,8 @@ const styleButton = {
   cursor: 'pointer'
 };
 
+const marginTop = '90px';
+
 class Recipes extends React.Component {
   static async getInitialProps({ req }) {
     try {
@@ -33,7 +35,8 @@ class Recipes extends React.Component {
           return {
             recipes: resultsUnsorted
               .sort((a, b) => b.avgRate - a.avgRate)
-              .slice(0, 6)
+              .slice(0, 6),
+            total: resultsUnsorted.length
           };
         } catch (e) {
           console.log(e);
@@ -41,7 +44,7 @@ class Recipes extends React.Component {
         }
       }
 
-      const response = await fetch(`/api/recipes`);
+      const response = await fetch(`/api/recipes?page=1`);
 
       if (response.status !== 200) {
         const e = new Error(res.statusText);
@@ -59,65 +62,68 @@ class Recipes extends React.Component {
 
   state = {
     recipesList: this.props.recipes || [],
-    sortBy: 'Most Popular'
+    sortBy: 'Most Popular',
+    page: 1,
+    total: this.props.total
   };
 
+  _container = null;
+
   componentDidMount() {
-    // if (window) {
-    //   console.log(this.container);
-    //   window.addEventListener('scroll', () => {
-    //     console.log(
-    //       window.innerHeight,
-    //       window.pageYOffset,
-    //       document.body.offsetHeight,
-    //       this.container.innerHeight,
-    //       this.container.pageYOffset
-    //     );
-    //     if (
-    //       window.innerHeight + window.pageYOffset >=
-    //       document.body.offsetHeight
-    //     ) {
-    //       console.log('bottom');
-    //     }
-    //   });
-    // }
+    if (window) {
+      window.addEventListener('scroll', this.infiniteScroll, false);
+    }
     this.props.router.prefetch('/auth/register');
   }
 
   componentWillUnmount() {
-    // if (window) window.removeEventListener('scroll');
+    if (window) {
+      window.removeEventListener('scroll', this.infiniteScroll, false);
+    }
   }
 
-  getRecipesByDate = async () => {
-    const { callApi, errorModal } = this.props;
-    await callApi(
-      '/api/recipes/recent',
-      null,
-      json => {
-        this.setState({
-          recipesList: json.results,
-          sortBy: 'Most Recent'
-        });
-      },
-      error => {
-        errorModal();
+  infiniteScroll = () => {
+    const rectBoundaries = this._container.getBoundingClientRect();
+    if (
+      rectBoundaries.bottom.toFixed(0) >= window.innerHeight - 10 &&
+      rectBoundaries.bottom.toFixed(0) <= window.innerHeight
+    ) {
+      if (this.state.sortBy === 'Most Popular') {
+        this.getRecipes(true, 'popular');
+      } else {
+        this.getRecipes(true, 'recent');
       }
-    );
+    }
   };
 
-  getRecipesByRate = async () => {
+  getRecipes = async (fromScroll = false, sort = 'popular') => {
     const { callApi, errorModal } = this.props;
+    const { page, total, recipesList } = this.state;
+
+    if (recipesList.length >= total && fromScroll) {
+      return false;
+    }
+
+    const endpoint =
+      sort === 'popular'
+        ? `/api/recipes?page=${fromScroll ? page + 1 : 1}`
+        : `/api/recipes/recent?page=${fromScroll ? page + 1 : 1}`;
+
     await callApi(
-      '/api/recipes',
+      endpoint,
       null,
       json => {
-        this.setState({
-          recipesList: json.results,
-          sortBy: 'Most Popular'
-        });
+        this.setState(prevState => ({
+          recipesList: fromScroll
+            ? [...prevState.recipesList, ...json.results]
+            : json.results,
+          sortBy: sort === 'popular' ? 'Most Popular' : 'Most Recent',
+          page: fromScroll ? prevState.page + 1 : 1,
+          total: json.total
+        }));
       },
       error => {
-        errorModal();
+        errorModal(error);
       }
     );
   };
@@ -173,23 +179,22 @@ class Recipes extends React.Component {
         <div
           className="recipes-container"
           ref={element => {
-            this.container = element;
+            this._container = element;
           }}
         >
           {user ? this.renderGreetToUser() : this.renderCallToAction()}
           <hr className="divider" />
           <RecipesList
             recipes={this.state.recipesList || this.props.recipes}
-            byDate={this.getRecipesByDate}
-            byRate={this.getRecipesByRate}
+            getRecipes={this.getRecipes}
             sortBy={this.state.sortBy}
           />
           <style jsx>{`
             .recipes-container {
               width: 100%;
               min-height: 100%;
-              padding: 90px 20px 40px 20px;
-              overflow-y: scroll;
+              margin-top: ${marginTop};
+              padding: 0px 20px 0px 20px;
             }
 
             .divider {

@@ -1,13 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default ({
-  isOpen,
-  toggleShow,
-  close,
-  sortBy,
-  sortByDate,
-  sortByRate
-}) => {
+export default ({ isOpen, toggleShow, close, sortBy, getRecipes }) => {
   return (
     <div className="dropdown-menu-container">
       <div className="choice" onClick={toggleShow}>
@@ -22,7 +15,7 @@ export default ({
             className="dropdown-menu-item"
             onClick={event => {
               close(event);
-              sortByRate();
+              getRecipes();
             }}
           >
             <span className="option-icon">
@@ -34,7 +27,7 @@ export default ({
             className="dropdown-menu-item"
             onClick={event => {
               close(event);
-              sortByDate();
+              getRecipes(false, 'recent');
             }}
           >
             <span className="option-icon">

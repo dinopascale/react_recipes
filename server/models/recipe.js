@@ -202,7 +202,15 @@ recipeSchema.statics.findAndSortByDate = async function() {
     const recipes = await Recipe.find({ sharable: true }).sort({
       createdAt: -1
     });
-    return recipes;
+    return recipes.map(recipe => {
+      return {
+        ...recipe._doc,
+        avgRate:
+          recipe._doc.rateCount !== 0
+            ? recipe._doc.rateValue / recipe._doc.rateCount
+            : 0
+      };
+    });
   } catch (e) {
     throw e;
   }

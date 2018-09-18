@@ -25,10 +25,6 @@ const recipeRateSchema = new mongoose.Schema({
 //   }
 // });
 
-recipeRateSchema.post('save', function() {
-  console.log(Recipe);
-});
-
 const RecipeRate = Rate.discriminator('RecipeRate', recipeRateSchema);
 
 module.exports = mongoose.model('RecipeRate');

@@ -41,18 +41,21 @@ router.get('/recipes', async (req, res, next) => {
     //     rateValue
     //   };
     // });
+    const { page } = req.query;
+    const prevPage = (+page - 1) * 6;
+    const nextPage = +page * 6;
 
     const resultsUnsorted = await Recipe.findByAvgRate();
 
     //sort by avgRate
 
-    const resultsByDate = resultsUnsorted.sort((a, b) => b.avgRate - a.avgRate);
+    const resultsByRate = resultsUnsorted.sort((a, b) => b.avgRate - a.avgRate);
 
     //pagination --- skip
 
     res.status(200).json({
-      total: resultsByDate.length,
-      results: resultsByDate.slice(0, 6)
+      total: resultsByRate.length,
+      results: resultsByRate.slice(prevPage, nextPage)
     });
   } catch (e) {
     e.status = 400;
@@ -62,10 +65,16 @@ router.get('/recipes', async (req, res, next) => {
 
 router.get('/recipes/recent', async (req, res, next) => {
   try {
+    const { page } = req.query;
+
+    const prevPage = (+page - 1) * 6;
+    const nextPage = +page * 6;
+
     const resultsByDate = await Recipe.findAndSortByDate();
+
     res.status(200).json({
       total: resultsByDate.length,
-      results: resultsByDate.slice(0, 6)
+      results: resultsByDate.slice(prevPage, nextPage)
     });
   } catch (e) {
     e.status = 400;

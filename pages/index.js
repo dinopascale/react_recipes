@@ -69,8 +69,7 @@ class Index extends React.Component {
         </div> */}
         <style jsx>{`
           .landing {
-            // height: calc(100% - 60px);
-            height: 100%;
+            height: 100vh;
             position: relative;
           }
 

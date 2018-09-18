@@ -87,7 +87,7 @@ class Login extends Component {
           </div>
           <style jsx>{`
             .auth {
-              height: 100%;
+              height: 100vh;
               display: flex;
               flex-flow: column;
               align-items: center;

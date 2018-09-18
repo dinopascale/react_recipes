@@ -14,37 +14,58 @@ const router = express.Router();
 
 router.get('/recipes', async (req, res, next) => {
   try {
-    const num = req.query.num || 4;
-    const recipes = await Recipe.find({ sharable: true })
-      .limit(+num)
-      .populate('_creator', 'avatar username')
-      .select(
-        'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
-      );
+    // const num = req.query.num || 4;
+    // const recipes = await Recipe.find({ sharable: true })
+    //   .limit(+num)
+    //   .populate('_creator', 'avatar username')
+    //   .select(
+    //     'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
+    //   );
 
-    const promises = recipes.map(async recipe => {
-      const rates = await RecipeRate.find({ recipeId: recipe._id }).select(
-        'value'
-      );
-      const rateCount = rates.length;
-      const rateValue =
-        rates.length === 0
-          ? 0
-          : rates.reduce((sum, rate) => sum + rate.value, 0);
-      return {
-        ...recipe._doc,
-        request: {
-          methods: ['GET'],
-          endpoint: req.headers.host + '/api/recipe/' + recipe._doc._id
-        },
-        rateCount,
-        rateValue
-      };
-    });
+    // const promises = recipes.map(async recipe => {
+    //   const rates = await RecipeRate.find({ recipeId: recipe._id }).select(
+    //     'value'
+    //   );
+    //   const rateCount = rates.length;
+    //   const rateValue =
+    //     rates.length === 0
+    //       ? 0
+    //       : rates.reduce((sum, rate) => sum + rate.value, 0);
+    //   return {
+    //     ...recipe._doc,
+    //     request: {
+    //       methods: ['GET'],
+    //       endpoint: req.headers.host + '/api/recipe/' + recipe._doc._id
+    //     },
+    //     rateCount,
+    //     rateValue
+    //   };
+    // });
+
+    const resultsUnsorted = await Recipe.findByAvgRate();
+
+    //sort by avgRate
+
+    const resultsByDate = resultsUnsorted.sort((a, b) => b.avgRate - a.avgRate);
+
+    //pagination --- skip
 
     res.status(200).json({
-      total: recipes.length,
-      results: await Promise.all(promises)
+      total: resultsByDate.length,
+      results: resultsByDate.slice(0, 6)
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
+router.get('/recipes/recent', async (req, res, next) => {
+  try {
+    const resultsByDate = await Recipe.findAndSortByDate();
+    res.status(200).json({
+      total: resultsByDate.length,
+      results: resultsByDate.slice(0, 6)
     });
   } catch (e) {
     e.status = 400;

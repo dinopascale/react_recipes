@@ -1,10 +1,9 @@
-import withFilter from '../hoc/withFilter';
 import DropdownList from '../hoc/DropdownList';
 
 import RecipeCard from './recipesList/RecipeCard';
 import FilterListRow from './recipesList/FilterListRow';
 
-const RecipesList = ({ recipes, sorted, sortBy }) => {
+const RecipesList = ({ recipes, byDate, byRate, sortBy }) => {
   return (
     <div className="recipes-list-container">
       <DropdownList
@@ -13,22 +12,16 @@ const RecipesList = ({ recipes, sorted, sortBy }) => {
             isOpen={isOpen}
             toggleShow={toggleShow}
             close={close}
-            sorted={sorted}
             sortBy={sortBy}
+            sortByDate={byDate}
+            sortByRate={byRate}
           />
         )}
       />
       <div className="recipes-list">
-        {recipes
-          .sort(
-            (a, b) =>
-              sortBy === 'createdAt'
-                ? new Date(b.createdAt) - new Date(a.createdAt)
-                : b[sortBy] - a[sortBy]
-          )
-          .map(recipe => (
-            <RecipeCard key={recipe._id} recipe={recipe} />
-          ))}
+        {recipes.map(recipe => (
+          <RecipeCard key={recipe._id} recipe={recipe} />
+        ))}
       </div>
       <style jsx>{`
         .recipes-list {
@@ -43,4 +36,4 @@ const RecipesList = ({ recipes, sorted, sortBy }) => {
   );
 };
 
-export default withFilter(RecipesList, 'avgRate');
+export default RecipesList;

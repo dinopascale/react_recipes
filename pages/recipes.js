@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 
+import { callApi, createErrorMessage } from '../store/actions';
+
 import ActionButton from '../frontend/shared/ActionButton';
 import GreetUser from '../frontend/component/GreetUser';
 import RecipesList from '../frontend/component/RecipesList';
@@ -25,31 +27,13 @@ class Recipes extends React.Component {
       if (req) {
         try {
           const { db } = req;
-          const recipes = await db.models['Recipe']
-            .find({ sharable: true })
-            .limit(6)
-            .populate('_creator', 'avatar username')
-            .select(
-              'name preparationTime cookTime difficulty _creator img tag createdAt'
-            );
-          const promises = recipes.map(async recipe => {
-            const rates = await db.models['RecipeRate']
-              .find({ recipeId: recipe._id })
-              .select('value');
-            const rateCount = rates.length;
-            const rateValue =
-              rates.length === 0
-                ? 0
-                : rates.reduce((sum, rate) => sum + rate.value, 0);
-            return {
-              ...recipe._doc,
-              rateCount,
-              rateValue,
-              avgRate: rateCount !== 0 ? +(rateValue / rateCount).toFixed(2) : 0
-            };
-          });
+
+          const resultsUnsorted = await db.models['Recipe'].findByAvgRate();
+
           return {
-            recipes: await Promise.all(promises)
+            recipes: resultsUnsorted
+              .sort((a, b) => b.avgRate - a.avgRate)
+              .slice(0, 6)
           };
         } catch (e) {
           console.log(e);
@@ -57,7 +41,7 @@ class Recipes extends React.Component {
         }
       }
 
-      const response = await fetch(`/api/recipes?num=6`);
+      const response = await fetch(`/api/recipes`);
 
       if (response.status !== 200) {
         const e = new Error(res.statusText);
@@ -66,24 +50,77 @@ class Recipes extends React.Component {
       }
       const data = await response.json();
       return {
-        recipes: data.results.map(recipe => {
-          return {
-            ...recipe,
-            avgRate:
-              recipe.rateCount !== 0
-                ? +(recipe.rateValue / recipe.rateCount).toFixed(2)
-                : 0
-          };
-        })
+        recipes: data.results
       };
     } catch (e) {
       return { error: e };
     }
   }
 
+  state = {
+    recipesList: this.props.recipes || [],
+    sortBy: 'Most Popular'
+  };
+
   componentDidMount() {
+    // if (window) {
+    //   console.log(this.container);
+    //   window.addEventListener('scroll', () => {
+    //     console.log(
+    //       window.innerHeight,
+    //       window.pageYOffset,
+    //       document.body.offsetHeight,
+    //       this.container.innerHeight,
+    //       this.container.pageYOffset
+    //     );
+    //     if (
+    //       window.innerHeight + window.pageYOffset >=
+    //       document.body.offsetHeight
+    //     ) {
+    //       console.log('bottom');
+    //     }
+    //   });
+    // }
     this.props.router.prefetch('/auth/register');
   }
+
+  componentWillUnmount() {
+    // if (window) window.removeEventListener('scroll');
+  }
+
+  getRecipesByDate = async () => {
+    const { callApi, errorModal } = this.props;
+    await callApi(
+      '/api/recipes/recent',
+      null,
+      json => {
+        this.setState({
+          recipesList: json.results,
+          sortBy: 'Most Recent'
+        });
+      },
+      error => {
+        errorModal();
+      }
+    );
+  };
+
+  getRecipesByRate = async () => {
+    const { callApi, errorModal } = this.props;
+    await callApi(
+      '/api/recipes',
+      null,
+      json => {
+        this.setState({
+          recipesList: json.results,
+          sortBy: 'Most Popular'
+        });
+      },
+      error => {
+        errorModal();
+      }
+    );
+  };
 
   renderCallToAction = () => {
     return (
@@ -127,17 +164,26 @@ class Recipes extends React.Component {
   };
 
   render() {
-    const { user, recipes } = this.props;
-    console.log(recipes);
+    const { user } = this.props;
     return (
       <Fragment>
         <Head>
           <title>Recipes | React Recipes</title>
         </Head>
-        <div className="recipes-container">
+        <div
+          className="recipes-container"
+          ref={element => {
+            this.container = element;
+          }}
+        >
           {user ? this.renderGreetToUser() : this.renderCallToAction()}
           <hr className="divider" />
-          <RecipesList recipes={recipes} />
+          <RecipesList
+            recipes={this.state.recipesList || this.props.recipes}
+            byDate={this.getRecipesByDate}
+            byRate={this.getRecipesByRate}
+            sortBy={this.state.sortBy}
+          />
           <style jsx>{`
             .recipes-container {
               width: 100%;
@@ -153,8 +199,6 @@ class Recipes extends React.Component {
             }
           `}</style>
         </div>
-        {/*two different render about no user and registered user*/}
-        {/*GridContainer with infinite scroll*/}
       </Fragment>
     );
   }
@@ -166,4 +210,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(Recipes));
+const mapDispatchToProps = dispatch => {
+  return {
+    callApi: (endpoint, options, onSuccess, onFail) =>
+      dispatch(callApi(endpoint, options, onSuccess, onFail)),
+    errorModal: error => dispatch(createErrorMessage(error))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Recipes));

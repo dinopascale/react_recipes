@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { ObjectId } = require('mongoose').Types;
 
+const RecipeRate = require('./rate/rateRecipe');
+
 const DIFFICULTIES = ['easy', 'medium', 'hard'];
 const TAG = ['Omnivore', 'Vegetarian', 'Vegan'];
 
@@ -77,7 +79,15 @@ const recipeSchema = mongoose.Schema({
         match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
       }
     }
-  ]
+  ],
+  rateCount: {
+    type: Number,
+    default: 0
+  },
+  rateValue: {
+    type: Number,
+    default: 0
+  }
 });
 
 const filterRecipeSchema = obj => {
@@ -134,6 +144,65 @@ recipeSchema.statics.findByIdAndGetAuthor = async function(id) {
       throw e;
     }
     return { ...recipe._doc };
+  } catch (e) {
+    throw e;
+  }
+};
+
+recipeSchema.statics.findByAvgRate = async function() {
+  try {
+    const Recipe = this;
+    const recipes = await Recipe.find({ sharable: true })
+      .populate('_creator', 'avatar username')
+      .select(
+        'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
+      );
+
+    return recipes.map(recipe => {
+      return {
+        ...recipe._doc,
+        avgRate:
+          recipe._doc.rateCount !== 0
+            ? recipe._doc.rateValue / recipe._doc.rateCount
+            : 0
+      };
+    });
+    // const recipes = await Recipe.find({ sharable: true })
+    //   .populate('_creator', 'avatar username')
+    //   .select(
+    //     'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
+    //   );
+
+    // const promises = recipes.map(async recipe => {
+    //   const rates = await RecipeRate.find({ recipeId: recipe._id }).select(
+    //     'value'
+    //   );
+    //   const rateCount = rates.length;
+    //   const rateValue =
+    //     rates.length === 0
+    //       ? 0
+    //       : rates.reduce((sum, rate) => sum + rate.value, 0);
+    //   return {
+    //     ...recipe._doc,
+    //     rateCount,
+    //     rateValue,
+    //     avgRate: rateCount !== 0 ? +(rateValue / rateCount).toFixed(2) : 0
+    //   };
+    // });
+
+    // return Promise.all(promises);
+  } catch (e) {
+    throw e;
+  }
+};
+
+recipeSchema.statics.findAndSortByDate = async function() {
+  try {
+    const Recipe = this;
+    const recipes = await Recipe.find({ sharable: true }).sort({
+      createdAt: -1
+    });
+    return recipes;
   } catch (e) {
     throw e;
   }

@@ -1,10 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default ({ isOpen, toggleShow, close, sorted, sortBy }) => {
+export default ({
+  isOpen,
+  toggleShow,
+  close,
+  sortBy,
+  sortByDate,
+  sortByRate
+}) => {
   return (
     <div className="dropdown-menu-container">
       <div className="choice" onClick={toggleShow}>
-        {sortBy === 'avgRate' ? 'Most Popular' : 'Most Recent'}
+        {sortBy}
         <span className="caret">
           <FontAwesomeIcon icon="caret-down" />
         </span>
@@ -15,7 +22,7 @@ export default ({ isOpen, toggleShow, close, sorted, sortBy }) => {
             className="dropdown-menu-item"
             onClick={event => {
               close(event);
-              sorted(event, 'avgRate');
+              sortByRate();
             }}
           >
             <span className="option-icon">
@@ -27,7 +34,7 @@ export default ({ isOpen, toggleShow, close, sorted, sortBy }) => {
             className="dropdown-menu-item"
             onClick={event => {
               close(event);
-              sorted(event, 'createdAt');
+              sortByDate();
             }}
           >
             <span className="option-icon">

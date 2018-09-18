@@ -34,7 +34,7 @@ class NewRecipe extends Component {
 
   render() {
     return (
-      <div style={{ height: '100%' }}>
+      <div style={{ minHeight: '100vh' }}>
         <Head>
           <title>New Recipe | React Recipes</title>
         </Head>

@@ -3,6 +3,8 @@ const { ObjectId } = require('mongoose').Types;
 
 const RecipeRate = require('../models/rate/rateRecipe');
 const CommentRate = require('../models/rate/rateComment');
+const Recipe = require('../models/recipe');
+
 const checkAuth = require('../middleware/check-auth');
 
 const router = express.Router();
@@ -28,6 +30,14 @@ router.post('/rate/r/:id', checkAuth, async (req, res, next) => {
       userId: new ObjectId(res.locals.issuerId),
       value: req.body.value
     }).save();
+
+    const recipe = await Recipe.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $inc: { rateCount: 1, rateValue: req.body.value }
+      },
+      { new: true }
+    );
 
     res.status(200).json({
       status: 'Ok'

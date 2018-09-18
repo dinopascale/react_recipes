@@ -144,7 +144,7 @@ export default ({
           display: flex;
           align-items: center;
           width: 100%;
-          height: calc(100% - 74px);
+          min-height: calc(100vh - 74px);
           background-color: #ff7f50;
           overflow-x: hidden;
         }

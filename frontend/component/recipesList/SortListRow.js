@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default ({ isOpen, toggleShow, close, sortBy, getRecipes }) => {
+export default ({ isOpen, toggleShow, items, close, sortBy }) => {
   return (
     <div className="dropdown-menu-container">
       <div className="choice" onClick={toggleShow}>
@@ -11,7 +11,7 @@ export default ({ isOpen, toggleShow, close, sortBy, getRecipes }) => {
       </div>
       {isOpen ? (
         <ul className="dropdown-menu">
-          <li
+          {/* <li
             className="dropdown-menu-item"
             onClick={event => {
               close(event);
@@ -27,20 +27,38 @@ export default ({ isOpen, toggleShow, close, sortBy, getRecipes }) => {
             className="dropdown-menu-item"
             onClick={event => {
               close(event);
-              getRecipes(false, 'recent');
+              getRecipes(false, 'Most Recent');
             }}
           >
             <span className="option-icon">
               <FontAwesomeIcon icon="clock" />
             </span>
             Most Recent
-          </li>
+          </li> */}
+          {items.map(item => (
+            <li
+              key={item.value}
+              className="dropdown-menu-item"
+              onClick={event => {
+                close(event);
+                item.handleClick();
+              }}
+            >
+              {item.icon ? (
+                <span className="option-icon">
+                  <FontAwesomeIcon icon={item.icon} />
+                </span>
+              ) : null}
+              <span className="option-value">{item.value}</span>
+            </li>
+          ))}
         </ul>
       ) : null}
       <style jsx>{`
         .dropdown-menu-container {
           position: relative;
           max-width: 150px;
+          flex: 0 0 50%;
         }
 
         .choice {
@@ -60,7 +78,7 @@ export default ({ isOpen, toggleShow, close, sortBy, getRecipes }) => {
         .dropdown-menu {
           position: absolute;
           background-color: #fff;
-          width: 150%;
+          width: 110%;
           display: inline-block;
           padding: 10px 0px;
           margin: 0;
@@ -81,7 +99,11 @@ export default ({ isOpen, toggleShow, close, sortBy, getRecipes }) => {
         }
 
         .option-icon {
-          margin: 0 10px 0 5px;
+          margin-left: 5px;
+        }
+
+        .option-value {
+          margin-left: 10px;
         }
       `}</style>
     </div>

@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { ObjectId } = require('mongoose').Types;
 
-const RecipeRate = require('./rate/rateRecipe');
-
 const DIFFICULTIES = ['easy', 'medium', 'hard'];
 const TAG = ['Omnivore', 'Vegetarian', 'Vegan'];
 
@@ -149,10 +147,11 @@ recipeSchema.statics.findByIdAndGetAuthor = async function(id) {
   }
 };
 
-recipeSchema.statics.findByAvgRate = async function() {
+recipeSchema.statics.findAndSortByAvgRate = async function(tag) {
   try {
+    tag = tag || 'Omnivore';
     const Recipe = this;
-    const recipes = await Recipe.find({ sharable: true })
+    const recipes = await Recipe.find({ sharable: true, tag: tag })
       .populate('_creator', 'avatar username')
       .select(
         'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
@@ -196,10 +195,11 @@ recipeSchema.statics.findByAvgRate = async function() {
   }
 };
 
-recipeSchema.statics.findAndSortByDate = async function() {
+recipeSchema.statics.findAndSortByDate = async function(tag) {
   try {
+    tag = tag || 'Omnivore';
     const Recipe = this;
-    const recipes = await Recipe.find({ sharable: true }).sort({
+    const recipes = await Recipe.find({ sharable: true, tag: tag }).sort({
       createdAt: -1
     });
     return recipes.map(recipe => {

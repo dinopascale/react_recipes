@@ -30,7 +30,9 @@ class Recipes extends React.Component {
         try {
           const { db } = req;
 
-          const resultsUnsorted = await db.models['Recipe'].findByAvgRate();
+          const resultsUnsorted = await db.models[
+            'Recipe'
+          ].findAndSortByAvgRate();
 
           return {
             recipes: resultsUnsorted
@@ -63,6 +65,7 @@ class Recipes extends React.Component {
   state = {
     recipesList: this.props.recipes || [],
     sortBy: 'Most Popular',
+    filterBy: 'Omnivore',
     page: 1,
     total: this.props.total
   };
@@ -89,14 +92,18 @@ class Recipes extends React.Component {
       rectBoundaries.bottom.toFixed(0) <= window.innerHeight
     ) {
       if (this.state.sortBy === 'Most Popular') {
-        this.getRecipes(true, 'popular');
+        this.getRecipes(true, 'Most Popular', this.state.filterBy);
       } else {
-        this.getRecipes(true, 'recent');
+        this.getRecipes(true, 'Most Recent', this.state.filterBy);
       }
     }
   };
 
-  getRecipes = async (fromScroll = false, sort = 'popular') => {
+  getRecipes = async (
+    fromScroll = false,
+    sort = 'Most Popular',
+    tag = false
+  ) => {
     const { callApi, errorModal } = this.props;
     const { page, total, recipesList } = this.state;
 
@@ -105,9 +112,13 @@ class Recipes extends React.Component {
     }
 
     const endpoint =
-      sort === 'popular'
-        ? `/api/recipes?page=${fromScroll ? page + 1 : 1}`
-        : `/api/recipes/recent?page=${fromScroll ? page + 1 : 1}`;
+      sort === 'Most Popular'
+        ? `/api/recipes?page=${fromScroll ? page + 1 : 1}${
+            tag ? '&tag=' + tag : ''
+          }`
+        : `/api/recipes/recent?page=${fromScroll ? page + 1 : 1}${
+            tag ? '&tag=' + tag : ''
+          }`;
 
     await callApi(
       endpoint,
@@ -117,7 +128,8 @@ class Recipes extends React.Component {
           recipesList: fromScroll
             ? [...prevState.recipesList, ...json.results]
             : json.results,
-          sortBy: sort === 'popular' ? 'Most Popular' : 'Most Recent',
+          sortBy: sort === 'Most Popular' ? 'Most Popular' : 'Most Recent',
+          filterBy: tag ? tag : prevState.tag,
           page: fromScroll ? prevState.page + 1 : 1,
           total: json.total
         }));
@@ -188,6 +200,7 @@ class Recipes extends React.Component {
             recipes={this.state.recipesList || this.props.recipes}
             getRecipes={this.getRecipes}
             sortBy={this.state.sortBy}
+            filterBy={this.state.filterBy}
           />
           <style jsx>{`
             .recipes-container {

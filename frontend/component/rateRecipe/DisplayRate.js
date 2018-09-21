@@ -80,6 +80,10 @@ export default props => {
           flex-flow: row nowrap;
           align-items: baseline;
           position: relative;
+          background: #fff;
+          width: 95%;
+          margin: 0 auto;
+          border-radius: 0 0 5px 5px;
         }
 
         .rating-container:before {

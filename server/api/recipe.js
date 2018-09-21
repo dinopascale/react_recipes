@@ -117,14 +117,18 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
     let isAuthor = false;
     let userRateValue = false;
 
-    const recipe = await Recipe.findByIdAndGetAuthor(id);
+    const queryDbResults = await Recipe.find({ _id: id }).populate(
+      '_creator',
+      'username'
+    );
+    const recipe = queryDbResults[0];
     //GET ALL RATES FOR RECIPE
-    const rates = await RecipeRate.find({
-      recipeId: id
-    }).select('value userId');
+    // const rates = await RecipeRate.find({
+    //   recipeId: id
+    // }).select('value userId');
 
-    const rateValue = rates.reduce((sum, rate) => sum + rate.value, 0);
-    const rateCount = rates.length;
+    // const rateValue = rates.reduce((sum, rate) => sum + rate.value, 0);
+    // const rateCount = rates.length;
 
     if (
       res.locals.issuerId &&
@@ -133,35 +137,41 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
       isAuthor = true;
     }
 
-    //CHECK IF RATED BEFORE
-    if (!isAuthor && rates.length > 0 && res.locals.issuerId) {
-      const userRate = rates.find(rate => {
-        return res.locals.issuerId.equals(rate.userId);
-      });
-      if (userRate) {
-        userRateValue = userRate.value;
-      }
-    }
+    //CHECK IF RATED BEFORE --- Probabily we need to separate this
+    // if (!isAuthor && rates.length > 0 && res.locals.issuerId) {
+    //   const userRate = rates.find(rate => {
+    //     return res.locals.issuerId.equals(rate.userId);
+    //   });
+    //   if (userRate) {
+    //     userRateValue = userRate.value;
+    //   }
+    // }
 
-    const difficultyObject = {
-      value: recipe.difficulty,
-      options: ['easy', 'medium', 'hard']
-    };
+    // const difficultyObject = {
+    //   value: recipe.difficulty,
+    //   options: ['easy', 'medium', 'hard']
+    // };
 
     res.status(200).json({
-      recipe: {
-        ...recipe,
-        difficulty: difficultyObject,
-        isAuthor,
-        rateValue,
-        rateCount,
-        ratedBefore: !!userRateValue,
-        userRateValue,
-        request: {
-          methods: ['UPDATE', 'DELETE'],
-          endpoint: req.headers.host + '/api/recipes/' + recipe._id
-        }
-      }
+      meta: {
+        isAuthor
+        // ratedBefore: !!userRateValue,
+        // userRateValue
+      },
+      recipe
+      //   recipe: {
+      //     ...recipe,
+      //     difficulty: difficultyObject,
+      //     isAuthor,
+      //     rateValue,
+      //     rateCount,
+      //     ratedBefore: !!userRateValue,
+      //     userRateValue,
+      //     request: {
+      //       methods: ['UPDATE', 'DELETE'],
+      //       endpoint: req.headers.host + '/api/recipes/' + recipe._id
+      //     }
+      //   }
     });
   } catch (e) {
     e.status = 400;

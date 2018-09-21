@@ -53,6 +53,11 @@ app
             app.render(req, res, actualPage, queryParams);
           });
 
+          server.get('/edit_recipe/:id', (req, res) => {
+            const queryParams = { id: req.params.id };
+            app.render(req, res, '/edit', queryParams);
+          });
+
           server.get('/new_recipe', checkAuth, (req, res) => {
             if (!res.locals.issuerId) {
               res.redirect(301, '/auth/login');
@@ -81,8 +86,6 @@ app
             }
             app.render(req, res, '/');
           });
-
-          
 
           //DEFAULT ROUTE
           server.get('*', (req, res) => {

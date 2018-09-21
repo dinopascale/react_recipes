@@ -8,6 +8,8 @@ import FilterRow from './threadList/FilterRow';
 import NewComment from './threadList/NewComment';
 import ActionButton from '../shared/ActionButton';
 import CommentList from './threadList/CommentList';
+import SortListRow from './recipesList/SortListRow';
+import DropdownList from '../hoc/DropdownList';
 
 const sortOptions = [
   {
@@ -28,7 +30,6 @@ class ThreadList extends Component {
   showResponseList = i => () => {
     const showNewConversation = [...this.state.conversationsShowed];
     showNewConversation.push(i);
-    console.log(showNewConversation);
     this.setState({
       conversationsShowed: showNewConversation
     });
@@ -45,7 +46,36 @@ class ThreadList extends Component {
           isAuth={this.props.isAuth}
         />
         {this.props.list.length > 0 ? (
-          <FilterRow options={sortOptions} selected={this.props.sorted} />
+          //   <FilterRow options={sortOptions} selected={this.props.sorted} />
+
+          <DropdownList
+            render={(isOpen, toggleShow, close) => (
+              <div className="sort-row">
+                <SortListRow
+                  isOpen={isOpen}
+                  toggleShow={toggleShow}
+                  close={close}
+                  sortBy={
+                    this.props.sortBy === 'totalRate'
+                      ? 'Most Popular'
+                      : 'Most Recent'
+                  }
+                  items={[
+                    {
+                      value: 'Most Popular',
+                      handleClick: event =>
+                        this.props.sorted(event, 'totalRate')
+                    },
+                    {
+                      value: 'Most Recent',
+                      handleClick: event =>
+                        this.props.sorted(event, 'createdAt')
+                    }
+                  ]}
+                />
+              </div>
+            )}
+          />
         ) : null}
         {this.props.list
           .sort((a, b) => b[this.props.sortBy] - a[this.props.sortBy])
@@ -78,11 +108,11 @@ class ThreadList extends Component {
                 handleClick={this.props.load}
                 customStyle={{
                   width: '100%',
-                  border: '1px solid rgb(119, 181, 255)',
+                  border: '1px solid rgb(236, 242, 132)',
                   padding: '30px',
-                  color: '#fff',
+                  color: '#000',
                   fontWeight: 'bold',
-                  backgroundColor: 'rgb(119, 181, 255)'
+                  backgroundColor: 'rgb(236, 242, 132)'
                 }}
               >
                 Load Comments
@@ -92,15 +122,22 @@ class ThreadList extends Component {
         </div>
         <style jsx>{`
           .comments-section {
-            background: #ffe4c4;
+            background: #ff7f50;
             padding: 10px 0;
-            margin-top: 20px;
+            margin-top: 0px;
+            width: 95%;
+            margin: 0 auto;
           }
 
           .comment-list-title {
             padding: 10px 20px;
+            margin-top: 5px;
             margin-bottom: 10px;
-            color: rgb(119, 181, 255);
+            color: #fff;
+          }
+
+          .sort-row {
+            padding: 20px 20px 10px 20px;
           }
 
           .comment-list {

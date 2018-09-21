@@ -17,8 +17,9 @@ export default props => (
         right: 0px;
         margin-top: 0px;
         width: 180px;
-        background-color: #eee;
-        border-radius: 2px;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 4px 9px rgba(0, 0, 0, 0.439216);
         z-index: 100;
       }
 
@@ -30,7 +31,7 @@ export default props => (
 
       .dropdown-list-element {
         padding: 10px 15px;
-        background-color: #eee;
+        background-color: #fff;
         cursor: pointer;
         font-size: 13px;
       }

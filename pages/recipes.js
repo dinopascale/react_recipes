@@ -27,23 +27,18 @@ class Recipes extends React.Component {
   static async getInitialProps({ req }) {
     try {
       if (req) {
-        try {
-          const { db } = req;
+        const { db } = req;
 
-          const resultsUnsorted = await db.models[
-            'Recipe'
-          ].findAndSortByAvgRate();
+        const resultsUnsorted = await db.models[
+          'Recipe'
+        ].findAndSortByAvgRate();
 
-          return {
-            recipes: resultsUnsorted
-              .sort((a, b) => b.avgRate - a.avgRate)
-              .slice(0, 6),
-            total: resultsUnsorted.length
-          };
-        } catch (e) {
-          console.log(e);
-          return e;
-        }
+        return {
+          recipes: resultsUnsorted
+            .sort((a, b) => b.avgRate - a.avgRate)
+            .slice(0, 6),
+          total: resultsUnsorted.length
+        };
       }
 
       const response = await fetch(`/api/recipes?page=1`);

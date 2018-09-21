@@ -20,7 +20,7 @@ class Editable extends Component {
     itemsToDelete: []
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.setState({
       field: this.transformData(this.props.data, this.props.name)
     });
@@ -54,6 +54,7 @@ class Editable extends Component {
 
   stopEditing = () => {
     const prevField = JSON.parse(JSON.stringify(this.state.prevField));
+    console.log('qui', prevField);
     this.setState({
       isEditing: false,
       field: prevField,
@@ -63,6 +64,7 @@ class Editable extends Component {
 
   changeHandler = i => event => {
     const newField = [...this.state.field];
+    console.log(event.target.value);
     newField[i][event.target.name] = event.target.value;
     this.setState({
       field: newField
@@ -115,6 +117,7 @@ class Editable extends Component {
     newData.push(empty);
     this.setState({
       field: newData,
+      prevField: this.state.field.slice(),
       isEditing: true,
       itemOnEdit: newData.length - 1
     });

@@ -32,11 +32,16 @@ export default props => {
       </div>
       <style jsx>{`
         .change-rate {
-          margin: 40px 0 80px 0;
-          padding: 0 20px;
+          margin: 0px 0 20px 0;
+          padding: 40px 20px;
+          width: 95%;
+          margin-left: auto;
+          margin-right: auto;
+          background: #fff;
         }
 
         .title {
+          margin-top: 0;
           text-align: center;
         }
 

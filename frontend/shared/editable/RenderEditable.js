@@ -15,45 +15,50 @@ export default props => {
   }
   if (props.isEditing) {
     classes.push('editing');
-    content = Object.keys(props.infos).map(key => (
-      <div
-        className={props.isList ? 'render-list' : 'render-single'}
-        onClick={props.onStart}
-        key={key}
-        style={{ ...props.style }}
-      >
-        {props.withLabel ? (
-          <label className="label-editing">{key}</label>
-        ) : null}
-        <InputType
-          type={props.type}
-          change={props.onChange}
-          name={key}
-          value={props.infos[key]}
-          options={props.options}
-          label={props.withLabel ? null : key}
-        />
-        <style jsx>{`
-          .render-single {
-            flex: 1 0 50%;
-            line-height: 1.5;
-          }
-          .render-list {
-            display: inline-block;
-            flex: 1 0 50%;
-            padding: 15px 0;
-          }
+    content = Object.keys(props.infos).map(key => {
+      console.log(key, props.infos[key]);
+      if (props.infos[key] !== null) {
+        return (
+          <div
+            className={props.isList ? 'render-list' : 'render-single'}
+            onClick={props.onStart}
+            key={key}
+            style={{ ...props.style }}
+          >
+            {props.withLabel ? (
+              <label className="label-editing">{key}</label>
+            ) : null}
+            <InputType
+              type={props.type}
+              change={props.onChange}
+              name={key}
+              value={props.infos[key]}
+              options={props.options}
+              label={props.withLabel ? null : key}
+            />
+            <style jsx>{`
+              .render-single {
+                flex: 1 0 50%;
+                line-height: 1.5;
+              }
+              .render-list {
+                display: inline-block;
+                flex: 1 0 50%;
+                padding: 15px 0;
+              }
 
-          .label-editing {
-            font-weight: bold;
-            font-size: 12px;
-            display: block;
-            width: 95%;
-            margin: 0 auto;
-          }
-        `}</style>
-      </div>
-    ));
+              .label-editing {
+                font-weight: bold;
+                font-size: 12px;
+                display: block;
+                width: 95%;
+                margin: 0 auto;
+              }
+            `}</style>
+          </div>
+        );
+      }
+    });
     controlContainer = (
       <div className="control-container">
         <ControlRow

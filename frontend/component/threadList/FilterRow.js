@@ -1,7 +1,6 @@
 export default props => {
   return (
     <div className="filter-row">
-      <span>Sort</span>
       <div className="select-menu">
         <select className="select-menu" onChange={props.selected}>
           {props.options.map(option => (
@@ -27,7 +26,7 @@ export default props => {
           font-family: 'Open Sans', sans-serif;
           font-size: 14px;
           font-weight: bold;
-          color: rgb(119, 181, 255);
+          color: #fff;
           text-transform: uppercase;
           background: transparent;
           outline: none;

@@ -26,7 +26,7 @@ export default withRouter(props => {
         </div>
         <div className="action-row">
           <ActionButton
-            customStyle={{ color: 'rgb(119, 181, 255)', fontWeight: 'bold' }}
+            customStyle={{ color: 'rgb(16, 174, 178)', fontWeight: 'bold' }}
             handleClick={props.comment}
           >
             Publish

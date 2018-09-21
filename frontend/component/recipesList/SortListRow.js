@@ -11,30 +11,6 @@ export default ({ isOpen, toggleShow, items, close, sortBy }) => {
       </div>
       {isOpen ? (
         <ul className="dropdown-menu">
-          {/* <li
-            className="dropdown-menu-item"
-            onClick={event => {
-              close(event);
-              getRecipes();
-            }}
-          >
-            <span className="option-icon">
-              <FontAwesomeIcon icon="gem" />
-            </span>
-            Most Popular
-          </li>
-          <li
-            className="dropdown-menu-item"
-            onClick={event => {
-              close(event);
-              getRecipes(false, 'Most Recent');
-            }}
-          >
-            <span className="option-icon">
-              <FontAwesomeIcon icon="clock" />
-            </span>
-            Most Recent
-          </li> */}
           {items.map(item => (
             <li
               key={item.value}

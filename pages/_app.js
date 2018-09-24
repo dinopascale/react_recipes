@@ -27,7 +27,8 @@ import {
   faGlobe,
   faGem,
   faClock,
-  faHeart
+  faHeart,
+  faUndo
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
@@ -54,7 +55,8 @@ library.add(
   faGlobe,
   faGem,
   faClock,
-  faHeart
+  faHeart,
+  faUndo
 );
 
 class MyApp extends App {

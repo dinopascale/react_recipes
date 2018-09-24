@@ -2,13 +2,14 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 
-import { auth, errorMessage, modal, loading } from './reducers';
+import { auth, errorMessage, modal, loading, toEdit } from './reducers';
 
 const appReducer = combineReducers({
   auth,
   errorMessage,
   modal,
-  loading
+  loading,
+  toEdit
 });
 
 const rootReducer = (state, action) => {

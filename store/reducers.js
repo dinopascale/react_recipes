@@ -9,6 +9,10 @@ const modalInitialState = {
   isSuccess: null
 };
 
+const toEditInitialState = {
+  item: null
+};
+
 export const errorMessage = (state = null, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_FAIL:
@@ -77,6 +81,26 @@ export const auth = (state = authInitialState, action) => {
         ...state,
         user: null
       };
+    default:
+      return state;
+  }
+};
+
+export const toEdit = (state = toEditInitialState, action) => {
+  switch (action.type) {
+    case actionTypes.ADD_ITEM_TOEDIT:
+      return {
+        ...state,
+        item: {
+          ...action.payload
+        }
+      };
+    case actionTypes.REMOVE_ITEM_TOEDIT: {
+      return {
+        ...state,
+        item: {}
+      };
+    }
     default:
       return state;
   }

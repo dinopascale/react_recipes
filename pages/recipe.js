@@ -11,6 +11,8 @@ import ThreadList from '../frontend/component/ThreadList';
 import SingleRecipe from '../frontend/component/SingleRecipe';
 import FloatingButton from '../frontend/shared/FloatingButton';
 
+import { addItemToEdit } from '../store/actions';
+
 // class Recipe extends React.Component {
 //   static async getInitialProps(props) {
 //     try {
@@ -285,7 +287,8 @@ class Recipe extends React.Component {
 
   goToEditMode = event => {
     event.preventDefault();
-    const { router, recipe } = this.props;
+    const { router, recipe, addRecipeToEdit } = this.props;
+    addRecipeToEdit(recipe);
     router.push(
       `/edit?id=${recipe._id}&isRecipe=true`,
       `/edit_recipe/${recipe._id}`
@@ -326,13 +329,6 @@ class Recipe extends React.Component {
           type="threads"
           isAuth={this.props.isAuthenticated.user}
         />
-        {/* <Link
-            prefetch
-            as={`/r/edit/${recipe._id}`}
-            href={`/recipe/edit?id=${recipe._id}`}
-          >
-            <a>Ciao</a>
-          </Link> */}
       </Fragment>
     );
   }
@@ -344,4 +340,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(Recipe));
+const mapDispatchToProps = dispatch => {
+  return {
+    addRecipeToEdit: recipe => dispatch(addItemToEdit(recipe))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Recipe));

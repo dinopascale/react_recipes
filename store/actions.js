@@ -9,7 +9,9 @@ export const actionTypes = {
   SHOW_MODAL: 'SHOW_MODAL',
   HIDE_MODAL: 'HIDE_MODAL',
   START_LOADING: 'START_LOADING',
-  STOP_LODADING: 'STOP_LOADING'
+  STOP_LODADING: 'STOP_LOADING',
+  ADD_ITEM_TOEDIT: 'ADD_ITEM_TOEDIT',
+  REMOVE_ITEM_TOEDIT: 'REMOVE_ITEM_TOEDIT'
 };
 
 //MIDDLEWARES
@@ -84,5 +86,18 @@ export const createErrorMessage = error => {
   return {
     type: actionTypes.NEW_ERROR_MESSAGE,
     payload: error
+  };
+};
+
+export const addItemToEdit = item => {
+  return {
+    type: actionTypes.ADD_ITEM_TOEDIT,
+    payload: item
+  };
+};
+
+export const removeItemToEdit = () => {
+  return {
+    type: actionTypes.REMOVE_ITEM_TOEDIT
   };
 };

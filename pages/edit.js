@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 
 import { removeItemToEdit } from '../store/actions';
 import EditToolbar from '../frontend/component/EditToolbar';
+import Form from '../frontend/shared/Form';
+import apiEndpoints from '../frontend/utils/apiEndpoints';
+import EditRecipeForm from '../frontend/component/EditRecipeForm';
+import apiCall from '../frontend/utils/apiCall';
 
 class Edit extends Component {
   static async getInitialProps({ res, query }) {
@@ -16,7 +20,22 @@ class Edit extends Component {
     }
 
     const { id, isRecipe } = query;
-    return { id, isRecipe };
+
+    let schema = null;
+    const endpoint = '/api/s/recipe';
+    const options = {
+      method: 'GET',
+      credentials: 'include'
+    };
+
+    await apiCall(
+      endpoint,
+      options,
+      json => (schema = json.schema),
+      err => (schema = err)
+    );
+
+    return { id, isRecipe, schema };
   }
 
   closeEdit = () => {
@@ -26,18 +45,52 @@ class Edit extends Component {
   };
 
   render() {
-    const { isRecipe, item } = this.props;
-    console.log(item);
+    const { isRecipe, schema, item } = this.props;
+    const { endpoint, options } = apiEndpoints.editRecipe;
+    console.log(item, schema);
     return (
       <Fragment>
         <Head>
           <title>Edit | React Recipes</title>
         </Head>
         <div>
-          <EditToolbar
-            itemId={item._id}
-            isRecipe={isRecipe}
-            exit={this.closeEdit}
+          <Form
+            endpoint={`${endpoint}/${item._id}`}
+            options={options}
+            data={schema}
+            filledValues={item}
+            submitSuccess={this.closeEdit}
+            render={(
+              state,
+              onChange,
+              onBlur,
+              onSubmit,
+              validateSingle,
+              validateChunk,
+              addNewField,
+              deleteField,
+              formToAPI
+            ) => (
+              <div className="container">
+                <EditToolbar save={onSubmit} exit={this.closeEdit} />
+                <EditRecipeForm
+                  form={state}
+                  changed={onChange}
+                  blurred={onBlur}
+                  validate={validateSingle}
+                  addNew={addNewField}
+                  deleteField={deleteField}
+                />
+                <style jsx>{`
+                  .container {
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: center;
+                    align-items: flex-start;
+                  }
+                `}</style>
+              </div>
+            )}
           />
         </div>
       </Fragment>

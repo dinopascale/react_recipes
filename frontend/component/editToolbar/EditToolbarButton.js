@@ -6,11 +6,12 @@ export default ({ action, icon }) => (
     <style jsx>{`
       .toolbar-button {
         background: none;
-        color: #fff;
+        color: #000;
         border: none;
         font-size: 18px;
         width: 36px;
         height: 36px;
+        outline: none;
       }
     `}</style>
   </button>

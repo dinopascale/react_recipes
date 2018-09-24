@@ -1,7 +1,6 @@
-import Link from 'next/link';
 import EditToolbarButton from './editToolbar/EditToolbarButton';
 
-const EditToolbar = ({ itemId, save, isRecipe, exit }) => (
+const EditToolbar = ({ save, exit }) => (
   <div className="edit-toolbar">
     <div className="toolbar-element exit">
       <EditToolbarButton icon="undo" action={exit} />
@@ -10,19 +9,24 @@ const EditToolbar = ({ itemId, save, isRecipe, exit }) => (
       <p className="title">Edit</p>
     </div>
     <div className="toolbar-element save">
-      <EditToolbarButton icon="save" />
+      <EditToolbarButton icon="save" action={save} />
     </div>
     <style jsx>{`
       .edit-toolbar {
+        flex: 1 0 100%;
+        width: 100%;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: center;
         padding: 0.5em 1em;
         min-height: 60px;
-        background-color: #10aeb2;
-        color: #fff;
+        background-color: rgb(236, 242, 132);
+        color: #000;
         font-size: 20px;
+        position: fixed;
+        top: 0;
+        z-index: 120;
       }
 
       .toolbar-element {
@@ -42,7 +46,6 @@ const EditToolbar = ({ itemId, save, isRecipe, exit }) => (
 
       .toolbar-button {
         background: none;
-        color: #fff;
         border: none;
         font-size: 18px;
         width: 36px;

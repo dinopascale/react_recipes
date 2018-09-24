@@ -12,13 +12,19 @@ import { connect } from 'react-redux';
 class Form extends Component {
   state = {};
 
-  transformPropToForm = prop => {
+  transformPropToForm = (prop, filledValue = null) => {
     return prop.reduce((frm, field) => {
       frm[field.name] = {
         name: field.name,
         value: field.subSchema
-          ? [this.transformPropToForm(field.subSchema)]
-          : field.default,
+          ? filledValue
+            ? filledValue[field.name].map(subfield =>
+                this.transformPropToForm(field.subSchema, subfield)
+              )
+            : [this.transformPropToForm(field.subSchema)]
+          : filledValue
+            ? filledValue[field.name]
+            : field.default,
         enum: field.enum,
         instance: field.instance,
         isPristine: true,
@@ -30,9 +36,6 @@ class Form extends Component {
           isUrl: field.name === 'img',
           isEmail: field.name === 'email'
         }
-        //   field.name === 'img'
-        //     ? { ...field.validationRules, isUrl: true }
-        //     : field.validationRules
       };
       return frm;
     }, {});
@@ -229,8 +232,9 @@ class Form extends Component {
   };
 
   componentWillMount() {
-    const form = this.transformPropToForm(this.props.data);
-    console.log(form);
+    const { data, filledValues } = this.props;
+    const form = this.transformPropToForm(data, filledValues);
+    console.log('form', form);
     this.setState({
       ...form
     });

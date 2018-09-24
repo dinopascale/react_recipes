@@ -1,9 +1,11 @@
-export default ({ field, change }) => (
-  <div>
-    <span className="field-name">{field.name} </span>
-    <span className="label-req">
-      {field.rules.required ? '- Required' : '- Optional'}
-    </span>
+export default ({ field, change, width }) => (
+  <div className="form-group">
+    <div className="form-label">
+      <span className="field-name">{field.name} </span>
+      <span className="label-req">
+        {field.rules.required ? '- Required' : '- Optional'}
+      </span>
+    </div>
     <div className="radio-group">
       <input
         id="truthy"
@@ -31,7 +33,23 @@ export default ({ field, change }) => (
       </label>
     </div>
     <style jsx>{`
+      .form-group {
+        width: ${width || '100%'};
+        display: flex;
+        flex-flow: column;
+        margin-bottom: 20px;
+      }
+
       .field-name {
+        text-transform: capitalize;
+        color: #666;
+        font-weight: bold;
+        font-size: 14px;
+        flex: 1 0 100%;
+        margin-bottom: 4px;
+      }
+
+      .form-label {
         text-transform: capitalize;
         color: #666;
         font-weight: bold;

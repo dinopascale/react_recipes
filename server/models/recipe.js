@@ -153,9 +153,7 @@ recipeSchema.statics.findAndSortByAvgRate = async function(tag) {
     const Recipe = this;
     const recipes = await Recipe.find({ sharable: true, tag: tag })
       .populate('_creator', 'avatar username')
-      .select(
-        'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
-      );
+      .select('name img rateCount rateValue');
 
     return recipes.map(recipe => {
       return {
@@ -199,9 +197,11 @@ recipeSchema.statics.findAndSortByDate = async function(tag) {
   try {
     tag = tag || 'Omnivore';
     const Recipe = this;
-    const recipes = await Recipe.find({ sharable: true, tag: tag }).sort({
-      createdAt: -1
-    });
+    const recipes = await Recipe.find({ sharable: true, tag: tag })
+      .sort({
+        createdAt: -1
+      })
+      .select('name img rateCount rateValue');
     return recipes.map(recipe => {
       return {
         ...recipe._doc,

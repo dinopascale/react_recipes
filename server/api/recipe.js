@@ -109,6 +109,30 @@ router.get('/s/recipe', checkAuth, async (req, res, next) => {
   }
 });
 
+//RATED BEFORE SINGLE RECIPE
+
+router.get('/recipe/rated/:recipeId', checkAuthor, async (req, res, next) => {
+  try {
+    const { recipeId } = req.params;
+    const { issuerId } = res.locals;
+
+    const userRate = await RecipeRate.findOne({
+      recipeId: recipeId,
+      userId: issuerId
+    }).select('value');
+
+    console.log(userRate);
+
+    res.status(201).json({
+      rated: !!userRate,
+      value: userRate ? userRate._doc.value : 0
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
 //GET SINGLE RECIPE BY ID - ADD "EDITABLE" FIELD IF AUTHOR
 
 router.get('/recipe/:id', checkAuthor, async (req, res, next) => {

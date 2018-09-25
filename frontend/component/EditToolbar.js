@@ -27,6 +27,7 @@ const EditToolbar = ({ save, exit }) => (
         position: fixed;
         top: 0;
         z-index: 120;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
       }
 
       .toolbar-element {

@@ -2,15 +2,40 @@ import React, { Component } from 'react';
 
 import DisplayRate from './rateRecipe/DisplayRate';
 import ChangeRate from './rateRecipe/ChangeRate';
+import Spinner from './Spinner';
 
 class RateRecipe extends Component {
   state = {
-    ratedBefore: this.props.ratedBefore,
-    userRate: this.props.userRate,
     rateCount: this.props.rateCount,
     rateValue: this.props.rateValue,
-    rateSystem: ['empty', 'empty', 'empty', 'empty', 'empty'],
-    isLoading: false
+    userRate: null,
+    rated: false,
+    isLoading: false,
+    initialized: false,
+    rateSystem: ['empty', 'empty', 'empty', 'empty', 'empty']
+  };
+
+  getRatedBefore = async () => {
+    this.setState({
+      isLoading: true
+    });
+
+    const endpoint = `/api/recipe/rated/${this.props.recipeId}`;
+    const options = {
+      method: 'GET',
+      credentials: 'include'
+    };
+
+    const response = await fetch(endpoint, options);
+
+    const json = await response.json();
+
+    this.setState({
+      initialized: true,
+      rated: json.rated,
+      userRate: json.value,
+      isLoading: false
+    });
   };
 
   setRate = i => event => {
@@ -36,7 +61,7 @@ class RateRecipe extends Component {
       }
     }, 0);
 
-    const rawResp = await fetch(`/api/rate/r/${this.props.id}`, {
+    const rawResp = await fetch(`/api/rate/r/${this.props.recipeId}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -50,33 +75,70 @@ class RateRecipe extends Component {
 
     this.setState(prevState => ({
       isLoading: false,
-      ratedBefore: true,
+      rated: true,
       rateCount: prevState.rateCount + 1,
       rateValue: prevState.rateValue + rate,
       userRate: rate
     }));
   };
 
+  componentDidUpdate(prevProps) {
+    const { initialized } = this.state;
+    if (!initialized && prevProps.isVisible !== this.props.isVisible) {
+      this.getRatedBefore();
+    }
+  }
+
   render() {
-    const canRate = this.props.isAuth && !this.props.isAuthor;
+    const { isAuth, isAuthor, recipeId } = this.props;
+    const {
+      rateValue,
+      rateCount,
+      userRate,
+      rateSystem,
+      rated,
+      isLoading
+    } = this.state;
+    const canRate = isAuth && !isAuthor;
+
     let content = null;
-    if (this.state.ratedBefore || !canRate) {
+
+    if (isLoading) {
+      return (
+        <div className="placeholder">
+          <Spinner type="contain" />
+          <style jsx>{`
+            .placeholder {
+              width: 100%;
+              min-height: 210px;
+              position: relative;
+              width: 95%;
+              margin: 0 auto;
+              padding: 2px 8px;
+              background: #fff;
+            }
+          `}</style>
+        </div>
+      );
+    }
+
+    if (rated || !canRate) {
       content = (
         <DisplayRate
-          rate={this.state.rateValue}
-          count={this.state.rateCount}
-          userRate={this.state.userRate}
-          isAuthor={this.props.isAuthor}
-          isAuth={this.props.isAuth}
+          rate={rateValue}
+          count={rateCount}
+          userRate={userRate}
+          isAuthor={isAuthor}
+          isAuth={isAuth}
         />
       );
     } else {
       content = (
         <ChangeRate
-          sys={this.state.rateSystem}
+          sys={rateSystem}
           eventHandler={this.setRate}
           sendRate={this.sendRate}
-          recipeId={this.props.id}
+          recipeId={recipeId}
         />
       );
     }

@@ -27,7 +27,7 @@ export default ({ recipe }) => (
       <div className="recipe-info-container">
         <p className="recipe-info title">{recipe.name}</p>
         <p className="recipe-info rate">
-          <span>{recipe.avgRate}</span>
+          <span>{recipe.avgRate.toFixed(1)}</span>
           <span className="rate-icon">
             <FontAwesomeIcon icon="star" />
           </span>

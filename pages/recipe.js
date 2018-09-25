@@ -12,6 +12,7 @@ import SingleRecipe from '../frontend/component/SingleRecipe';
 import FloatingButton from '../frontend/shared/FloatingButton';
 
 import { addItemToEdit } from '../store/actions';
+import IntoView from '../frontend/hoc/IntoView';
 
 // class Recipe extends React.Component {
 //   static async getInitialProps(props) {
@@ -279,6 +280,7 @@ class Recipe extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.recipe);
     const { isAuthor, router } = this.props;
     if (isAuthor) {
       router.prefetch('/edit');
@@ -287,12 +289,13 @@ class Recipe extends React.Component {
 
   goToEditMode = event => {
     event.preventDefault();
+    console.log('qui');
     const { router, recipe, addRecipeToEdit } = this.props;
-    addRecipeToEdit(recipe);
     router.push(
       `/edit?id=${recipe._id}&isRecipe=true`,
       `/edit_recipe/${recipe._id}`
     );
+    addRecipeToEdit(recipe);
   };
 
   render() {
@@ -314,14 +317,19 @@ class Recipe extends React.Component {
           <FloatingButton icon="edit" action={this.goToEditMode} />
         ) : null}
         <SingleRecipe recipe={recipe} />
-        <RateRecipe
-          ratedBefore={this.props.recipe.ratedBefore}
-          userRate={this.props.recipe.userRateValue}
-          rateValue={this.props.recipe.rateValue}
-          rateCount={this.props.recipe.rateCount}
-          isAuth={this.props.isAuthenticated.user}
-          isAuthor={this.props.recipe.isAuthor}
-          id={this.props.recipe._id}
+        <IntoView
+          render={isVisible => (
+            <RateRecipe
+              ratedBefore={this.props.recipe.ratedBefore}
+              userRate={this.props.recipe.userRateValue}
+              rateValue={this.props.recipe.rateValue}
+              rateCount={this.props.recipe.rateCount}
+              isAuth={this.props.isAuthenticated.user}
+              isAuthor={isAuthor}
+              recipeId={recipe._id}
+              isVisible={isVisible}
+            />
+          )}
         />
         <ThreadList
           apiId={this.props.recipe._id}

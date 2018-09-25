@@ -65,10 +65,11 @@ export default ({ form, changed, blurred, validate, addNew, deleteField }) => (
     <style jsx>{`
       .edit-recipe-form {
         flex: 0 0 95%;
-        margin: 90px 0;
+        margin: 90px 0 40px 0;
         z-index: 110;
         background: #fff;
-        padding: 0px 16px;
+        padding: 30px 16px 10px 16px;
+        border-radius: 4px;
       }
     `}</style>
   </form>

@@ -4,6 +4,10 @@ const checkAuth = require('../middleware/check-auth');
 const checkAuthor = require('../middleware/check-author');
 
 const User = require('../models/user');
+const Comment = require('../models/comment');
+const Thread = require('../models/thread');
+const RecipeRate = require('../models/rate/rateRecipe');
+const Recipe = require('../models/recipe');
 
 const router = express.Router();
 
@@ -74,14 +78,20 @@ router.post('/user/signup', async (req, res, next) => {
   }
 });
 
+//USER LOGOUT
+
+router.post('/user/me/logout', checkAuth, (req, res, next) => {
+  res.cookie('token', '', { expires: new Date(0) }).json({
+    status: 'Ok'
+  });
+});
+
 //GET MY ACCOUNT
 
 router.get('/user/me', checkAuth, async (req, res, next) => {
   try {
     const userId = new ObjectId(res.locals.issuerId);
-    const me = await User.findOne({ _id: userId }).select(
-      '-_id username avatar'
-    );
+    const me = await User.findOne({ _id: userId }).select('username avatar');
 
     if (!me) {
       return res.status(404).json({
@@ -96,23 +106,36 @@ router.get('/user/me', checkAuth, async (req, res, next) => {
   }
 });
 
-//USER LOGOUT
-
-router.post('/user/me/logout', checkAuth, (req, res, next) => {
-  res.cookie('token', '', { expires: new Date(0) }).json({
-    status: 'Ok'
-  });
-});
-
 //GET SINGLE USER
 
 router.get('/user/:id', async (req, res, next) => {
   let authorId = new ObjectId(req.params.id);
-  const user = await User.findById(authorId);
+  const user = await User.findById(authorId).select('username avatar bio');
 
   res.status(200).json({
     user
   });
+});
+
+router.get('/user/statistics/:id', async (req, res, next) => {
+  try {
+    let userId = new ObjectId(req.params.id);
+    const userThreads = await Thread.find({ user: userId }).countDocuments();
+    const userRates = await RecipeRate.find({ userId }).countDocuments();
+
+    const userRecipes = await Recipe.find({ _creator: userId }).select(
+      'img name rateCount rateValue createdAt updatedAt'
+    );
+
+    res.status(201).json({
+      recipes: userRecipes,
+      userComments: userThreads,
+      userRates
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
 });
 
 //UPDATE SINGLE USER - GUARDED

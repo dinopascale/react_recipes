@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default ({ recipe }) => {
   return (
     <div className="single-recipe-container">
@@ -5,7 +7,17 @@ export default ({ recipe }) => {
       <div className="info-container">
         <div className="recipe-title-container">
           <h1 className="recipe-title">{recipe.name}</h1>
-          <p className="recipe-author">by {recipe._creator.username}</p>
+
+          <p className="recipe-author-container">
+            by
+            <Link
+              prefetch
+              as={`/u/${recipe._creator._id}`}
+              href={`/user?userId=${recipe._creator._id}`}
+            >
+              <span className="recipe-author"> {recipe._creator.username}</span>
+            </Link>
+          </p>
         </div>
 
         <div className="grid-simple-info">
@@ -81,10 +93,16 @@ export default ({ recipe }) => {
             margin: 0;
         }
 
-        .recipe-author {
+        .recipe-author-container {
             text-align: center;
             margin: 10px 0 0 0;
             color: #777;
+        }
+
+        .recipe-author {
+            color: rgb(16, 174, 178);
+            font-weight: bold;
+            cursor:pointer;
         }
 
 

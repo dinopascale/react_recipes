@@ -1,11 +1,9 @@
 import React, { Fragment } from 'react';
 import { withRouter } from 'next/router';
 import Head from 'next/head';
-import Link from 'next/link';
 import ErrorPage from './_error';
 import { connect } from 'react-redux';
 
-import Editable from '../frontend/shared/Editable';
 import RateRecipe from '../frontend/component/RateRecipe';
 import ThreadList from '../frontend/component/ThreadList';
 import SingleRecipe from '../frontend/component/SingleRecipe';
@@ -272,7 +270,6 @@ class Recipe extends React.Component {
         isAuthor
       };
     } catch (error) {
-      console.log(error);
       return {
         error
       };
@@ -280,7 +277,6 @@ class Recipe extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.recipe);
     const { isAuthor, router } = this.props;
     if (isAuthor) {
       router.prefetch('/edit');

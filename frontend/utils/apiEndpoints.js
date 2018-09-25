@@ -26,7 +26,13 @@ const apiEndpoints = {
   logout: { endpoint: '/api/user/me/logout', options: fetchOptions.POST },
   login: { endpoint: '/api/user/login', options: fetchOptions.POST },
   register: { endpoint: '/api/user/signup', options: fetchOptions.POST },
-  editRecipe: { endpoint: '/api/recipe', options: fetchOptions.PATCH }
+  editRecipe: { endpoint: '/api/recipe', options: fetchOptions.PATCH },
+  user: { endpoint: '/api/user', options: fetchOptions.GET },
+  me: { endpoint: '/api/user/me', options: fetchOptions.GET },
+  userStatistics: {
+    endpoint: '/api/user/statistics',
+    options: fetchOptions.GET
+  }
 };
 
 export default apiEndpoints;

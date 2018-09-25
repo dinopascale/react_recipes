@@ -4,7 +4,7 @@ export default async (endpoint, options, success = null, fail = null) => {
 
     const json = await rawResponse.json();
 
-    if (rawResponse.status !== 200) {
+    if (rawResponse.status !== 200 && rawResponse.status !== 201) {
       const e = new Error(json.error.message || rawResponse.statusText);
       e.status = rawResponse.status;
       throw e;

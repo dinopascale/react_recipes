@@ -1,14 +1,17 @@
+import Link from 'next/link';
+
 export default ({ user }) => {
   return (
     <div className="greet-user-container">
       <div className="avatar-container">
-        <img src={user.avatar} className="avatar" />
+        <Link prefetch href="/u/me">
+          <img src={user.avatar} className="avatar" />
+        </Link>
       </div>
       <div className="user-info-container">
         <h1 className="title">Hi, {user.username}!</h1>
         <p className="subtitle">What would you like to do today?</p>
       </div>
-      <div className="action-container">Ciao</div>
       <style jsx>{`
         .greet-user-container {
           width: 100%;
@@ -33,6 +36,7 @@ export default ({ user }) => {
         .avatar {
           width: 100%;
           border-radius: 4px;
+          cursor: pointer;
         }
 
         .title,

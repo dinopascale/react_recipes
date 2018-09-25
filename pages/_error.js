@@ -27,7 +27,7 @@ export default class Error extends React.Component {
             .error-page {
               width: 100vw;
               max-width: 800px;
-              height: 100%;
+              height: 100vh;
               padding: 40px 20px;
               display: flex;
               flex-flow: column;

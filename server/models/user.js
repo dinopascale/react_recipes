@@ -28,7 +28,8 @@ const userSchema = mongoose.Schema({
   bio: {
     type: String,
     trim: true,
-    maxlength: 140
+    maxlength: 140,
+    default: 'No bio avaible'
   },
   avatar: {
     type: String,

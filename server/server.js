@@ -69,7 +69,13 @@ app
             if (!res.locals.issuerId) {
               res.redirect(301, '/');
             }
-            app.render(req, res, '/user/me');
+
+            const queryParams = {
+              userId: req.params.userId,
+              isMe: req.params.isMe
+            };
+
+            app.render(req, res, '/user', queryParams);
           });
 
           server.get('/u/:userId', (req, res) => {

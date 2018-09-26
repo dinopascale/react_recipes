@@ -69,12 +69,12 @@ const recipeSchema = mongoose.Schema({
       name: {
         type: String,
         required: true,
-        match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
+        match: [/^[a-zA-Z0-9\' ,.]+$/, 'No special symbol allowed']
       },
       quantity: {
         type: String,
         required: true,
-        match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
+        match: [/^[a-zA-Z0-9\' ,.]+$/, 'No special symbol allowed']
       }
     }
   ],

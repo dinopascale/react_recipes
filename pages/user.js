@@ -7,26 +7,34 @@ import apiCall from '../frontend/utils/apiCall';
 import SingleUser from '../frontend/component/SingleUser';
 
 class User extends Component {
-  static async getInitialProps({ req, query }) {
+  static async getInitialProps({ req, res, query }) {
     try {
       const isServer = !!req;
-      const userId = query.userId;
+      let userId = null;
+      let user = null;
+      let error = null;
+      let isMe = false;
 
       if (isServer) {
         const { db } = req;
+        isMe = !!res.locals.issuerId;
+        userId = isMe ? res.locals.issuerId : query.userId;
+
         const queryDbResults = await db.models['User']
           .find({ _id: userId })
           .select('avatar username bio');
-        const user = queryDbResults[0];
+        user = queryDbResults[0];
 
         return {
-          user
+          user,
+          isMe,
+          error
         };
       }
 
       const { endpoint, options } = apiEndpoints.user;
-      let user = null;
-      let error = null;
+      isMe = query.isMe || false;
+      userId = query.userId;
 
       await apiCall(
         `${endpoint}/${userId}`,
@@ -35,7 +43,7 @@ class User extends Component {
         error => (error = error)
       );
 
-      return { user, error };
+      return { user, error, isMe };
     } catch (error) {
       return {
         error
@@ -51,6 +59,7 @@ class User extends Component {
   };
 
   async componentDidMount() {
+    console.log(this.props);
     const { endpoint, options } = apiEndpoints.userStatistics;
     const { _id } = this.props.user;
 
@@ -86,7 +95,7 @@ class User extends Component {
         </Head>
         <SingleUser
           user={user}
-          recipes={recipes ? recipes.length : 0}
+          recipes={recipes}
           comments={userComments}
           rates={userRates}
           isLoading={isLoading}

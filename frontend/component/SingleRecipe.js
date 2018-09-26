@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default ({ recipe }) => {
+export default ({ recipe, isAuthor }) => {
   return (
     <div className="single-recipe-container">
       <div className="recipe-img" />
@@ -12,8 +12,12 @@ export default ({ recipe }) => {
             by
             <Link
               prefetch
-              as={`/u/${recipe._creator._id}`}
-              href={`/user?userId=${recipe._creator._id}`}
+              as={isAuthor ? '/u/me' : `/u/${recipe._creator._id}`}
+              href={
+                isAuthor
+                  ? `/user?userId=${recipe._creator._id}&isMe=true`
+                  : `/user?userId=${recipe._creator._id}`
+              }
             >
               <span className="recipe-author"> {recipe._creator.username}</span>
             </Link>

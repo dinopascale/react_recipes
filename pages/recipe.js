@@ -312,7 +312,7 @@ class Recipe extends React.Component {
         {isAuthor ? (
           <FloatingButton icon="edit" action={this.goToEditMode} />
         ) : null}
-        <SingleRecipe recipe={recipe} />
+        <SingleRecipe recipe={recipe} isAuthor={isAuthor} />
         <IntoView
           render={isVisible => (
             <RateRecipe

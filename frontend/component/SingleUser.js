@@ -1,4 +1,5 @@
 import UserStatistics from './singleUser/UserStatistics';
+import UserRecipesList from './singleUser/UserRecipesList';
 
 export default ({ user, recipes, comments, rates, isLoading }) => (
   <div className="user-info-container">
@@ -15,9 +16,10 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
     <UserStatistics
       rates={rates}
       comments={comments}
-      recipes={recipes}
+      recipes={recipes ? recipes.length : 0}
       isLoading={isLoading}
     />
+    <UserRecipesList recipeList={recipes ? recipes : []} />
     <style jsx>{`
       .user-info-container {
         margin: 150px auto 20px auto;

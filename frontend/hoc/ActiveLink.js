@@ -5,13 +5,14 @@ const ActiveLink = ({
   children,
   router,
   href,
+  as,
   color,
   activeColor,
   focusColor
 }) => {
   return (
-    <Link prefetch href={href}>
-      <a className={router.pathname === href ? 'active' : null}>
+    <Link prefetch as={as} href={href}>
+      <a className={router.asPath === (as || href) ? 'active' : null}>
         {children}
         <style jsx>{`
           a {

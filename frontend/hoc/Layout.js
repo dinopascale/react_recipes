@@ -38,6 +38,7 @@ class Layout extends React.Component {
           <Toolbar
             opened={this.openSideDrawerHandler}
             isAuth={!!this.props.userInfo}
+            userId={this.props.userInfo ? this.props.userInfo._id : null}
           />
           <SideDrawer
             open={this.state.showSideDrawer}

@@ -9,7 +9,7 @@ export default props => (
     <ToggleButton openSideDrawer={props.opened} />
     <Logo isAuth={props.isAuth} />
     <nav className="desktop-only">
-      <NavigationElements />
+      <NavigationElements userId={props.userId} />
     </nav>
     <style jsx>{`
       .desktop-only {

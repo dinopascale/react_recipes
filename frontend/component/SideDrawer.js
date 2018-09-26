@@ -23,7 +23,10 @@ export default props => {
       >
         <Header ctaHandler={props.closed} user={props.user} />
         <nav style={{ padding: '0 15px' }}>
-          <NavigationElements isAuth={!!props.user} />
+          <NavigationElements
+            isAuth={!!props.user}
+            userId={props.user ? props.user._id : null}
+          />
         </nav>
       </div>
       <style jsx>{`
@@ -34,7 +37,7 @@ export default props => {
           height: 100%;
           left: 0;
           top: 0;
-          z-index: 200;
+          z-index: 1200;
           background-color: white;
           box-sizing: border-box;
           transition: transform 0.4s ease-out;

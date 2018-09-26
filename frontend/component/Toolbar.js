@@ -14,14 +14,14 @@ class Toolbar extends React.Component {
   }
 
   render() {
-    const { opened, isAuth, router } = this.props;
+    const { opened, isAuth, router, userId } = this.props;
     const isEdit = router.pathname === '/edit';
     if (isEdit) {
       return null;
     }
     return (
       <div className="navbar">
-        <NavMode opened={opened} isAuth={isAuth} />
+        <NavMode opened={opened} isAuth={isAuth} userId={userId} />
         <style jsx>{`
           .navbar {
             position: fixed;

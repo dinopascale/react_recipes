@@ -10,18 +10,23 @@ export default props => {
     content = (
       <Fragment>
         <NavigationElement
-          to="/new_recipe"
+          href="/new_recipe"
           title="New Recipe"
           icon="plus-circle"
         />
-        <NavigationElement to="/ed" title="Edit Account" icon="user-circle" />
+        <NavigationElement
+          href={`/user?userId=${props.userId}&isMe=true`}
+          as="/u/me"
+          title="My Account"
+          icon="user-circle"
+        />
         <LogoutButton />
       </Fragment>
     );
   }
   return (
     <div className="nav-elements">
-      <NavigationElement to="/recipes" title="See all recipes" icon="globe" />
+      <NavigationElement href="/recipes" title="See all recipes" icon="globe" />
       {content}
       <style jsx>{`
         .nav-elements {

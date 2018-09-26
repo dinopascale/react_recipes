@@ -4,7 +4,7 @@ export default ({ user }) => {
   return (
     <div className="greet-user-container">
       <div className="avatar-container">
-        <Link prefetch href="/u/me">
+        <Link prefetch as="/u/me" href={`/user?userId=${user._id}&isMe=true`}>
           <img src={user.avatar} className="avatar" />
         </Link>
       </div>

@@ -1,8 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ActiveLink from '../../hoc/ActiveLink';
 
-export default ({ to, title, icon }) => (
-  <ActiveLink href={to} color="#555" focusColor="#10aeb2" activeColor="#10aeb2">
+export default ({ href, as, title, icon }) => (
+  <ActiveLink
+    href={href}
+    as={as}
+    color="#555"
+    focusColor="#10aeb2"
+    activeColor="#10aeb2"
+  >
     <p>
       {icon ? (
         <span>

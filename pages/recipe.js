@@ -285,7 +285,6 @@ class Recipe extends React.Component {
 
   goToEditMode = event => {
     event.preventDefault();
-    console.log('qui');
     const { router, recipe, addRecipeToEdit } = this.props;
     router.push(
       `/edit?id=${recipe._id}&isRecipe=true`,

@@ -58,6 +58,11 @@ app
             app.render(req, res, '/edit', queryParams);
           });
 
+          server.get('/edit_user/:id', (req, res) => {
+            const queryParams = { id: req.params.id };
+            app.render(req, res, '/edit', queryParams);
+          });
+
           server.get('/new_recipe', checkAuth, (req, res) => {
             if (!res.locals.issuerId) {
               res.redirect(301, '/auth/login');
@@ -71,7 +76,7 @@ app
             }
 
             const queryParams = {
-              userId: req.params.userId,
+              userId: res.locals.issuerId,
               isMe: req.params.isMe
             };
 

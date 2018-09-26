@@ -9,6 +9,7 @@ import Form from '../frontend/shared/Form';
 import apiEndpoints from '../frontend/utils/apiEndpoints';
 import EditRecipeForm from '../frontend/component/EditRecipeForm';
 import apiCall from '../frontend/utils/apiCall';
+import EditUserForm from '../frontend/component/EditUserForm';
 
 class Edit extends Component {
   static async getInitialProps({ res, query }) {
@@ -19,13 +20,22 @@ class Edit extends Component {
       res.end();
     }
 
-    const { id, isRecipe } = query;
+    const { id } = query;
+    const isRecipe = !!query.isRecipe;
+    const isUser = !!query.isUser;
+
+    console.log(query, isRecipe, isUser);
 
     let schema = null;
-    const endpoint = '/api/s/recipe';
+    const endpoint = isUser ? '/api/s/user' : '/api/s/recipe';
     const options = {
-      method: 'GET',
-      credentials: 'include'
+      method: isUser ? 'POST' : 'GET',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: isUser ? JSON.stringify({}) : null
     };
 
     await apiCall(
@@ -35,13 +45,17 @@ class Edit extends Component {
       err => (schema = err)
     );
 
-    return { id, isRecipe, schema };
+    return { id, isRecipe, isUser, schema };
   }
 
   closeEdit = () => {
-    const { exitEdit, router, item } = this.props;
+    const { exitEdit, router, item, isUser } = this.props;
+    const as = isUser ? `/u/me` : `/r/${item._id}`;
+    const href = isUser
+      ? `/user?userId=${item._id}&isMe=true`
+      : `/recipe?id=${item._id}&isRecipe=true`;
     exitEdit();
-    router.push(`/recipe?id=${item._id}&isRecipe=true`, `/r/${item._id}`);
+    router.push(href, as);
   };
 
   render() {
@@ -73,14 +87,22 @@ class Edit extends Component {
             ) => (
               <div className="container">
                 <EditToolbar save={onSubmit} exit={this.closeEdit} />
-                <EditRecipeForm
-                  form={state}
-                  changed={onChange}
-                  blurred={onBlur}
-                  validate={validateSingle}
-                  addNew={addNewField}
-                  deleteField={deleteField}
-                />
+                {isRecipe ? (
+                  <EditRecipeForm
+                    form={state}
+                    changed={onChange}
+                    blurred={onBlur}
+                    validate={validateSingle}
+                    addNew={addNewField}
+                    deleteField={deleteField}
+                  />
+                ) : (
+                  <EditUserForm
+                    form={state}
+                    changed={onChange}
+                    blurred={onBlur}
+                  />
+                )}
                 <style jsx>{`
                   .container {
                     display: flex;

@@ -1,5 +1,9 @@
 import TextareaAutoresize from './singleTextarea/TextareaAutoresize';
 
+const checkInvalidValue = (val, limit, isMax) => {
+  return isMax ? val > limit : val < limit;
+};
+
 export default ({ field, change, blur }) => (
   <div className="form-group">
     <div className="form-field">
@@ -26,7 +30,12 @@ export default ({ field, change, blur }) => (
           <span
             className={
               field.value
-                ? field.value && field.value.length < field.rules.minlength
+                ? field.value &&
+                  checkInvalidValue(
+                    field.value.length,
+                    field.rules.minlength || field.rules.maxlength,
+                    !!field.rules.maxlength
+                  )
                   ? 'invalid-text'
                   : 'valid-text'
                 : 'invalid-text'
@@ -34,7 +43,7 @@ export default ({ field, change, blur }) => (
           >
             {field.value === null ? ' 0' : ' ' + field.value.length}
           </span>{' '}
-          / {field.rules.minlength} characters
+          / {field.rules.minlength || field.rules.maxlength} characters
         </span>
       </div>
       {field.errorMessage === 'Field is required' ? (

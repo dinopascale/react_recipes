@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
   },
   email: {
     type: String,
@@ -28,12 +29,14 @@ const userSchema = mongoose.Schema({
   bio: {
     type: String,
     trim: true,
+    required: true,
     maxlength: 140,
     default: 'No bio avaible'
   },
   avatar: {
     type: String,
     trim: true,
+    alias: 'url',
     default:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/240px-Placeholder_no_text.svg.png',
     validate: {
@@ -43,9 +46,9 @@ const userSchema = mongoose.Schema({
   }
 });
 
-const filterUserSchema = obj => {
+const filterUserSchema = (obj, fields) => {
   return Object.keys(obj)
-    .filter(key => ['username', 'email', 'password'].includes(key))
+    .filter(key => fields.includes(key))
     .map(key => {
       return {
         name: obj[key].path,
@@ -54,6 +57,7 @@ const filterUserSchema = obj => {
         validationRules: {
           required: obj[key].options.required || null,
           minlength: obj[key].options.minlength || null,
+          maxlength: obj[key].options.maxlength || null,
           regExp: obj[key].options.match
             ? [obj[key].options.match[0].toString(), obj[key].options.match[1]]
             : null
@@ -82,9 +86,10 @@ userSchema.methods.generateAuthToken = async function() {
   }
 };
 
-userSchema.statics.getSchema = function() {
+userSchema.statics.getSchema = function(...fields) {
   const User = this;
-  return filterUserSchema(User.schema.paths);
+  fields = fields.length !== 0 ? fields : ['username', 'bio', 'avatar'];
+  return filterUserSchema(User.schema.paths, fields);
 };
 
 userSchema.statics.findByCredentials = async function(email, password) {

@@ -11,7 +11,7 @@ class Login extends Component {
   static async getInitialProps(props) {
     if (props.req) {
       const { db } = props.req;
-      const schema = db.models['User'].getSchema();
+      const schema = db.models['User'].getSchema('email', 'password');
       return { schema };
     }
 
@@ -24,14 +24,15 @@ class Login extends Component {
     const { router, callApi, isAuth } = this.props;
     router.prefetch('/recipes');
 
-    // if (isAuth) {
-    //   router.push('/recipes');
-    // }
-
     const endpoint = '/api/s/user';
     const options = {
-      method: 'GET',
-      credentials: 'include'
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ filter: 'auth' })
     };
 
     await callApi(

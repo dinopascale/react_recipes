@@ -1,10 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
+import { withRouter } from 'next/router';
 import ErrorPage from './_error';
+import { connect } from 'react-redux';
+
+import { addItemToEdit } from '../store/actions';
 
 import apiEndpoints from '../frontend/utils/apiEndpoints';
 import apiCall from '../frontend/utils/apiCall';
 import SingleUser from '../frontend/component/SingleUser';
+import FloatingButton from '../frontend/shared/FloatingButton';
 
 class User extends Component {
   static async getInitialProps({ req, res, query }) {
@@ -35,6 +40,8 @@ class User extends Component {
       const { endpoint, options } = apiEndpoints.user;
       isMe = query.isMe || false;
       userId = query.userId;
+
+      console.log(userId);
 
       await apiCall(
         `${endpoint}/${userId}`,
@@ -80,8 +87,15 @@ class User extends Component {
     );
   }
 
+  goToEditMode = event => {
+    event.preventDefault();
+    const { router, user, addUserToEdit } = this.props;
+    router.push(`/edit?id=${user._id}&isUser=true`, `/edit_user/${user._id}`);
+    addUserToEdit(user);
+  };
+
   render() {
-    const { user, error } = this.props;
+    const { user, error, isMe } = this.props;
     const { recipes, userComments, userRates, isLoading } = this.state;
 
     if (error) {
@@ -93,6 +107,9 @@ class User extends Component {
         <Head>
           <title>{user.username + ' | React Recipes'}</title>
         </Head>
+        {isMe ? (
+          <FloatingButton icon="edit" action={this.goToEditMode} />
+        ) : null}
         <SingleUser
           user={user}
           recipes={recipes}
@@ -105,4 +122,13 @@ class User extends Component {
   }
 }
 
-export default User;
+const mapDispatchToProps = dispatch => {
+  return {
+    addUserToEdit: user => dispatch(addItemToEdit(user))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(User));

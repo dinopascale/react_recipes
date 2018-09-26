@@ -109,12 +109,17 @@ router.get('/user/me', checkAuth, async (req, res, next) => {
 //GET SINGLE USER
 
 router.get('/user/:id', async (req, res, next) => {
-  let authorId = new ObjectId(req.params.id);
-  const user = await User.findById(authorId).select('username avatar bio');
+  try {
+    let authorId = new ObjectId(req.params.id);
+    const user = await User.findById(authorId).select('username avatar bio');
 
-  res.status(200).json({
-    user
-  });
+    res.status(200).json({
+      user
+    });
+  } catch (e) {
+    e.status = 400;
+    next(e);
+  }
 });
 
 router.get('/user/statistics/:id', async (req, res, next) => {
@@ -168,9 +173,13 @@ router.delete('/user/:id', checkAuth, checkAuthor, async (req, res, next) => {
 
 //getSchema
 
-router.get('/s/user', async (req, res, next) => {
+router.post('/s/user', async (req, res, next) => {
   try {
-    const schema = User.getSchema();
+    const { filter } = req.body;
+    const schema =
+      filter === 'auth'
+        ? User.getSchema('username', 'password', 'email')
+        : User.getSchema();
     res.status(200).json({
       schema
     });

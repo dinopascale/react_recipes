@@ -34,9 +34,10 @@ class TextareaAutoresize extends Component {
         <textarea
           className="form-textarea"
           value={this.props.value}
+          onFocus={this.autoResize}
           onKeyUp={this.autoResize}
           style={textareaStyle}
-          rows="8"
+          rows="4"
           spellCheck="false"
           {...this.props}
         />

@@ -11,7 +11,11 @@ class Register extends Component {
   static async getInitialProps(props) {
     if (props.req) {
       const { db } = props.req;
-      const schema = db.models['User'].getSchema();
+      const schema = db.models['User'].getSchema(
+        'email',
+        'password',
+        'username'
+      );
       return { schema };
     }
 
@@ -23,8 +27,13 @@ class Register extends Component {
   async componentDidMount() {
     const endpoint = '/api/s/user';
     const options = {
-      method: 'GET',
-      credentials: 'include'
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ filter: 'auth' })
     };
 
     const { router, callApi } = this.props;

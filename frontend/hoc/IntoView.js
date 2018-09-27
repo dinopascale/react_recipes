@@ -19,7 +19,6 @@ class IntoView extends Component {
 
   componentWillUnmount() {
     if (this.io) {
-      console.log('disconnect');
       this.io.disconnect();
     }
   }

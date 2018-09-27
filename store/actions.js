@@ -11,7 +11,7 @@ export const actionTypes = {
   START_LOADING: 'START_LOADING',
   STOP_LODADING: 'STOP_LOADING',
   ADD_ITEM_TOEDIT: 'ADD_ITEM_TOEDIT',
-  REMOVE_ITEM_TOEDIT: 'REMOVE_ITEM_TOEDIT'
+  UPDATE_USER_INFO: 'UPDATE_USER_INFO'
 };
 
 //MIDDLEWARES
@@ -49,6 +49,15 @@ export const successAndCloseModal = () => dispatch => {
       type: actionTypes.HIDE_MODAL
     });
   }, 2000);
+};
+
+export const removeItemToEdit = (
+  isUser = false,
+  newUser = null
+) => dispatch => {
+  if (isUser) {
+    dispatch({ type: actionTypes.UPDATE_USER_INFO, payload: newUser });
+  }
 };
 
 //Action creator
@@ -93,11 +102,5 @@ export const addItemToEdit = item => {
   return {
     type: actionTypes.ADD_ITEM_TOEDIT,
     payload: item
-  };
-};
-
-export const removeItemToEdit = () => {
-  return {
-    type: actionTypes.REMOVE_ITEM_TOEDIT
   };
 };

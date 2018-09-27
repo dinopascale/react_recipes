@@ -5,7 +5,6 @@ import CommentElement from './CommentElement';
 
 class CommentList extends Component {
   async componentDidMount() {
-    console.log('mounted CommentList');
     await this.props.load();
   }
 

@@ -71,6 +71,7 @@ class Recipes extends React.Component {
     if (window) {
       window.addEventListener('scroll', this.infiniteScroll, false);
     }
+    console.log(this.props.recipes);
     this.props.router.prefetch('/auth/register');
   }
 

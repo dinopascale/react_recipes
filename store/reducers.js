@@ -10,7 +10,7 @@ const modalInitialState = {
 };
 
 const toEditInitialState = {
-  item: null
+  item: {}
 };
 
 export const errorMessage = (state = null, action) => {
@@ -81,6 +81,16 @@ export const auth = (state = authInitialState, action) => {
         ...state,
         user: null
       };
+    case actionTypes.UPDATE_USER_INFO:
+      const { username, avatar } = action.payload;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          username,
+          avatar
+        }
+      };
     default:
       return state;
   }
@@ -95,12 +105,6 @@ export const toEdit = (state = toEditInitialState, action) => {
           ...action.payload
         }
       };
-    case actionTypes.REMOVE_ITEM_TOEDIT: {
-      return {
-        ...state,
-        item: {}
-      };
-    }
     default:
       return state;
   }

@@ -38,7 +38,7 @@ export default props => {
           left: 0;
           top: 0;
           z-index: 1200;
-          background-color: white;
+          background-color: #f5f5f5;
           box-sizing: border-box;
           transition: transform 0.4s ease-out;
         }

@@ -41,8 +41,6 @@ class User extends Component {
       isMe = query.isMe || false;
       userId = query.userId;
 
-      console.log(userId);
-
       await apiCall(
         `${endpoint}/${userId}`,
         options,
@@ -66,7 +64,6 @@ class User extends Component {
   };
 
   async componentDidMount() {
-    console.log(this.props);
     const { endpoint, options } = apiEndpoints.userStatistics;
     const { _id } = this.props.user;
 
@@ -81,9 +78,7 @@ class User extends Component {
           isLoading: false
         });
       },
-      error => {
-        console.log(error);
-      }
+      error => {}
     );
   }
 

@@ -28,7 +28,6 @@ router.get('/users', async (req, res, next) => {
 router.post('/user/login', async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
 
     if (!email.trim() || !password.trim()) {
       const e = new Error('Email and Password are required');
@@ -47,7 +46,8 @@ router.post('/user/login', async (req, res, next) => {
         message: 'Login Success',
         userInfo: {
           username: user.username,
-          avatar: user.avatar
+          avatar: user.avatar,
+          _id: user._id
         }
       });
   } catch (e) {
@@ -70,7 +70,11 @@ router.post('/user/signup', async (req, res, next) => {
       .cookie('token', token, { maxAge: 3600000 })
       .json({
         message: 'User Subs',
-        userInfo: { username: user.username, avatar: user.avatar }
+        userInfo: {
+          username: user.username,
+          avatar: user.avatar,
+          _id: user._id
+        }
       });
   } catch (e) {
     e.status = 400;
@@ -125,7 +129,7 @@ router.get('/user/:id', async (req, res, next) => {
 router.get('/user/statistics/:id', async (req, res, next) => {
   try {
     let userId = new ObjectId(req.params.id);
-    const userThreads = await Thread.find({ user: userId }).countDocuments();
+    const userComments = await Thread.find({ user: userId }).countDocuments();
     const userRates = await RecipeRate.find({ userId }).countDocuments();
 
     const userRecipes = await Recipe.find({ _creator: userId }).select(
@@ -134,7 +138,7 @@ router.get('/user/statistics/:id', async (req, res, next) => {
 
     res.status(201).json({
       recipes: userRecipes,
-      userComments: userThreads,
+      userComments,
       userRates
     });
   } catch (e) {
@@ -145,7 +149,38 @@ router.get('/user/statistics/:id', async (req, res, next) => {
 
 //UPDATE SINGLE USER - GUARDED
 
-router.patch('/user/:id', checkAuth, checkAuthor, async (req, res, next) => {});
+router.patch('/user/me', checkAuth, async (req, res, next) => {
+  try {
+    const { issuerId } = res.locals;
+
+    if (!issuerId) {
+      const e = new Error('Not Auth');
+      e.status = 401;
+      throw e;
+    }
+
+    const obId = new ObjectId(issuerId);
+    const updateFields = { ...req.body };
+
+    const updatedMe = await User.findOneAndUpdate(
+      { _id: issuerId },
+      {
+        $set: updateFields
+      },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      meta: {
+        status: 'Ok'
+      },
+      updatedMe
+    });
+  } catch (e) {
+    e.status = e.status || 400;
+    next(e);
+  }
+});
 
 //DELETE SINGLE USER - GUARDED
 

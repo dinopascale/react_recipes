@@ -3,9 +3,7 @@ import UserRecipesList from './singleUser/UserRecipesList';
 
 export default ({ user, recipes, comments, rates, isLoading }) => (
   <div className="user-info-container">
-    <div className="avatar-container">
-      <img className="avatar" src={user.avatar} />
-    </div>
+    <div className="avatar-container" />
     <div className="user-username-container">
       <h1 className="username">{user.username}</h1>
     </div>
@@ -39,9 +37,11 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
         top: -75px;
         left: 50%;
         transform: translateX(-50%);
-        border: 5px solid #fff;
+        border: 4px solid #fff;
         border-radius: 50%;
-        background: #f1f1f1;
+        background: #999 url("${user.avatar}") no-repeat center center;
+        background-size: cover;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
       }
 
       .avatar {

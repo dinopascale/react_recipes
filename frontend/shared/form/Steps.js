@@ -39,7 +39,6 @@ class Steps extends Component {
   };
 
   jumpBack = number => event => {
-    console.log('called');
     if (number >= this.state.activeStep) {
       return false;
     }

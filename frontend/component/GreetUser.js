@@ -3,39 +3,39 @@ import Link from 'next/link';
 export default ({ user }) => {
   return (
     <div className="greet-user-container">
-      <div className="avatar-container">
-        <Link prefetch as="/u/me" href={`/user?userId=${user._id}&isMe=true`}>
-          <img src={user.avatar} className="avatar" />
-        </Link>
-      </div>
+      <Link prefetch as="/u/me" href={`/user?userId=${user._id}&isMe=true`}>
+        <div className="avatar-container" />
+      </Link>
       <div className="user-info-container">
         <h1 className="title">Hi, {user.username}!</h1>
-        <p className="subtitle">What would you like to do today?</p>
+        <p className="subtitle">Take a look at these awesome Recipes!</p>
       </div>
       <style jsx>{`
         .greet-user-container {
+          margin: 0px auto 20px auto;
           width: 100%;
+          border-radius: 4px;
           display: flex;
-          flex-flow: row wrap;
+          flex-flow: row nowrap;
           justify-content: space-between;
-          align-items: flex-start;
+          position: relative;
         }
 
         .user-info-container {
-          flex: 0 0 60%;
-        }
-
-        .action-container {
-          flex: 0 0 100%;
+            flex: 0 0 50%;
         }
 
         .avatar-container {
           flex: 0 0 35%;
+          background: #f1f1f1 url("${user.avatar}") no-repeat center center;
+          background-size: cover;
+          border-radius: 5px;
         }
 
         .avatar {
           width: 100%;
-          border-radius: 4px;
+          max-height: 120px;
+          border-radius: 50%;
           cursor: pointer;
         }
 

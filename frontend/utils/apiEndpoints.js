@@ -27,6 +27,7 @@ const apiEndpoints = {
   login: { endpoint: '/api/user/login', options: fetchOptions.POST },
   register: { endpoint: '/api/user/signup', options: fetchOptions.POST },
   editRecipe: { endpoint: '/api/recipe', options: fetchOptions.PATCH },
+  editUser: { endpoint: '/api/user', options: fetchOptions.PATCH },
   user: { endpoint: '/api/user', options: fetchOptions.GET },
   me: { endpoint: '/api/user/me', options: fetchOptions.GET },
   userStatistics: {

@@ -10,7 +10,14 @@ import { validationRules, validationError } from '../utils/validationRules';
 import { connect } from 'react-redux';
 
 class Form extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+
+    const { data, filledValues } = this.props;
+    const form = this.transformPropToForm(data, filledValues);
+
+    this.state = { ...form };
+  }
 
   transformPropToForm = (prop, filledValue = null) => {
     return prop.reduce((frm, field) => {
@@ -231,13 +238,11 @@ class Form extends Component {
     });
   };
 
-  componentWillMount() {
-    const { data, filledValues } = this.props;
-    const form = this.transformPropToForm(data, filledValues);
-    console.log('form', form);
-    this.setState({
-      ...form
-    });
+  componentDidMount() {
+    // const form = this.transformPropToForm(data, filledValues);
+    // this.setState({
+    //   ...form
+    // });
   }
 
   render() {

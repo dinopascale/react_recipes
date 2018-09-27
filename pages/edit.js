@@ -19,12 +19,9 @@ class Edit extends Component {
       });
       res.end();
     }
-
     const { id } = query;
     const isRecipe = !!query.isRecipe;
     const isUser = !!query.isUser;
-
-    console.log(query, isRecipe, isUser);
 
     let schema = null;
     const endpoint = isUser ? '/api/s/user' : '/api/s/recipe';
@@ -48,20 +45,31 @@ class Edit extends Component {
     return { id, isRecipe, isUser, schema };
   }
 
-  closeEdit = () => {
+  closeEdit = response => {
     const { exitEdit, router, item, isUser } = this.props;
     const as = isUser ? `/u/me` : `/r/${item._id}`;
     const href = isUser
       ? `/user?userId=${item._id}&isMe=true`
       : `/recipe?id=${item._id}&isRecipe=true`;
+    if (isUser && response.updatedMe) {
+      exitEdit(isUser, response.updatedMe);
+      return router.push(href, as);
+    }
     exitEdit();
     router.push(href, as);
   };
 
+  //   componentDidMount() {
+  //     if (!Object.keys(this.props.item).length) {
+  //       this.props.router.push('/recipes');
+  //     }
+  //   }
+
   render() {
     const { isRecipe, schema, item } = this.props;
-    const { endpoint, options } = apiEndpoints.editRecipe;
-    console.log(item, schema);
+    const { endpoint, options } = isRecipe
+      ? apiEndpoints.editRecipe
+      : apiEndpoints.editUser;
     return (
       <Fragment>
         <Head>
@@ -69,7 +77,7 @@ class Edit extends Component {
         </Head>
         <div>
           <Form
-            endpoint={`${endpoint}/${item._id}`}
+            endpoint={`${endpoint}/${isRecipe ? item._id : 'me'}`}
             options={options}
             data={schema}
             filledValues={item}
@@ -128,7 +136,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    exitEdit: () => dispatch(removeItemToEdit())
+    exitEdit: (isUser, updateUser) =>
+      dispatch(removeItemToEdit(isUser, updateUser))
   };
 };
 

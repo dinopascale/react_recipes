@@ -6,27 +6,44 @@ export default props => {
   if (props.user) {
     content = (
       <Fragment>
-        <div
+        {/* <div
           className="avatar-container"
           style={{ backgroundImage: `url(${props.user.avatar})` }}
-        />
-        <div>
-          <h4 className="greet">Hello, {props.user.username}!</h4>
+        /> */}
+        <div className="greet">
+          <h4>{props.user.username}</h4>
         </div>
         <style jsx>{`
           .avatar-container {
             margin: 0 auto;
             width: 120px;
             height: 120px;
+            border: 4px solid #fff;
             border-radius: 50%;
+            background-color: #f1f1f1;
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
           }
 
           .greet {
+            position: absolute;
+            bottom: -20px;
+            width: 90%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            background: #f5f5f5;
+            text-align: center;
+            color: #000;
             font-family: 'Montserrat', sans-serif;
-            margin-bottom: 0;
+            padding: 5px 10px;
+            font-size: 18px;
+            align-self: flex-end;
+          }
+
+          .greet h4 {
+            margin: 0;
           }
         `}</style>
       </Fragment>
@@ -54,12 +71,18 @@ export default props => {
       <style jsx>{`
         .header {
           width: 100%;
+          min-height:150px;
           margin: 0 0 30px 0;
-          padding: 35px 15px;
+          background: url("${
+            props.user ? props.user.avatar : null
+          }") no-repeat center center;
+          background-size: cover;
+          padding: 20px 15px;
           font-family: 'Open Sans', sans-serif;
           box-sizing: border-box;
           background-color: #ff7f50;
           color: #fff;
+          position: relative;
         }
       `}</style>
     </div>

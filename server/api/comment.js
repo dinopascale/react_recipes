@@ -151,7 +151,6 @@ router.post('/comment/:threadId', checkAuth, async (req, res, next) => {
     const { text } = req.body;
 
     const thread = await Thread.findOne({ _id: threadId }).select('recipeId');
-    console.log(thread);
 
     const comment = await new Comment({
       user,

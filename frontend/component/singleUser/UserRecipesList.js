@@ -2,9 +2,11 @@ import UserRecipe from './userRecipesList/UserRecipe';
 
 export default ({ recipeList }) => (
   <div className="user-recipe-list">
-    {recipeList.map(recipe => (
-      <UserRecipe recipe={recipe} key={recipe._id} />
-    ))}
+    {recipeList
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .map(recipe => (
+        <UserRecipe recipe={recipe} key={recipe._id} />
+      ))}
     <style jsx>{`
       .user-recipe-list {
         width: 100%;

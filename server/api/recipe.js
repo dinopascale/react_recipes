@@ -121,8 +121,6 @@ router.get('/recipe/rated/:recipeId', checkAuthor, async (req, res, next) => {
       userId: issuerId
     }).select('value');
 
-    console.log(userRate);
-
     res.status(201).json({
       rated: !!userRate,
       value: userRate ? userRate._doc.value : 0

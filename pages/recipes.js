@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import Head from 'next/head';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
+import ErrorPage from './_error';
 
 import { callApi, createErrorMessage } from '../store/actions';
 
@@ -37,7 +38,8 @@ class Recipes extends React.Component {
           recipes: resultsUnsorted
             .sort((a, b) => b.avgRate - a.avgRate)
             .slice(0, 6),
-          total: resultsUnsorted.length
+          total: resultsUnsorted.length,
+          error: null
         };
       }
 
@@ -48,9 +50,11 @@ class Recipes extends React.Component {
         e.status = response.status;
         throw e;
       }
+
       const data = await response.json();
       return {
-        recipes: data.results
+        recipes: data.results,
+        error: null
       };
     } catch (e) {
       return { error: e };
@@ -178,7 +182,12 @@ class Recipes extends React.Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, error } = this.props;
+
+    if (error) {
+      return <ErrorPage statusCode={error.status} />;
+    }
+
     return (
       <Fragment>
         <Head>

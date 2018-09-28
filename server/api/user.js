@@ -128,11 +128,16 @@ router.get('/user/:id', async (req, res, next) => {
 
 router.get('/user/statistics/:id', async (req, res, next) => {
   try {
+    const isMe = !!req.query.isMe;
     let userId = new ObjectId(req.params.id);
     const userComments = await Thread.find({ user: userId }).countDocuments();
     const userRates = await RecipeRate.find({ userId }).countDocuments();
 
-    const userRecipes = await Recipe.find({ _creator: userId }).select(
+    const where = isMe
+      ? { _creator: userId }
+      : { _creator: userId, sharable: true };
+
+    const userRecipes = await Recipe.find(where).select(
       'img name rateCount rateValue createdAt updatedAt sharable'
     );
 

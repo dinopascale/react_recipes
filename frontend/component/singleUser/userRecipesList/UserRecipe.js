@@ -51,13 +51,19 @@ export default ({ recipe }) => (
 
       .recipe-img-container.draft:before {
         content: "Draft";
-        width: 40px;
+        width: 100%;
+        height: 100%;
         position: absolute;
-        background-color: red;
-        color: #fff;
         top:0;
         left:0;
-        transform: translateY(5px) rotate(-45deg);
+        background-color: rgba(0,0,0,.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 18px;
+        color: #fff;
       }
 
       .recipe-info-container {

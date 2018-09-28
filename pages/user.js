@@ -64,11 +64,26 @@ class User extends Component {
   };
 
   async componentDidMount() {
+    await this.getUserStatistics();
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (prevProps.user._id !== this.props.user._id) {
+      await this.getUserStatistics();
+    }
+  }
+
+  async getUserStatistics() {
     const { endpoint, options } = apiEndpoints.userStatistics;
     const { _id } = this.props.user;
+    const { isMe } = this.props;
+
+    const dynamicEndpoint = isMe
+      ? `${endpoint}/${_id}?isMe=yes`
+      : `${endpoint}/${_id}`;
 
     await apiCall(
-      `${endpoint}/${_id}`,
+      dynamicEndpoint,
       options,
       infos => {
         this.setState({

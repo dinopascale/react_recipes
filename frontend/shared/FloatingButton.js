@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default ({ action, icon, type, text }) => (
+export default ({ action, icon, type, text, isColumn }) => (
   <button
     onClick={action}
     className={type === 'extended' ? 'floating-extended' : 'floating'}
@@ -16,9 +16,9 @@ export default ({ action, icon, type, text }) => (
       .floating-extended,
       .floating {
         position: fixed;
-        bottom: 16px;
-        background-color: #10aeb2;
-        color: #fff;
+        bottom: ${isColumn ? '96px' : '16px'};
+        background-color: ${isColumn ? '#f6f6f6' : '#10aeb2'};
+        color: ${isColumn ? '#10aeb2' : '#fff'};
         box-shadow: 0px 2px 5px #666;
         cursor: pointer;
         z-index: 110;
@@ -46,7 +46,13 @@ export default ({ action, icon, type, text }) => (
         border-radius: 28px;
       }
 
-      .icon {
+      .floating .icon {
+        padding: 0;
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .floating-extended .icon {
         padding: 0;
         margin: 0 6px 0 12px;
       }

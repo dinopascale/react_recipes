@@ -104,7 +104,6 @@ app
           });
 
           server.get('/', checkAuth, (req, res) => {
-            console.log('alla pagina iniziale');
             if (res.locals.issuerId) {
               res.redirect(301, '/recipes');
             }

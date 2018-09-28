@@ -9,7 +9,8 @@ class Toolbar extends React.Component {
     const actualPath = this.props.router.pathname;
     return (
       (nextPath === '/edit' && actualPath !== '/edit') ||
-      (nextPath !== '/edit' && actualPath === '/edit')
+      (nextPath !== '/edit' && actualPath === '/edit') ||
+      this.props.isAuth !== nextProps.isAuth
     );
   }
 

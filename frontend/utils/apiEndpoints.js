@@ -18,6 +18,10 @@ const fetchOptions = {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }
+  },
+  DELETE: {
+    method: 'DELETE',
+    credentials: 'include'
   }
 };
 
@@ -27,6 +31,7 @@ const apiEndpoints = {
   login: { endpoint: '/api/user/login', options: fetchOptions.POST },
   register: { endpoint: '/api/user/signup', options: fetchOptions.POST },
   editRecipe: { endpoint: '/api/recipe', options: fetchOptions.PATCH },
+  deleteRecipe: { endpoint: '/api/recipe', options: fetchOptions.DELETE },
   editUser: { endpoint: '/api/user', options: fetchOptions.PATCH },
   user: { endpoint: '/api/user', options: fetchOptions.GET },
   me: { endpoint: '/api/user/me', options: fetchOptions.GET },

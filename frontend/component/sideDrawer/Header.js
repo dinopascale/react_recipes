@@ -71,11 +71,11 @@ export default props => {
       <style jsx>{`
         .header {
           width: 100%;
-          min-height:150px;
+          min-height: 150px;
           margin: 0 0 30px 0;
-          background: url("${
-            props.user ? props.user.avatar : null
-          }") no-repeat center center;
+          ${props.user
+            ? `background: url("${props.user.avatar}") no-repeat center center;`
+            : null};
           background-size: cover;
           padding: 20px 15px;
           font-family: 'Open Sans', sans-serif;

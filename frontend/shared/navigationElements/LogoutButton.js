@@ -8,12 +8,13 @@ import apiEndpoints from '../../utils/apiEndpoints';
 
 class LogoutButton extends React.Component {
   clickHandler = async () => {
-    const { logoutSuccess, logoutFail, callApi } = this.props;
+    const { logoutSuccess, logoutFail, callApi, router } = this.props;
     const { endpoint, options } = apiEndpoints.logout;
     await callApi(
       endpoint,
       options,
       () => {
+        router.push('/auth/login');
         logoutSuccess();
       },
       error => {

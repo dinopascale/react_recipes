@@ -8,7 +8,6 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
       <h1 className="username">{user.username}</h1>
     </div>
     <div className="user-bio-container">
-      <h4 />
       <p className="bio">{user.bio || 'No bio avaible'}</p>
     </div>
     <UserStatistics
@@ -17,6 +16,7 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
       recipes={recipes ? recipes.length : 0}
       isLoading={isLoading}
     />
+    <h4 className="section-title">Recent Recipes</h4>
     <UserRecipesList recipeList={recipes ? recipes : []} />
     <style jsx>{`
       .user-info-container {
@@ -59,13 +59,14 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
         font-size: 26px;
       }
 
-      .user-bio-container {
-      }
-
       .bio {
         color: #888;
         font-style: italic;
         line-height: 1.6;
+      }
+
+      .section-title {
+          text-transform: uppercase;
       }
     `}</style>
   </div>

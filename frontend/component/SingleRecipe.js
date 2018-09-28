@@ -144,6 +144,10 @@ export default ({ recipe, isAuthor }) => {
             padding:0 8px;
         }
 
+        .directions-container {
+            word-wrap: break-word;
+        }
+
         .ingredients {
             margin: 5px 0;
             // padding: 0 10px;

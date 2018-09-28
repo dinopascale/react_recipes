@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: [/^[a-zA-Z0-9\' ,]+$/, 'No special symbol allowed']
+    match: [/^[a-zA-Z\u00C0-\u024F\'\s,]+$/, 'No special symbol allowed']
   },
   email: {
     type: String,

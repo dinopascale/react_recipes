@@ -103,7 +103,12 @@ class User extends Component {
           <title>{user.username + ' | React Recipes'}</title>
         </Head>
         {isMe ? (
-          <FloatingButton icon="edit" action={this.goToEditMode} />
+          <FloatingButton
+            icon="edit"
+            action={this.goToEditMode}
+            type="extended"
+            text="edit"
+          />
         ) : null}
         <SingleUser
           user={user}

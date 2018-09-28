@@ -133,7 +133,7 @@ router.get('/user/statistics/:id', async (req, res, next) => {
     const userRates = await RecipeRate.find({ userId }).countDocuments();
 
     const userRecipes = await Recipe.find({ _creator: userId }).select(
-      'img name rateCount rateValue createdAt updatedAt'
+      'img name rateCount rateValue createdAt updatedAt sharable'
     );
 
     res.status(201).json({

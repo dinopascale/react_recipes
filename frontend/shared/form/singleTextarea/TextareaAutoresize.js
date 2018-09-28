@@ -1,21 +1,26 @@
 import React, { Component, Fragment } from 'react';
 
 class TextareaAutoresize extends Component {
-  state = {
-    textareaStyle: null
-  };
-
-  componentWillMount() {
-    this.setState({
-      textareaStyle: { ...this.props.customStyle }
-    });
+  constructor(props) {
+    super(props);
+    this.state = { textareaStyle: { ...this.props.customStyle } };
   }
+
+  //   state = {
+  //     textareaStyle: null
+  //   };
+
+  //   componentWillMount() {
+  //     this.setState({
+  //       textareaStyle: { ...this.props.customStyle }
+  //     });
+  //   }
 
   autoResize = event => {
     const target = event.target;
     const textareaStyle = {
       ...this.state.textareaStyle,
-      height: target.scrollHeight
+      minHeight: target.scrollHeight
     };
     this.setState(
       {
@@ -48,6 +53,7 @@ class TextareaAutoresize extends Component {
             overflow: hidden;
             resize: none;
             width: 100%;
+            min-height: 80px;
             padding: 10px 8px;
             font-family: 'Open Sans', sans-serif;
             font-size: 15px;
@@ -57,7 +63,7 @@ class TextareaAutoresize extends Component {
             border-radius: 3px;
             background: #10aeb2;
             outline: none;
-            transition: all 0.1s linear;
+            transition: all 0.2s linear;
           }
 
           .form-textarea.valid {

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CallToAction from '../../shared/CallToAction';
 
 export default props => {
-  const rateAvg = (props.rate / props.count).toFixed(1);
+  const rateAvg = props.count === 0 ? 0 : (props.rate / props.count).toFixed(1);
 
   let content = (
     <div className="cta-container">

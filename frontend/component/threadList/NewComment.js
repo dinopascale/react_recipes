@@ -79,7 +79,7 @@ export default withRouter(props => {
       <ActionButton
         customStyle={{ flex: '0 0 80%', color: '#aaa' }}
         icon="comment"
-        handleClick={() => props.router.push('/auth')}
+        handleClick={() => props.router.push('/auth/register')}
       >
         Login to write a response
       </ActionButton>

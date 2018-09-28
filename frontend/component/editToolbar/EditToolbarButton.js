@@ -6,7 +6,7 @@ export default ({ action, icon }) => (
     <style jsx>{`
       .toolbar-button {
         background: none;
-        color: #000;
+        color: #fff;
         border: none;
         font-size: 18px;
         width: 36px;

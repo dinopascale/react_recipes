@@ -126,7 +126,7 @@ class ThreadList extends Component {
             padding: 10px 0;
             margin-top: 0px;
             width: 95%;
-            margin: 0 auto;
+            margin: 0 auto 48px auto;
           }
 
           .comment-list-title {

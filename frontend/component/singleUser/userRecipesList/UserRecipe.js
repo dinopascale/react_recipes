@@ -6,7 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default ({ recipe }) => (
   <Link prefetch as={`/r/${recipe._id}`} href={`/recipe?id=${recipe._id}`}>
     <div className="user-recipe">
-      <div className="recipe-img-container" />
+      <div
+        className={
+          recipe.sharable
+            ? 'recipe-img-container'
+            : 'recipe-img-container draft'
+        }
+      />
       <div className="recipe-info-container">
         <div className="recipe-name-container">
           <p className="recipe-name">{recipe.name}</p>
@@ -40,6 +46,18 @@ export default ({ recipe }) => (
           background-size: cover;
           width: 100%;
           height: 90px;
+          position: relative;
+      }
+
+      .recipe-img-container.draft:before {
+        content: "Draft";
+        width: 40px;
+        position: absolute;
+        background-color: red;
+        color: #fff;
+        top:0;
+        left:0;
+        transform: translateY(5px) rotate(-45deg);
       }
 
       .recipe-info-container {

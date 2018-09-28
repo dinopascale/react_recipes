@@ -21,8 +21,8 @@ const EditToolbar = ({ save, exit }) => (
         align-items: center;
         padding: 0.5em 1em;
         min-height: 60px;
-        background-color: rgb(236, 242, 132);
-        color: #000;
+        background-color: #10aeb2;
+        color: #fff;
         font-size: 20px;
         position: fixed;
         top: 0;

@@ -309,29 +309,38 @@ class Recipe extends React.Component {
           </title>
         </Head>
         {isAuthor ? (
-          <FloatingButton icon="edit" action={this.goToEditMode} />
+          <FloatingButton
+            icon="edit"
+            action={this.goToEditMode}
+            type="extended"
+            text="Edit"
+          />
         ) : null}
         <SingleRecipe recipe={recipe} isAuthor={isAuthor} />
-        <IntoView
-          render={isVisible => (
-            <RateRecipe
-              ratedBefore={this.props.recipe.ratedBefore}
-              userRate={this.props.recipe.userRateValue}
-              rateValue={this.props.recipe.rateValue}
-              rateCount={this.props.recipe.rateCount}
-              isAuth={this.props.isAuthenticated.user}
-              isAuthor={isAuthor}
-              recipeId={recipe._id}
-              isVisible={isVisible}
+        {recipe.sharable ? (
+          <Fragment>
+            <IntoView
+              render={isVisible => (
+                <RateRecipe
+                  ratedBefore={this.props.recipe.ratedBefore}
+                  userRate={this.props.recipe.userRateValue}
+                  rateValue={this.props.recipe.rateValue}
+                  rateCount={this.props.recipe.rateCount}
+                  isAuth={this.props.isAuthenticated.user}
+                  isAuthor={isAuthor}
+                  recipeId={recipe._id}
+                  isVisible={isVisible}
+                />
+              )}
             />
-          )}
-        />
-        <ThreadList
-          apiId={this.props.recipe._id}
-          baseURL="/api/thread"
-          type="threads"
-          isAuth={this.props.isAuthenticated.user}
-        />
+            <ThreadList
+              apiId={this.props.recipe._id}
+              baseURL="/api/thread"
+              type="threads"
+              isAuth={this.props.isAuthenticated.user}
+            />
+          </Fragment>
+        ) : null}
       </Fragment>
     );
   }

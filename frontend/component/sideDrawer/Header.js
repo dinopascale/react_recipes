@@ -11,7 +11,7 @@ export default props => {
           style={{ backgroundImage: `url(${props.user.avatar})` }}
         /> */}
         <div className="greet">
-          <h4>{props.user.username}</h4>
+          <p className="caption">{props.user.username}</p>
         </div>
         <style jsx>{`
           .avatar-container {
@@ -33,16 +33,15 @@ export default props => {
             left: 50%;
             transform: translateX(-50%);
             border-radius: 5px;
-            background: #f5f5f5;
+            background: #fff;
             text-align: center;
             color: #000;
-            font-family: 'Montserrat', sans-serif;
             padding: 5px 10px;
-            font-size: 18px;
             align-self: flex-end;
           }
 
-          .greet h4 {
+          .greet p {
+            font-size: 18px;
             margin: 0;
           }
         `}</style>

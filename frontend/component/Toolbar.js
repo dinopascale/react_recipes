@@ -4,15 +4,10 @@ import { withRouter } from 'next/router';
 import NavMode from './toolbar/NavMode';
 
 class Toolbar extends React.Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    const nextPath = nextProps.router.pathname;
-    const actualPath = this.props.router.pathname;
-    return (
-      (nextPath === '/edit' && actualPath !== '/edit') ||
-      (nextPath !== '/edit' && actualPath === '/edit') ||
-      this.props.isAuth !== nextProps.isAuth
-    );
-  }
+  access = () => {
+    const { router } = this.props;
+    router.push('/auth/login');
+  };
 
   render() {
     const { opened, isAuth, router, userId } = this.props;
@@ -20,9 +15,18 @@ class Toolbar extends React.Component {
     if (isEdit) {
       return null;
     }
+    const isAuthPage =
+      router.pathname === '/auth/login' || router.pathname === '/auth/register';
+
     return (
       <div className="navbar">
-        <NavMode opened={opened} isAuth={isAuth} userId={userId} />
+        <NavMode
+          opened={opened}
+          isAuth={isAuth}
+          userId={userId}
+          isAuthPage={isAuthPage}
+          access={this.access}
+        />
         <style jsx>{`
           .navbar {
             position: fixed;
@@ -31,10 +35,12 @@ class Toolbar extends React.Component {
             left: 0;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             flex: 1 0 0;
             padding: 10px 20px;
-            background: transparent;
+            background: #fff;
             z-index: 100;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
           }
 
           @media (min-width: 499px) {

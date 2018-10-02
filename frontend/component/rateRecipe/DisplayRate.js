@@ -1,15 +1,22 @@
+import Link from 'next/link';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CallToAction from '../../shared/CallToAction';
 
 export default props => {
   const rateAvg = props.count === 0 ? 0 : (props.rate / props.count).toFixed(1);
 
   let content = (
     <div className="cta-container">
-      <p className="cta-text">Subscribe or Login to rate this recipe!</p>
-      <CallToAction small href="/auth">
-        Go
-      </CallToAction>
+      <p className="cta-text body-two">
+        <Link prefetch href="/auth/register">
+          <a className="link">Subscribe </a>
+        </Link>
+        or
+        <Link prefetch href="/auth/login">
+          <a className="link"> Login </a>
+        </Link>
+        to rate this recipe!
+      </p>
       <style jsx>{`
         .cta-container {
           text-align: center;
@@ -18,7 +25,15 @@ export default props => {
 
         .cta-text {
           font-size: 14px;
+          color: #777e8e;
+          line-height: 1.6;
           margin-bottom: 25px;
+        }
+
+        .link {
+          color: #06b4fe;
+          font-weight: bold;
+          text-decoration: none;
         }
       `}</style>
     </div>
@@ -56,12 +71,12 @@ export default props => {
     >
       {!props.isAuthor ? (
         <div className="user-rate">
-          <h4 className="label">Your Rate</h4>
+          <h5 className="label">Your Rate</h5>
           {content}
         </div>
       ) : null}
       <div className="overall-rate">
-        <h4 className="label">Overall Rate</h4>
+        <h5 className="label">Overall Rate</h5>
         <span className="icon">
           <FontAwesomeIcon icon="star" color="#ffd166" />
           <p className="text-on-icon">{rateAvg}</p>
@@ -75,15 +90,15 @@ export default props => {
       <style jsx>{`
         .rating-container,
         .rating-container.author {
-          padding: 20px;
+          padding: 20px 20px 40px 20px;
           display: flex;
           flex-flow: row nowrap;
           align-items: baseline;
+          justify-content: space-between;
           position: relative;
           background: #fff;
           width: 95%;
           margin: 0 auto;
-          border-radius: 0 0 5px 5px;
         }
 
         .rating-container:before {
@@ -102,7 +117,7 @@ export default props => {
 
         .overall-rate,
         .user-rate {
-          flex: 1 0 50%;
+          flex: 0 0 45%;
           display: flex;
           flex-flow: row wrap;
           align-items: flex-start;
@@ -120,7 +135,9 @@ export default props => {
         .label {
           flex: 1 0 100%;
           text-align: center;
-          margin-bottom: 0px;
+          margin-bottom: 6px;
+          color: #26335e;
+          font-weight: 900;
         }
 
         .icon {

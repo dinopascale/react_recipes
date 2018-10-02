@@ -6,7 +6,7 @@ export default ({ recipe, isAuthor }) => {
       <div className="recipe-img" />
       <div className="info-container">
         <div className="recipe-title-container">
-          <h1 className="recipe-title">{recipe.name}</h1>
+          <h3 className="recipe-title">{recipe.name}</h3>
 
           <p className="recipe-author-container">
             by
@@ -26,40 +26,40 @@ export default ({ recipe, isAuthor }) => {
 
         <div className="grid-simple-info">
           <div className="simple-info">
-            <span className="label">Preparation Time</span>
-            <p className="info">{recipe.preparationTime} min</p>
+            <span className="label caption">Preparation Time</span>
+            <p className="info body-one">{recipe.preparationTime} min</p>
           </div>
           <div className="simple-info">
-            <span className="label">Cook Time</span>
-            <p className="info">{recipe.cookTime} min</p>
+            <span className="label caption">Cook Time</span>
+            <p className="info body-one">{recipe.cookTime} min</p>
           </div>
           <div className="simple-info">
-            <span className="label">Serves</span>
-            <p className="info">{recipe.serves}</p>
+            <span className="label caption">Serves</span>
+            <p className="info body-one">{recipe.serves}</p>
           </div>
           <div className="simple-info">
-            <span className="label">Difficulty</span>
-            <p className="info">{recipe.difficulty}</p>
+            <span className="label caption">Difficulty</span>
+            <p className="info body-one">{recipe.difficulty}</p>
           </div>
           <div className="simple-info">
-            <span className="label">Tag</span>
-            <p className="info">{recipe.tag}</p>
+            <span className="label caption">Tag</span>
+            <p className="info body-one">{recipe.tag}</p>
           </div>
         </div>
 
         <div className="recipe-ingredients">
-          <p className="section-title">Ingredients</p>
+          <p className="section-title caption">Ingredients</p>
           <ul className="ingredients">
             {recipe.ingredients.map(ing => (
-              <li className="ingredient" key={ing.name}>
+              <li className="ingredient body-one" key={ing.name}>
                 {ing.name} - {ing.quantity}
               </li>
             ))}
           </ul>
         </div>
         <div className="directions-container">
-          <p className="section-title">Directions</p>
-          <p className="directions">{recipe.directions}</p>
+          <p className="section-title caption">Directions</p>
+          <p className="directions body-one">{recipe.directions}</p>
         </div>
       </div>
       <style jsx>{`
@@ -95,6 +95,8 @@ export default ({ recipe, isAuthor }) => {
 
         .recipe-title {
             margin: 0;
+            color: #26335e;
+            font-weight: 900;
         }
 
         .recipe-author-container {
@@ -104,7 +106,7 @@ export default ({ recipe, isAuthor }) => {
         }
 
         .recipe-author {
-            color: rgb(16, 174, 178);
+            color: #06b4fe;
             font-weight: bold;
             cursor:pointer;
         }
@@ -126,8 +128,8 @@ export default ({ recipe, isAuthor }) => {
         }
 
         .label, .section-title {
-            color: #444;
-            font-weight: bold;
+            color: #26335e;
+            font-weight: 900;
             font-size: 13px;
         }
 
@@ -137,6 +139,7 @@ export default ({ recipe, isAuthor }) => {
 
         .info, .ingredient {
             font-size: 15px;
+            color: #777e8e;
             margin: 5px 0;
         }
 
@@ -162,8 +165,8 @@ export default ({ recipe, isAuthor }) => {
 
         .directions {
             margin-top: 5px;
-            font-size: 15px;
             line-height: 1.6;
+            color: #777e8e;
         }
 
       `}</style>

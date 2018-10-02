@@ -15,9 +15,9 @@ export default ({ recipe }) => (
       />
       <div className="recipe-info-container">
         <div className="recipe-name-container">
-          <p className="recipe-name">{recipe.name}</p>
+          <p className="recipe-name body-one">{recipe.name}</p>
           <div className="recipe-rate-row">
-            <p className="recipe-rate">
+            <p className="recipe-rate caption">
               {recipe.rateCount !== 0
                 ? (recipe.rateValue / recipe.rateCount).toFixed(1)
                 : 0}
@@ -28,7 +28,7 @@ export default ({ recipe }) => (
           </div>
         </div>
         <div className="recipe-date-container">
-          <p className="created">{dateInterval(recipe.createdAt)}</p>
+          <p className="created caption">{dateInterval(recipe.createdAt)}</p>
         </div>
       </div>
       <style jsx>{`
@@ -72,14 +72,11 @@ export default ({ recipe }) => (
           flex-flow: column;
       }
 
-      .recipe-name-container {
-          flex: 1 0 0;
-      }
-
       .recipe-name {
           margin: 0;
           font-size: 15px;
-          font-weight: bold;
+          font-weight: 900;
+          color: #06b4fe;
       }
 
       .recipe-rate-row {
@@ -109,7 +106,7 @@ export default ({ recipe }) => (
 
       .created {
           margin: 5px 0 0 0;
-          font-size: 14px;
+          font-size: 12px;
           color: #999;
       }
     `}</style>

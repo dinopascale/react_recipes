@@ -3,33 +3,33 @@ import Spinner from '../Spinner';
 export default ({ rates, comments, recipes, isLoading }) => (
   <div className="statistics-container">
     <div className="statistic recipe">
-      <p className="label">Recipes</p>
       <div className="container-spinner">
         {isLoading ? (
           <Spinner type="contain" />
         ) : (
           <p className="number">{recipes}</p>
         )}
+        <p className="label overline">Recipes</p>
       </div>
     </div>
     <div className="statistic recipe">
-      <p className="label">Rates</p>
       <div className="container-spinner">
         {isLoading ? (
           <Spinner type="contain" />
         ) : (
           <p className="number">{rates}</p>
         )}
+        <p className="label caption">Rates</p>
       </div>
     </div>
     <div className="statistic recipe">
-      <p className="label">Comments</p>
       <div className="container-spinner">
         {isLoading ? (
           <Spinner type="contain" />
         ) : (
           <p className="number">{comments}</p>
         )}
+        <p className="label caption">Comments</p>
       </div>
     </div>
     <style jsx>{`
@@ -47,9 +47,10 @@ export default ({ rates, comments, recipes, isLoading }) => (
       }
 
       .label {
-        margin: 2px 0;
-        font-size: 14px;
+        margin: 0 0 10px 0;
+        font-size: 12px;
         text-transform: uppercase;
+        color: #777e8e;
       }
 
       .container-spinner {
@@ -63,8 +64,9 @@ export default ({ rates, comments, recipes, isLoading }) => (
 
       .number {
         font-size: 32px;
-        font-weight: bold;
         margin: 5px 0;
+        color: #777e8e;
+        font-weight: 900;
       }
     `}</style>
   </div>

@@ -21,16 +21,20 @@ export default props => {
       onClick={props.handleClick}
       style={props.customStyle}
       name={props.name}
+      className="action-button"
       type="button"
     >
       {icon}
       {props.children ? (
-        <p className="text" style={{ marginLeft: props.icon ? '10px' : '0' }}>
+        <p
+          className="button-text text"
+          style={{ marginLeft: props.icon ? '10px' : '0' }}
+        >
           {props.children}
         </p>
       ) : null}
       <style jsx>{`
-        button {
+        .action-button {
           flex: 0 1 30%;
           display: flex;
           justify-content: center;
@@ -42,10 +46,12 @@ export default props => {
           font-family: 'Open Sans', sans-serif;
           font-size: 14px;
           outline: none;
+          max-height: 36px;
+          max-width: 200px;
         }
 
         .text {
-          margin-top: 0px;
+          margin-top: 0;
           margin-bottom: 0;
         }
       `}</style>

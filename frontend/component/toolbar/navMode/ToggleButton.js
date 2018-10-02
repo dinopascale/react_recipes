@@ -5,13 +5,12 @@ export default props => (
     <span />
     <style jsx>{`
       .hamburger-icon {
-        width: 40px;
-        height: 50px;
+        width: 25px;
+        height: 15px;
         display: flex;
         flex-flow: column;
         justify-content: space-around;
         align-items: center;
-        padding: 10px 0;
         box-sizing: border-box;
         cursor: pointer;
         cursor: pointer;
@@ -19,9 +18,9 @@ export default props => (
 
       .hamburger-icon span {
         width: 90%;
-        border-radius: 40px;
+        border-radius: 70px;
         height: 2px;
-        background-color: #fff;
+        background-color: #919bb0;
       }
 
       @media (min-width: 499px) {

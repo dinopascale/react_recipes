@@ -6,6 +6,7 @@ import Router, { withRouter } from 'next/router';
 
 import { callApi, successLogin, failLogin } from '../../store/actions';
 import LoginForm from '../../frontend/component/LoginForm';
+import Spinner from '../../frontend/component/Spinner';
 
 class Login extends Component {
   static async getInitialProps(props) {
@@ -14,7 +15,6 @@ class Login extends Component {
       const schema = db.models['User'].getSchema('email', 'password');
       return { schema };
     }
-
     if (props.reduxStore.getState().auth.user) {
       Router.push('/recipes');
     }
@@ -71,20 +71,24 @@ class Login extends Component {
         </Head>
         <div className="auth">
           <div className="form">
-            <h1 className="form-auth-title">Login</h1>
+            <h3 className="form-auth-title">Login</h3>
             <p className="form-auth-subtitle">
               or{' '}
               <Link prefetch href="/auth/register">
                 <span className="auth-link">create a new account</span>
               </Link>
             </p>
-            {!isLoading ? (
-              <LoginForm
-                schema={this.props.schema || this.state.schema}
-                submitSucceeded={this.loggedInAndPushToRecipes}
-                submitFailed={this.props.loginFail}
-              />
-            ) : null}
+            <div className="container">
+              {!isLoading ? (
+                <LoginForm
+                  schema={this.props.schema || this.state.schema}
+                  submitSucceeded={this.loggedInAndPushToRecipes}
+                  submitFailed={this.props.loginFail}
+                />
+              ) : (
+                <Spinner type="contain" />
+              )}
+            </div>
           </div>
           <style jsx>{`
             .auth {
@@ -98,6 +102,8 @@ class Login extends Component {
             .form-auth-title {
               margin-top: 0;
               margin-bottom: 5px;
+              color: #26335e;
+              font-weight: 900;
             }
 
             .form-auth-subtitle {
@@ -114,10 +120,16 @@ class Login extends Component {
 
             .form {
               width: 90%;
+              margin-top: 50px;
               min-height: 236px;
               background: #fff;
               border-radius: 4px;
-              padding: 40px 20px;
+              padding: 20px 20px;
+            }
+
+            .container {
+              position: relative;
+              min-height: 200px;
             }
 
             .toggle-form {

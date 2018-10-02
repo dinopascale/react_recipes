@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default ({ isOpen, toggleShow, items, close, sortBy }) => {
   return (
     <div className="dropdown-menu-container">
-      <div className="choice" onClick={toggleShow}>
+      <div className="body-two choice" onClick={toggleShow}>
         {sortBy}
         <span className="caret">
           <FontAwesomeIcon icon="caret-down" />
@@ -14,7 +14,7 @@ export default ({ isOpen, toggleShow, items, close, sortBy }) => {
           {items.map(item => (
             <li
               key={item.value}
-              className="dropdown-menu-item"
+              className="body-two dropdown-menu-item"
               onClick={event => {
                 close(event);
                 item.handleClick();
@@ -38,9 +38,9 @@ export default ({ isOpen, toggleShow, items, close, sortBy }) => {
         }
 
         .choice {
-          color: #fff;
-          font-weight: bold;
-          font-size: 14px;
+          color: #777e8e;
+          //   font-weight: bold;
+          //   font-size: 14px;
           padding: 10px 0;
           margin: 0;
           width: 100%;
@@ -69,7 +69,7 @@ export default ({ isOpen, toggleShow, items, close, sortBy }) => {
           width: 100%;
           font-size: 14px;
           padding: 8px 5px;
-          color: #333;
+          color: #777e8e;
           display: flex;
           align-items: center;
         }

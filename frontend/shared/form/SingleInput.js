@@ -79,12 +79,11 @@ export default ({ field, change, blur, type, width }) => (
         width: 100%;
         flex: 0 0 90%;
         padding: 5px 8px;
-        font-family: 'Open Sans', sans-serif;
         font-size: 15px;
-        color: #fff;
-        border: none;
+        color: #111;
+        border: 1px solid #bdbdbd;
         border-radius: 3px;
-        background: #10aeb2;
+        background: #fff;
         outline: none;
         transition: all 0.1s linear;
       }
@@ -95,16 +94,19 @@ export default ({ field, change, blur, type, width }) => (
 
       .form-input:focus,
       .form-input.dirty {
-        background: #10aeb2;
         flex: 0 0 90%;
       }
 
       .form-input.valid {
-        background: #00e676;
+        // background: #00e676;
+        // color: #fff;
+        border: 1px solid #00e676;
       }
 
       .form-input.invalid {
-        background: #b71c1c;
+        border: 1px solid #b71c1c;
+        // color: #fff;
+        // border: none;
       }
 
       .form-icon {
@@ -130,6 +132,7 @@ export default ({ field, change, blur, type, width }) => (
       .form-error {
         padding-top: 4px;
         width: 100%;
+        min-height: 21px;
         font-style: italic;
         font-size: 14px;
         color: #888;

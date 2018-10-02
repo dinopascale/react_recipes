@@ -74,8 +74,7 @@ class Layout extends React.Component {
               width: 100%;
               overflow: hidden;
               position: relative;
-              background-color: #ff7f50;
-              //   transition: all
+              background-color: #cad1de;
             }
 
             .app-container.blurred {
@@ -83,12 +82,10 @@ class Layout extends React.Component {
             }
 
             .content {
-              font-family: 'Open Sans', sans-serif;
               //   max-width: 800px;
               min-height: 100vh;
-              background-color: #ff7f50;
+              background-color: #cad1de;
               margin: 0 auto;
-              //   overflow-y: auto;
             }
           `}</style>
         </div>

@@ -11,15 +11,13 @@ import GreetUser from '../frontend/component/GreetUser';
 import RecipesList from '../frontend/component/RecipesList';
 
 const styleButton = {
-  maxWidth: '300px',
-  maxHeight: '36px',
-  backgroundColor: '#ecf284',
-  fontWeight: 'bold',
-  lineHeight: '14px',
+  backgroundColor: '#06b4fe',
+  color: '#fff',
   marginBottom: '20px',
-  borderRadius: '4px',
   padding: '10px 40px',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  boxShadow:
+    '0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)'
 };
 
 const marginTop = '90px';
@@ -144,8 +142,8 @@ class Recipes extends React.Component {
   renderCallToAction = () => {
     return (
       <div className="invite-container">
-        <h1 className="title">Feel Inspired?</h1>
-        <p className="subtitle">
+        <h3 className="title">Feel Inspired?</h3>
+        <p className="body-one subtitle">
           Why not register and post your awesome recipe?
         </p>
         <ActionButton
@@ -162,15 +160,18 @@ class Recipes extends React.Component {
           .title,
           .subtitle {
             margin-top: 0;
-            color: #fff;
           }
 
           .title {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            color: #26335e;
+            font-weight: 900;
           }
 
           .subtitle {
             margin-bottom: 30px;
+            color: #777e8e;
+            line-height: 1.5;
           }
         `}</style>
       </div>
@@ -210,15 +211,17 @@ class Recipes extends React.Component {
           />
           <style jsx>{`
             .recipes-container {
-              width: 100%;
+              width: 90%;
+              margin: ${marginTop} auto 30px auto;
+              border-radius: 8px;
               min-height: 100%;
-              margin-top: ${marginTop};
-              padding: 0px 20px 0px 20px;
+              padding: 30px 16px 0px 16px;
+              background: #fff;
             }
 
             .divider {
               border: 1px solid;
-              color: #fff;
+              color: #777e8e;
               margin: 40px 0 20px 0;
             }
           `}</style>

@@ -6,15 +6,12 @@ import React, { Fragment } from 'react';
 import ErrorPage from './_error';
 import ActionButton from '../frontend/shared/ActionButton';
 
-const styleButton = {
+const loginButton = {
   width: '100%',
-  maxWidth: '300px',
-  maxHeight: '36px',
-  backgroundColor: '#ecf284',
-  fontWeight: 'bold',
-  lineHeight: '14px',
+  maxWidth: '200px',
+  backgroundColor: '#06b4fe',
+  color: '#fff',
   marginBottom: '20px',
-  borderRadius: '4px',
   cursor: 'pointer'
 };
 
@@ -44,67 +41,52 @@ class Index extends React.Component {
         </Head>
         <div className="landing">
           <section className="title-action">
-            <h1 className="title">React Recipes</h1>
-            <h3 className="subtitle">
+            <h3 className="title">React Recipes</h3>
+            <h5 className="subtitle">
               Share your recipes. Get inspired.
               <br /> Cook!
-            </h3>
+            </h5>
             <ActionButton
-              customStyle={styleButton}
-              handleClick={this.navigateTo('/auth/login')}
-            >
-              Enter
-            </ActionButton>
-
-            <ActionButton
-              customStyle={styleButton}
+              customStyle={loginButton}
               handleClick={this.navigateTo('/auth/register')}
             >
               Register
             </ActionButton>
           </section>
         </div>
-        {/* <div className="explore">
-          <p>... or just search for some recipes!</p>
-        </div> */}
         <style jsx>{`
           .landing {
             height: 100vh;
-            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
 
           .title-action {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            padding: 40px 30px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 30px 16px;
             text-align: center;
             display: flex;
             flex-flow: column;
             justify-content: center;
             align-items: center;
+            background-color: #fff;
+            border-radius: 8px;
           }
 
           .title {
             font-size: 48px;
-            margin: 0 0 30px 0;
+            margin: 0px;
             padding: 15px 0;
-            color: #fff;
-            border-top: 6px solid;
-            border-bottom: 6px solid;
+            color: #26335e;
+            font-weight: 900;
           }
 
           .subtitle {
-            font-size: 16px;
-            font-weight: 200;
-            font-family: 'Open Sans', sans-serif;
-            color: #fff;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            color: #777e8e;
+            line-height: 1.5;
+            margin: 8px 0 40px 0;
             font-size: 18px;
           }
 
@@ -126,61 +108,5 @@ class Index extends React.Component {
     );
   }
 }
-
-// Index.getInitialProps = async ({ req }) => {
-//   try {
-//     if (req) {
-//       try {
-//         const { db } = req;
-//         const recipes = await db.models['Recipe']
-//           .find({ sharable: true })
-//           .limit(4)
-//           .populate('_creator', 'avatar username')
-//           .select(
-//             'name preparationTime cookTime difficulty _creator img tag rateCount rateValue'
-//           );
-
-//         const promises = recipes.map(async recipe => {
-//           const rates = await db.models['RecipeRate']
-//             .find({ recipeId: recipe._id })
-//             .select('value');
-//           const rateCount = rates.length;
-//           const rateValue =
-//             rates.length === 0
-//               ? 0
-//               : rates.reduce((sum, rate) => sum + rate.value, 0);
-//           return {
-//             ...recipe._doc,
-//             rateCount,
-//             rateValue
-//           };
-//         });
-
-//         return {
-//           recipes: await Promise.all(promises)
-//         };
-//       } catch (e) {
-//         console.log(e);
-//         return e;
-//       }
-//     }
-
-//     const res = await fetch(`/api/recipes`);
-
-//     if (res.status !== 200) {
-//       const e = new Error(res.statusText);
-//       e.status = res.status;
-//       throw e;
-//     }
-
-//     const data = await res.json();
-
-//     return {
-//       recipes: data.results
-//     };
-//   } catch (e) {
-//     return { error: e };
-//   }
-// };
 
 export default withRouter(Index);

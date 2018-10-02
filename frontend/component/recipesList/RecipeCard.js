@@ -29,14 +29,14 @@ class RecipeCard extends React.PureComponent {
             />
           </div>
           <div className="recipe-info-container">
-            <p className="recipe-info title">{recipe.name}</p>
-            <div className="recipe-info rate-container">
+            <p className="recipe-info title body-one">{recipe.name}</p>
+            <div className="recipe-info rate-container caption">
               <p className="rate-value">{recipe.avgRate.toFixed(1)}</p>
               <span className="rate-icon">
                 <FontAwesomeIcon icon="star" />
               </span>
             </div>
-            <span className="recipe-date">
+            <span className="recipe-date caption">
               {dateInterval(recipe.createdAt)}
             </span>
           </div>
@@ -46,6 +46,7 @@ class RecipeCard extends React.PureComponent {
               margin-bottom: 10px;
               display: flex;
               flex-flow: column;
+              color: #777e8e;
             }
 
             .recipe-img-container {
@@ -70,7 +71,10 @@ class RecipeCard extends React.PureComponent {
               margin: 0;
               font-size: 14px;
               font-weight: bold;
-              color: #fff;
+            }
+
+            .recipe-info.title {
+              color: #26335e;
             }
 
             .recipe-info.rate-container {
@@ -80,7 +84,6 @@ class RecipeCard extends React.PureComponent {
               display: flex;
               //   align-content: baseline;
               align-items: center;
-              color: #fff;
             }
 
             .rate-value {
@@ -96,7 +99,6 @@ class RecipeCard extends React.PureComponent {
             }
 
             .recipe-date {
-              color: #fff;
               font-size: 12px;
               font-style: italic;
             }

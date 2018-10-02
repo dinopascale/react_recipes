@@ -73,6 +73,7 @@ const RecipesList = ({ recipes, getRecipes, sortBy, filterBy }) => {
           display: flex;
           flex-flow: row nowrap;
           justify-content: space-between;
+          margin-bottom: 20px;
         }
       `}</style>
     </div>

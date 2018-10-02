@@ -5,10 +5,11 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
   <div className="user-info-container">
     <div className="avatar-container" />
     <div className="user-username-container">
-      <h1 className="username">{user.username}</h1>
+      <h4 className="username">{user.username}</h4>
     </div>
     <div className="user-bio-container">
-      <p className="bio">{user.bio || 'No bio avaible'}</p>
+      <h6 className="section-title">Bio</h6>
+      <p className="bio body-one">{user.bio || 'No bio avaible'}</p>
     </div>
     <UserStatistics
       rates={rates}
@@ -16,7 +17,7 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
       recipes={recipes ? recipes.length : 0}
       isLoading={isLoading}
     />
-    <h4 className="section-title">Recent Recipes</h4>
+    <h6 className="section-title">Recent Recipes</h6>
     <UserRecipesList recipeList={recipes ? recipes : []} />
     <style jsx>{`
       .user-info-container {
@@ -56,17 +57,20 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
       }
 
       .username {
-        font-size: 26px;
+        color:#26335e;
+        font-weight: 900;
       }
 
       .bio {
-        color: #888;
-        font-style: italic;
+        margin:0;
+        color: #777e8e;
         line-height: 1.6;
       }
 
       .section-title {
-          text-transform: uppercase;
+        color:#26335e;
+        font-weight: 900;
+        margin: 0 0 10px 0;
       }
     `}</style>
   </div>

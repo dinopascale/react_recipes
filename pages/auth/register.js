@@ -75,7 +75,7 @@ class Register extends Component {
         </Head>
         <div className="auth">
           <div className="form">
-            <h1 className="form-auth-title">Register</h1>
+            <h3 className="form-auth-title">Register</h3>
             <p className="form-auth-subtitle">
               or{' '}
               <Link prefetch href="/auth/login">
@@ -101,15 +101,18 @@ class Register extends Component {
 
             .form {
               width: 90%;
+              margin-top: 50px;
               min-height: 236px;
               background: #fff;
               border-radius: 4px;
-              padding: 40px 20px;
+              padding: 20px 20px;
             }
 
             .form-auth-title {
               margin-top: 0;
               margin-bottom: 5px;
+              color: #26335e;
+              font-weight: 900;
             }
 
             .form-auth-subtitle {

@@ -4,11 +4,11 @@ import SingleInput from '../shared/form/SingleInput';
 import ActionButton from '../shared/ActionButton';
 
 const registerButton = {
+  float: 'right',
   padding: '10px 30px',
-  fontWeight: 'bold',
-  marginTop: '40px',
-  borderRadius: '4px',
-  background: 'rgb(236, 242, 132)'
+  marginTop: '30px',
+  background: '#06b4fe',
+  color: '#fff'
 };
 
 const RegisterForm = ({ schema, submitSucceeded, submitFailed }) => {

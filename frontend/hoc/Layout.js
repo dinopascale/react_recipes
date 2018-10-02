@@ -7,6 +7,8 @@ import Toolbar from '../component/Toolbar';
 import SideDrawer from '../component/SideDrawer';
 import Modal from '../component/Modal';
 import Spinner from '../component/Spinner';
+import Snackbar from '../shared/Snackbar';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 class Layout extends React.Component {
   state = {
@@ -24,9 +26,10 @@ class Layout extends React.Component {
   };
 
   render() {
+    const { closeModal, errMessage, modal } = this.props;
     return (
       <Fragment>
-        {/* {this.props.loading ? <Spinner /> : null} */}
+        {this.props.loading ? <Spinner /> : null}
         <Meta
           isScrollable={!(this.state.showSideDrawer || this.props.modal.isOpen)}
         />
@@ -46,12 +49,25 @@ class Layout extends React.Component {
             user={this.props.userInfo}
           />
           <main className="content">{this.props.children}</main>
-          <Modal
+          {/* <Modal
             close={this.props.closeModal}
             isOpen={this.props.modal.isOpen}
             error={this.props.errMessage}
             isSuccess={this.props.modal.isSuccess}
-          />
+          /> */}
+          <CSSTransitionGroup
+            transitionName="fade"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            {modal.isOpen ? (
+              <Snackbar
+                close={closeModal}
+                isOpen={modal.isOpen}
+                message={modal.message}
+              />
+            ) : null}
+          </CSSTransitionGroup>
           <style jsx>{`
             .app-container {
               min-height: 100%;
@@ -59,10 +75,11 @@ class Layout extends React.Component {
               overflow: hidden;
               position: relative;
               background-color: #ff7f50;
+              //   transition: all
             }
 
             .app-container.blurred {
-              filter: blur(2px);
+              //   filter: blur(2px);
             }
 
             .content {

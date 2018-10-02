@@ -266,9 +266,9 @@ class Recipe extends React.Component {
         throw e;
       }
 
-      const data = await response.json();
-      const { isAuthor } = data.meta;
-      const { recipe } = data;
+      const json = await response.json();
+      const { isAuthor } = json.meta;
+      const { recipe } = json.data;
 
       if (!recipe || recipe.length === 0) {
         const e = new Error('Recipe not Found');

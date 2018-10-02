@@ -43,11 +43,13 @@ router.post('/user/login', async (req, res, next) => {
       .status(200)
       .cookie('token', token, { maxAge: 3600000 })
       .json({
-        message: 'Login Success',
-        userInfo: {
-          username: user.username,
-          avatar: user.avatar,
-          _id: user._id
+        meta: { message: 'Login Success' },
+        data: {
+          userInfo: {
+            username: user.username,
+            avatar: user.avatar,
+            _id: user._id
+          }
         }
       });
   } catch (e) {
@@ -69,11 +71,13 @@ router.post('/user/signup', async (req, res, next) => {
       .status(200)
       .cookie('token', token, { maxAge: 3600000 })
       .json({
-        message: 'User Subs',
-        userInfo: {
-          username: user.username,
-          avatar: user.avatar,
-          _id: user._id
+        meta: { message: 'Registration completed!' },
+        data: {
+          userInfo: {
+            username: user.username,
+            avatar: user.avatar,
+            _id: user._id
+          }
         }
       });
   } catch (e) {
@@ -86,7 +90,8 @@ router.post('/user/signup', async (req, res, next) => {
 
 router.post('/user/me/logout', checkAuth, (req, res, next) => {
   res.cookie('token', '', { expires: new Date(0) }).json({
-    status: 'Ok'
+    meta: { message: 'Logout success' },
+    data: {}
   });
 });
 
@@ -99,11 +104,12 @@ router.get('/user/me', checkAuth, async (req, res, next) => {
 
     if (!me) {
       return res.status(404).json({
-        message: `No user with ID: ${id} was found`
+        meta: { message: `No user with ID: ${id} was found` },
+        data: {}
       });
     }
 
-    res.status(200).json({ user: me });
+    res.status(200).json({ meta: { message: 'Ok' }, data: { user: me } });
   } catch (e) {
     e.status = 400;
     next(e);
@@ -118,7 +124,10 @@ router.get('/user/:id', async (req, res, next) => {
     const user = await User.findById(authorId).select('username avatar bio');
 
     res.status(200).json({
-      user
+      meta: { message: 'Ok' },
+      data: {
+        user
+      }
     });
   } catch (e) {
     e.status = 400;
@@ -142,9 +151,12 @@ router.get('/user/statistics/:id', async (req, res, next) => {
     );
 
     res.status(201).json({
-      recipes: userRecipes,
-      userComments,
-      userRates
+      meta: { message: 'Ok' },
+      data: {
+        recipes: userRecipes,
+        userComments,
+        userRates
+      }
     });
   } catch (e) {
     e.status = 400;
@@ -177,9 +189,9 @@ router.patch('/user/me', checkAuth, async (req, res, next) => {
 
     res.status(200).json({
       meta: {
-        status: 'Ok'
+        message: 'Ok'
       },
-      updatedMe
+      data: { updatedMe }
     });
   } catch (e) {
     e.status = e.status || 400;
@@ -203,7 +215,10 @@ router.delete('/user/:id', checkAuth, checkAuthor, async (req, res, next) => {
     }
 
     res.status(200).json({
-      message: 'User Deleted'
+      meta: {
+        message: 'User Deleted'
+      },
+      data: {}
     });
   } catch (e) {
     e.status = 400;
@@ -221,7 +236,10 @@ router.post('/s/user', async (req, res, next) => {
         ? User.getSchema('username', 'password', 'email')
         : User.getSchema();
     res.status(200).json({
-      schema
+      meta: { message: 'Ok' },
+      data: {
+        schema
+      }
     });
   } catch (e) {
     e.status = 400;

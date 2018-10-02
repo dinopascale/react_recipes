@@ -80,7 +80,7 @@ export default props => {
           padding: 20px 15px;
           font-family: 'Open Sans', sans-serif;
           box-sizing: border-box;
-          background-color: #ff7f50;
+          background-color: #10aeb2;
           color: #fff;
           position: relative;
         }

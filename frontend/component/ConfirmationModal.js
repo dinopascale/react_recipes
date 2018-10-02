@@ -2,7 +2,7 @@ export default ({ children, close, title, message, onConfirm, onCancel }) => (
   <div className="confirm-modal-backdrop" onClick={close}>
     <div className="confirm-modal">
       <div className="title-row">
-        <h4>{title}</h4>
+        <h4 className="title">{title}</h4>
       </div>
       <div className="message-row">
         <p>{message}</p>
@@ -49,11 +49,15 @@ export default ({ children, close, title, message, onConfirm, onCancel }) => (
       }
 
       .title-row {
-        font-size: 21px;
+        font-size: 22px;
+      }
+
+      .title {
+        margin: 20px 0 10px 0px;
       }
 
       .message-row {
-        font-size: 17px;
+        font-size: 16px;
         color: #232f34;
       }
 

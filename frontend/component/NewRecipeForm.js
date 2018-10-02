@@ -3,10 +3,10 @@ import SingleTextarea from '../shared/form/SingleTextarea';
 import ArrayOfInputs from '../shared/form/ArrayOfInputs';
 import Step from '../shared/form/steps/Step';
 import ProgressRow from '../shared/form/steps/ProgressRow';
-import RecapInfoForm from '../shared/form/RecapInfoForm';
+import RecapInfoForm from './newRecipeForm/RecapInfoForm';
 import SingleRadioButton from '../shared/form/SingleRadioButton';
 import ToggleSwitch from '../shared/form/ToggleSwitch';
-import ActionButton from '../shared/ActionButton';
+import FloatingButton from '../shared/FloatingButton';
 
 export default ({
   form,
@@ -27,22 +27,7 @@ export default ({
     <form className="new-recipe-form">
       <ProgressRow steps={max} actual={steps.activeStep} jumpBack={jump} />
       {steps.activeStep === 4 ? (
-        <ActionButton
-          customStyle={{
-            position: 'fixed',
-            width: '56px',
-            height: '56px',
-            border: 'none',
-            bottom: '16px',
-            right: '16px',
-            zIndex: '200',
-            borderRadius: '50%',
-            backgroundColor: '#10aeb2',
-            color: '#fff'
-          }}
-          handleClick={submitted}
-          icon="paper-plane"
-        />
+        <FloatingButton icon="paper-plane" action={submitted} />
       ) : null}
       <Step
         fields={[form.img, form.name]}

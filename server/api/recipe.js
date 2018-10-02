@@ -27,8 +27,8 @@ router.get('/recipes', async (req, res, next) => {
     //pagination --- skip
 
     res.status(200).json({
-      total: resultsByRate.length,
-      results: resultsByRate.slice(prevPage, nextPage)
+      meta: { total: resultsByRate.length },
+      data: { results: resultsByRate.slice(prevPage, nextPage) }
     });
   } catch (e) {
     e.status = 400;
@@ -46,8 +46,8 @@ router.get('/recipes/recent', async (req, res, next) => {
     const resultsByDate = await Recipe.findAndSortByDate(tag);
 
     res.status(200).json({
-      total: resultsByDate.length,
-      results: resultsByDate.slice(prevPage, nextPage)
+      meta: { total: resultsByDate.length },
+      data: { results: resultsByDate.slice(prevPage, nextPage) }
     });
   } catch (e) {
     e.status = 400;
@@ -80,12 +80,10 @@ router.post('/recipe', checkAuth, async (req, res, next) => {
       ingredients: req.body.ingredients
     }).save();
     res.status(200).json({
-      message: 'New Recipe Added!',
-      recipeCreated: {
-        ...recipe._doc,
-        request: {
-          methods: ['GET'],
-          endpoint: req.headers.host + '/api/recipes/'
+      data: { message: 'New Recipe Added!' },
+      data: {
+        recipeCreated: {
+          ...recipe._doc
         }
       }
     });
@@ -101,7 +99,10 @@ router.get('/s/recipe', checkAuth, async (req, res, next) => {
   try {
     const schema = Recipe.getSchema();
     res.status(200).json({
-      schema
+      meta: { message: 'Ok' },
+      data: {
+        schema
+      }
     });
   } catch (e) {
     e.status = 400;
@@ -122,8 +123,8 @@ router.get('/recipe/rated/:recipeId', checkAuthor, async (req, res, next) => {
     }).select('value');
 
     res.status(201).json({
-      rated: !!userRate,
-      value: userRate ? userRate._doc.value : 0
+      meta: { rated: !!userRate },
+      data: { value: userRate ? userRate._doc.value : 0 }
     });
   } catch (e) {
     e.status = 400;
@@ -180,7 +181,7 @@ router.get('/recipe/:id', checkAuthor, async (req, res, next) => {
         // ratedBefore: !!userRateValue,
         // userRateValue
       },
-      recipe
+      data: { recipe }
       //   recipe: {
       //     ...recipe,
       //     difficulty: difficultyObject,
@@ -216,7 +217,7 @@ router.patch('/recipe/:id', checkAuth, async (req, res, next) => {
 
     if (!recipeToUpdate) {
       return res.status(404).json({
-        message: `No recipe with ID: ${id} was found`
+        meta: { message: `No recipe with ID: ${id} was found` }
       });
     }
 
@@ -234,11 +235,8 @@ router.patch('/recipe/:id', checkAuth, async (req, res, next) => {
     );
 
     res.status(200).json({
-      message: 'Recipe Updated!',
-      request: {
-        methods: ['GET'],
-        endpoint: req.headers.host + '/api/recipes/'
-      }
+      meta: { message: 'Recipe Updated!' },
+      data: {}
     });
   } catch (e) {
     e.status = 400;
@@ -257,16 +255,14 @@ router.delete('/recipe/:id', checkAuth, async (req, res, next) => {
 
     if (!deletedRecipe) {
       return res.status(404).json({
-        message: `No recipe with ID: ${id} was found`
+        meta: { message: `No recipe with ID: ${id} was found` },
+        data: {}
       });
     }
 
     res.status(200).json({
-      message: 'Recipe Deleted',
-      request: {
-        methods: ['GET'],
-        endpoint: req.headers.host + '/api/recipes/'
-      }
+      meta: { message: 'Recipe Deleted' },
+      data: {}
     });
   } catch (e) {
     e.status = 400;

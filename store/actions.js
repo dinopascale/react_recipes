@@ -9,7 +9,7 @@ export const actionTypes = {
   SHOW_MODAL: 'SHOW_MODAL',
   HIDE_MODAL: 'HIDE_MODAL',
   START_LOADING: 'START_LOADING',
-  STOP_LODADING: 'STOP_LOADING',
+  STOP_LOADING: 'STOP_LOADING',
   ADD_ITEM_TOEDIT: 'ADD_ITEM_TOEDIT',
   UPDATE_USER_INFO: 'UPDATE_USER_INFO'
 };
@@ -26,15 +26,16 @@ export const callApi = (
     dispatch({ type: actionTypes.START_LOADING });
     const rawResponse = await fetch(endpoint, options);
     const json = await rawResponse.json();
+
     if (rawResponse.status !== 200) {
-      const e = new Error(json.error.message || rawResponse.statusText);
+      const e = new Error(json.meta.message || rawResponse.statusText);
       e.status = rawResponse.status;
       throw e;
     }
-    dispatch({ type: actionTypes.STOP_LODADING });
+    dispatch({ type: actionTypes.STOP_LOADING });
     successCallBack(json);
   } catch (e) {
-    dispatch({ type: actionTypes.STOP_LODADING });
+    dispatch({ type: actionTypes.STOP_LOADING });
     failCallBack(e);
   }
 };
@@ -62,6 +63,13 @@ export const removeItemToEdit = (
 
 //Action creator
 
+export const successModal = message => {
+  return {
+    type: actionTypes.SHOW_MODAL,
+    payload: message
+  };
+};
+
 export const successLogin = userInfo => {
   return {
     type: actionTypes.LOGIN_SUCCESS,
@@ -69,18 +77,17 @@ export const successLogin = userInfo => {
   };
 };
 
-export const failLogin = error => {
-  const { message, status } = error;
+export const failLogin = message => {
   return {
     type: actionTypes.LOGIN_FAIL,
-    payload: { message, status }
+    payload: message
   };
 };
 
-export const successLogout = userInfo => {
+export const successLogout = message => {
   return {
     type: actionTypes.LOGOUT_SUCCESS,
-    payload: userInfo
+    payload: message
   };
 };
 

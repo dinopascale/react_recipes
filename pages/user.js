@@ -44,7 +44,7 @@ class User extends Component {
       await apiCall(
         `${endpoint}/${userId}`,
         options,
-        json => (user = json.user),
+        json => (user = json.data.user),
         error => (error = error)
       );
 
@@ -86,10 +86,11 @@ class User extends Component {
       dynamicEndpoint,
       options,
       infos => {
+        const { recipes, userComments, userRates } = infos.data;
         this.setState({
-          recipes: infos.recipes,
-          userComments: infos.userComments,
-          userRates: infos.userRates,
+          recipes,
+          userComments,
+          userRates,
           isLoading: false
         });
       },

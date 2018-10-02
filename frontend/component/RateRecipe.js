@@ -32,8 +32,8 @@ class RateRecipe extends Component {
 
     this.setState({
       initialized: true,
-      rated: json.rated,
-      userRate: json.value,
+      rated: json.meta.rated,
+      userRate: json.data.value,
       isLoading: false
     });
   };

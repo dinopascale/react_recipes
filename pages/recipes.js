@@ -51,9 +51,10 @@ class Recipes extends React.Component {
         throw e;
       }
 
-      const data = await response.json();
+      const json = await response.json();
       return {
-        recipes: data.results,
+        total: json.meta.total,
+        recipes: json.data.results,
         error: null
       };
     } catch (e) {
@@ -126,8 +127,8 @@ class Recipes extends React.Component {
       json => {
         this.setState(prevState => ({
           recipesList: fromScroll
-            ? [...prevState.recipesList, ...json.results]
-            : json.results,
+            ? [...prevState.recipesList, ...json.data.results]
+            : json.data.results,
           sortBy: sort === 'Most Popular' ? 'Most Popular' : 'Most Recent',
           filterBy: tag ? tag : prevState.tag,
           page: fromScroll ? prevState.page + 1 : 1,

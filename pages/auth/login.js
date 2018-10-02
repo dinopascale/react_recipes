@@ -40,7 +40,7 @@ class Login extends Component {
       options,
       json =>
         this.setState({
-          schema: json.schema,
+          schema: json.data.schema,
           isLoading: false
         }),
       error => {
@@ -58,7 +58,7 @@ class Login extends Component {
 
   loggedInAndPushToRecipes = json => {
     const { loginSuccess, router } = this.props;
-    loginSuccess(json.userInfo);
+    loginSuccess(json.data.userInfo);
     router.push('/recipes');
   };
 

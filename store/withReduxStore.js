@@ -30,10 +30,8 @@ async function getUserInfo(appContext) {
   return {
     auth: {
       user: {
-        ...json.user
-      },
-      loading: false,
-      errorMex: ''
+        ...json.data.user
+      }
     }
   };
 }

@@ -88,7 +88,7 @@ class Form extends Component {
         submitSuccess ? submitSuccess(json) : successModal();
       },
       error => {
-        submitFail ? submitFail(error) : errorModal(error);
+        submitFail ? submitFail(error.message) : errorModal(error.message);
       }
     );
   };

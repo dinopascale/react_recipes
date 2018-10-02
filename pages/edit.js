@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 
-import { removeItemToEdit } from '../store/actions';
+import { removeItemToEdit, successModal } from '../store/actions';
 import EditToolbar from '../frontend/component/EditToolbar';
 import Form from '../frontend/shared/Form';
 import apiEndpoints from '../frontend/utils/apiEndpoints';
@@ -38,7 +38,7 @@ class Edit extends Component {
     await apiCall(
       endpoint,
       options,
-      json => (schema = json.schema),
+      json => (schema = json.data.schema),
       err => (schema = err)
     );
 
@@ -46,24 +46,20 @@ class Edit extends Component {
   }
 
   closeEdit = response => {
-    const { exitEdit, router, item, isUser } = this.props;
+    const { exitEdit, success, router, item, isUser } = this.props;
     const as = isUser ? `/u/me` : `/r/${item._id}`;
     const href = isUser
       ? `/user?userId=${item._id}&isMe=true`
       : `/recipe?id=${item._id}&isRecipe=true`;
-    if (isUser && response.updatedMe) {
-      exitEdit(isUser, response.updatedMe);
+    if (isUser && response.data.updatedMe) {
+      success('User information');
+      exitEdit(isUser, response.data.updatedMe);
       return router.push(href, as);
     }
+    success('Recipe');
     exitEdit();
     router.push(href, as);
   };
-
-  //   componentDidMount() {
-  //     if (!Object.keys(this.props.item).length) {
-  //       this.props.router.push('/recipes');
-  //     }
-  //   }
 
   render() {
     const { isRecipe, schema, item } = this.props;
@@ -136,6 +132,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    success: item => dispatch(successModal(`${item} updated successfully!`)),
     exitEdit: (isUser, updateUser) =>
       dispatch(removeItemToEdit(isUser, updateUser))
   };

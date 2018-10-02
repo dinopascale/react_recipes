@@ -21,7 +21,7 @@ export default ({ action, icon, type, text, isColumn }) => (
         color: ${isColumn ? '#10aeb2' : '#fff'};
         box-shadow: 0px 2px 5px #666;
         cursor: pointer;
-        z-index: 110;
+        z-index: 200;
         outline: none;
         font-size: 14px;
         border: none;

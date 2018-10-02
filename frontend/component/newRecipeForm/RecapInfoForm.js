@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 class RecapInfoForm extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -89,22 +89,24 @@ class RecapInfoForm extends Component {
       <div className="recap-form-container">
         <h2>Recap of your Recipe</h2>
         <div className="recap-form">
-          {Object.keys(data).map(key => {
-            return (
-              <div
-                key={key}
-                className={['recap-element-container', key].join(' ')}
-              >
-                {key === 'img' ? (
-                  <img src={data.img} className="img-recap" />
-                ) : key === 'ingredients' ? (
-                  this.renderIngredients(data.ingredients)
-                ) : (
-                  this.renderSingleField(key, data[key])
-                )}
-              </div>
-            );
-          })}
+          {Object.keys(data)
+            .filter(key => key !== 'rateCount' && key !== 'rateValue')
+            .map(key => {
+              return (
+                <div
+                  key={key}
+                  className={['recap-element-container', key].join(' ')}
+                >
+                  {key === 'img' ? (
+                    <img src={data.img} className="img-recap" />
+                  ) : key === 'ingredients' ? (
+                    this.renderIngredients(data.ingredients)
+                  ) : (
+                    this.renderSingleField(key, data[key])
+                  )}
+                </div>
+              );
+            })}
         </div>
         <style jsx>{`
           .recap-form-container {

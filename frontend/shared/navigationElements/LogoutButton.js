@@ -13,12 +13,12 @@ class LogoutButton extends React.Component {
     await callApi(
       endpoint,
       options,
-      () => {
+      json => {
         router.push('/auth/login');
-        logoutSuccess();
+        logoutSuccess(json.meta.message);
       },
       error => {
-        logoutFail(error);
+        logoutFail(error.meta);
       }
     );
   };
@@ -56,9 +56,8 @@ const mapDispatchToProps = dispatch => {
   return {
     callApi: (endpoint, options, onSuccess, onFail) =>
       dispatch(callApi(endpoint, options, onSuccess, onFail)),
-    logoutSuccess: () => dispatch(successLogout()),
-    logoutFail: error => dispatch(failLogout(error)),
-    onLogout: () => dispatch(tryLogout())
+    logoutSuccess: message => dispatch(successLogout(message)),
+    logoutFail: error => dispatch(failLogout(error))
   };
 };
 

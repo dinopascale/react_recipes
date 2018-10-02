@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 
 class ImgWithSpinner extends Component {
-  state = {
-    loading: true,
-    error: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      error: false
+    };
+  }
 
   handleLoading = () => {
     this.setState({

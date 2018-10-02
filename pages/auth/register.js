@@ -44,7 +44,7 @@ class Register extends Component {
       options,
       json =>
         this.setState({
-          schema: json.schema,
+          schema: json.data.schema,
           isLoading: false
         }),
       error => {
@@ -62,7 +62,7 @@ class Register extends Component {
 
   registerInAndPushToRecipes = json => {
     const { loginSuccess, router } = this.props;
-    loginSuccess(json.userInfo);
+    loginSuccess(json.data.userInfo);
     router.push('/recipes');
   };
 

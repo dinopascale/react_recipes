@@ -25,7 +25,7 @@ class NewRecipe extends Component {
     await apiCall(
       endpoint,
       options,
-      json => (schema = json.schema),
+      json => (schema = json.data.schema),
       err => (schema = err)
     );
 

@@ -10,11 +10,21 @@ class Toolbar extends React.Component {
   };
 
   render() {
-    const { opened, isAuth, router, userId } = this.props;
+    const {
+      opened,
+      isAuth,
+      router,
+      userId,
+      isRecipeAuthor,
+      editRecipe,
+      editUser,
+      openModal
+    } = this.props;
     const isEdit = router.pathname === '/edit';
     if (isEdit) {
       return null;
     }
+
     const isAuthPage =
       router.pathname === '/auth/login' || router.pathname === '/auth/register';
 
@@ -25,12 +35,18 @@ class Toolbar extends React.Component {
           isAuth={isAuth}
           userId={userId}
           isAuthPage={isAuthPage}
+          editUser={editUser}
+          editRecipe={editRecipe}
+          router={router}
+          isRecipeAuthor={isRecipeAuthor}
           access={this.access}
+          openModal={openModal}
         />
         <style jsx>{`
           .navbar {
             position: fixed;
             width: 100%;
+            height: 56px;
             top: 0;
             left: 0;
             display: flex;

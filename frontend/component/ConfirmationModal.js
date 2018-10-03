@@ -1,18 +1,18 @@
-export default ({ children, close, title, message, onConfirm, onCancel }) => (
+export default ({ close, title, message, onConfirm, onCancel }) => (
   <div className="confirm-modal-backdrop" onClick={close}>
     <div className="confirm-modal">
       <div className="title-row">
-        <h4 className="title">{title}</h4>
+        <h6 className="title">{title}</h6>
       </div>
       <div className="message-row">
-        <p>{message}</p>
+        <p className="body-one">{message}</p>
       </div>
       <div className="action-row">
-        <button className="action-button" onClick={onConfirm}>
-          Confirm
-        </button>
-        <button className="action-button" onClick={onCancel}>
+        <button className="action-button button-text" onClick={onCancel}>
           Cancel
+        </button>
+        <button className="action-button button-text" onClick={onConfirm}>
+          Discard
         </button>
       </div>
     </div>
@@ -58,7 +58,8 @@ export default ({ children, close, title, message, onConfirm, onCancel }) => (
 
       .message-row {
         font-size: 16px;
-        color: #232f34;
+        color: #777e8e;
+        line-height: 1.4;
       }
 
       .action-row {
@@ -74,10 +75,7 @@ export default ({ children, close, title, message, onConfirm, onCancel }) => (
         border: none;
         background: none;
         text-transform: uppercase;
-        font-size: 15px;
-        font-weight: bold;
-        font-family: 'Open Sans', sans-serif;
-        color: #10aeb2;
+        color: #06b4fe;
       }
 
       .action-button:nth-child(1) {

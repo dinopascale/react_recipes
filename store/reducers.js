@@ -4,7 +4,11 @@ const authInitialState = {
   user: null
 };
 
-const modalInitialState = {
+const confirmationModaInitialState = {
+  isOpen: false
+};
+
+const snackbarInitialState = {
   isOpen: false,
   message: null
 };
@@ -12,6 +16,8 @@ const modalInitialState = {
 const toEditInitialState = {
   item: {}
 };
+
+const recipeInitialState = null;
 
 export const loading = (state = null, action) => {
   switch (action.type) {
@@ -28,21 +34,43 @@ export const loading = (state = null, action) => {
   }
 };
 
-export const modal = (state = modalInitialState, action) => {
+export const confirmationModal = (
+  state = confirmationModaInitialState,
+  action
+) => {
+  switch (action.type) {
+    case actionTypes.SHOW_MODAL:
+      return {
+        ...state,
+        isOpen: true
+      };
+    case actionTypes.HIDE_MODAL:
+      return {
+        ...state,
+        isOpen: false
+      };
+    default:
+      return state;
+  }
+};
+
+export const snackbar = (state = snackbarInitialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_FAIL:
     case actionTypes.NEW_ERROR_MESSAGE:
-    case actionTypes.SHOW_MODAL:
+    case actionTypes.SHOW_SNACKBAR:
+    case actionTypes.SUCCESS_DELETE_RECIPE:
+    case actionTypes.FAIL_DELETE_RECIPE:
       return {
         ...state,
         isOpen: true,
         message: action.payload
       };
-    case actionTypes.HIDE_MODAL:
+    case actionTypes.HIDE_SNACKBAR:
       return {
         ...state,
         isOpen: false,
-        message: null
+        message: ''
       };
     default:
       return state;
@@ -64,13 +92,14 @@ export const auth = (state = authInitialState, action) => {
         user: null
       };
     case actionTypes.UPDATE_USER_INFO:
-      const { username, avatar } = action.payload;
+      const { username, avatar, bio } = action.payload;
       return {
         ...state,
         user: {
           ...state.user,
           username,
-          avatar
+          avatar,
+          bio
         }
       };
     default:
@@ -86,6 +115,18 @@ export const toEdit = (state = toEditInitialState, action) => {
         item: {
           ...action.payload
         }
+      };
+    default:
+      return state;
+  }
+};
+
+export const recipe = (state = recipeInitialState, action) => {
+  switch (action.type) {
+    case actionTypes.ADD_RECIPE:
+      return {
+        ...state,
+        ...action.payload
       };
     default:
       return state;

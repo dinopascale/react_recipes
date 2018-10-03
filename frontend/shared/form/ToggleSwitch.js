@@ -74,19 +74,19 @@ export default ({ field, change, width }) => (
 
       .btn {
         cursor: pointer;
-        border: 2px solid #10aeb2;
+        border: 1px solid #26335e;
         display: inline-block;
         padding: 4px 20px;
         font-size: 14px;
         width: 61px;
-        color: #10aeb2;
+        color: #26335e;
         position: relative;
         text-align: center;
         transition: background 600ms ease, color 600ms ease;
       }
 
       .btn:after {
-        background: #10aeb2;
+        background: #26335e;
         content: '';
         height: 100%;
         position: absolute;

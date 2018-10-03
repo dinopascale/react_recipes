@@ -2,15 +2,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ActionButton from '../../shared/ActionButton';
 
 const btnStyle = {
-  backgroundColor: '#ffd166',
-  padding: '10px 50px',
-  borderRadius: '10px'
+  backgroundColor: '#fff',
+  color: '#06b4fe',
+  cursor: 'pointer'
 };
 
 export default props => {
   return (
     <div className="change-rate">
-      <h4 className="title">Rate this Recipe!</h4>
+      <h5 className="title">Rate this Recipe!</h5>
       <div className="rating-single-container">
         {props.sys.map((el, index) => (
           <div
@@ -20,7 +20,7 @@ export default props => {
           >
             <FontAwesomeIcon
               icon="star"
-              color={el === 'full' ? '#ffd166' : '#eee'}
+              color={el === 'full' ? '#ffd166' : '#cad1de'}
             />
           </div>
         ))}
@@ -41,27 +41,27 @@ export default props => {
         }
 
         .title {
-          margin-top: 0;
-          text-align: center;
+          margin: 0;
+          color: #26335e;
+          font-weight: 900;
+          //   text-align: center;
         }
 
         .rating-single-container {
           display: flex;
           flex-flow: row nowrap;
-          justify-content: center;
-          margin: 30px 0 40px 0;
+          margin: 20px 0 30px 0;
         }
 
         .rating-single {
           flex: 1 0 20%;
           font-size: 36px;
           position: relative;
-          text-align: center;
         }
 
         .button-container {
           display: flex;
-          justify-content: center;
+          justify-content: flex-end;
         }
       `}</style>
     </div>

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 
-import { removeItemToEdit, successModal } from '../store/actions';
+import { exitEdit } from '../store/actions';
 import EditToolbar from '../frontend/component/EditToolbar';
 import Form from '../frontend/shared/Form';
 import apiEndpoints from '../frontend/utils/apiEndpoints';
@@ -45,27 +45,12 @@ class Edit extends Component {
     return { id, isRecipe, isUser, schema };
   }
 
-  closeEdit = response => {
-    const { exitEdit, success, router, item, isUser } = this.props;
-    const as = isUser ? `/u/me` : `/r/${item._id}`;
-    const href = isUser
-      ? `/user?userId=${item._id}&isMe=true`
-      : `/recipe?id=${item._id}&isRecipe=true`;
-    if (isUser && response.data.updatedMe) {
-      success('User information');
-      exitEdit(isUser, response.data.updatedMe);
-      return router.push(href, as);
-    }
-    success('Recipe');
-    exitEdit();
-    router.push(href, as);
-  };
-
   render() {
-    const { isRecipe, schema, item } = this.props;
+    const { isRecipe, schema, item, exitSansSave, exitWithSave } = this.props;
     const { endpoint, options } = isRecipe
       ? apiEndpoints.editRecipe
       : apiEndpoints.editUser;
+    const type = isRecipe ? 'recipe' : 'user';
     return (
       <Fragment>
         <Head>
@@ -77,7 +62,9 @@ class Edit extends Component {
             options={options}
             data={schema}
             filledValues={item}
-            submitSuccess={this.closeEdit}
+            submitSuccess={response =>
+              exitWithSave(type, response.data.updatedMe)
+            }
             render={(
               state,
               onChange,
@@ -90,7 +77,7 @@ class Edit extends Component {
               formToAPI
             ) => (
               <div className="container">
-                <EditToolbar save={onSubmit} exit={this.closeEdit} />
+                <EditToolbar save={onSubmit} exit={() => exitSansSave(type)} />
                 {isRecipe ? (
                   <EditRecipeForm
                     form={state}
@@ -132,9 +119,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    success: item => dispatch(successModal(`${item} updated successfully!`)),
-    exitEdit: (isUser, updateUser) =>
-      dispatch(removeItemToEdit(isUser, updateUser))
+    exitSansSave: kind => dispatch(exitEdit(kind)),
+    exitWithSave: (kind, updatedUser) =>
+      dispatch(exitEdit(kind, updatedUser, true))
   };
 };
 

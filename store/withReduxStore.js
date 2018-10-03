@@ -27,6 +27,7 @@ async function getUserInfo(appContext) {
     headers: { cookie: appContext.ctx.req.headers.cookie }
   });
   const json = await resp.json();
+  console.log(json.data);
   return {
     auth: {
       user: {

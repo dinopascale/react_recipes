@@ -126,6 +126,10 @@ export default props => {
           position: relative;
         }
 
+        .rating-container.author .overall-rate {
+          flex: 1 0 100%;
+        }
+
         .divider {
           width: 1px;
           background: #eee;
@@ -135,7 +139,7 @@ export default props => {
         .label {
           flex: 1 0 100%;
           text-align: center;
-          margin-bottom: 6px;
+          margin: 0px 0 6px 0;
           color: #26335e;
           font-weight: 900;
         }

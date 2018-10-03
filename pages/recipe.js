@@ -7,15 +7,22 @@ import { connect } from 'react-redux';
 import RateRecipe from '../frontend/component/RateRecipe';
 import ThreadList from '../frontend/component/ThreadList';
 import SingleRecipe from '../frontend/component/SingleRecipe';
-import FloatingButton from '../frontend/shared/FloatingButton';
 
-import { addItemToEdit, createErrorMessage, callApi } from '../store/actions';
+import {
+  actionTypes,
+  addItemToEdit,
+  createErrorMessage,
+  callApi,
+  addRecipe,
+  closeModal,
+  openModal
+} from '../store/actions';
 import IntoView from '../frontend/hoc/IntoView';
 import apiEndpoints from '../frontend/utils/apiEndpoints';
 import ConfirmationModal from '../frontend/component/ConfirmationModal';
 
 class Recipe extends React.Component {
-  static async getInitialProps({ req, res, query }) {
+  static async getInitialProps({ req, res, query, reduxStore }) {
     try {
       if (req) {
         const _id = res.locals.issuerId ? res.locals.issuerId._id : null;
@@ -32,14 +39,16 @@ class Recipe extends React.Component {
 
         const isPublic = recipe.sharable;
 
-        if (!isPublic) {
+        const isAuthor = !!(_id && _id.equals(recipe._creator._id));
+
+        if (!isPublic && !isAuthor) {
           res.writeHead(302, {
             Location: '/'
           });
           res.end();
         }
 
-        const isAuthor = !!(_id && _id.equals(recipe._creator._id));
+        reduxStore.dispatch(addRecipe({ ...recipe._doc, isAuthor }));
 
         return {
           recipe,
@@ -68,6 +77,8 @@ class Recipe extends React.Component {
         throw e;
       }
 
+      reduxStore.dispatch(addRecipe({ ...recipe, isAuthor }));
+
       return {
         recipe,
         isAuthor
@@ -79,38 +90,12 @@ class Recipe extends React.Component {
     }
   }
 
-  state = {
-    confirmModalisOpen: false
-  };
-
   componentDidMount() {
     const { isAuthor, router } = this.props;
     if (isAuthor) {
       router.prefetch('/edit');
     }
   }
-
-  goToEditMode = event => {
-    event.preventDefault();
-    const { router, recipe, addRecipeToEdit } = this.props;
-    router.push(
-      `/edit?id=${recipe._id}&isRecipe=true`,
-      `/edit_recipe/${recipe._id}`
-    );
-    addRecipeToEdit(recipe);
-  };
-
-  closeConfirmModal = () => {
-    this.setState({
-      confirmModalisOpen: false
-    });
-  };
-
-  openConfirmModal = () => {
-    this.setState({
-      confirmModalisOpen: true
-    });
-  };
 
   deleteRecipe = async () => {
     const { endpoint, options } = apiEndpoints.deleteRecipe;
@@ -123,14 +108,21 @@ class Recipe extends React.Component {
       options,
       () => router.push('/recipes'),
       error => {
+        console.log(error);
         onError({ status: error.status, message: error.message });
       }
     );
   };
 
   render() {
-    const { error, recipe, router, isAuthor } = this.props;
-    const { confirmModalisOpen } = this.state;
+    const {
+      error,
+      recipe,
+      isAuthor,
+      modalIsOpen,
+      closeModal,
+      openModal
+    } = this.props;
 
     if (error) {
       return <ErrorPage statusCode={error.status} />;
@@ -145,24 +137,14 @@ class Recipe extends React.Component {
           </title>
         </Head>
         <div className="recipe-c">
-          {isAuthor ? (
-            <Fragment>
-              {confirmModalisOpen ? (
-                <ConfirmationModal
-                  close={this.closeConfirmModal}
-                  title="Discard Recipe?"
-                  message="This action is irreversible and your recipe we'll be lost forever"
-                  onCancel={this.closeConfirmModal}
-                  onConfirm={this.deleteRecipe}
-                />
-              ) : null}
-              <FloatingButton
-                icon="trash"
-                isColumn
-                action={this.openConfirmModal}
-              />
-              <FloatingButton icon="edit" action={this.goToEditMode} />
-            </Fragment>
+          {modalIsOpen ? (
+            <ConfirmationModal
+              close={closeModal}
+              title="Discard Recipe?"
+              message="This action is irreversible and your recipe we'll be lost forever"
+              onConfirm={this.deleteRecipe}
+              onCancle={closeModal}
+            />
           ) : null}
           <SingleRecipe recipe={recipe} isAuthor={isAuthor} />
           {recipe.sharable ? (
@@ -191,7 +173,7 @@ class Recipe extends React.Component {
           ) : null}
           <style jsx>{`
             .recipe-c {
-              height: ${confirmModalisOpen ? '100vh' : 'auto'};
+              height: ${modalIsOpen ? '100vh' : 'auto'};
               margin-bottom: 40px;
             }
           `}</style>
@@ -203,7 +185,8 @@ class Recipe extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth
+    isAuthenticated: state.auth,
+    modalIsOpen: state.confirmationModal.isOpen
   };
 };
 
@@ -212,7 +195,13 @@ const mapDispatchToProps = dispatch => {
     addRecipeToEdit: recipe => dispatch(addItemToEdit(recipe)),
     callApi: (endpoint, options, onSuccess, onFail) =>
       dispatch(callApi(endpoint, options, onSuccess, onFail)),
-    onError: error => dispatch(createErrorMessage(error))
+    onError: () =>
+      dispatch({
+        type: actionTypes.FAIL_DELETE_RECIPE,
+        payload: 'Recipe not deleted'
+      }),
+    closeModal: () => dispatch(closeModal()),
+    openModal: () => dispatch(openModal())
   };
 };
 

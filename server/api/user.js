@@ -48,6 +48,7 @@ router.post('/user/login', async (req, res, next) => {
           userInfo: {
             username: user.username,
             avatar: user.avatar,
+            bio: user.bio,
             _id: user._id
           }
         }
@@ -76,6 +77,7 @@ router.post('/user/signup', async (req, res, next) => {
           userInfo: {
             username: user.username,
             avatar: user.avatar,
+            bio: user.bio,
             _id: user._id
           }
         }
@@ -100,7 +102,9 @@ router.post('/user/me/logout', checkAuth, (req, res, next) => {
 router.get('/user/me', checkAuth, async (req, res, next) => {
   try {
     const userId = new ObjectId(res.locals.issuerId);
-    const me = await User.findOne({ _id: userId }).select('username avatar');
+    const me = await User.findOne({ _id: userId }).select(
+      'username avatar bio'
+    );
 
     if (!me) {
       return res.status(404).json({

@@ -3,13 +3,16 @@ import EditToolbarButton from './editToolbar/EditToolbarButton';
 const EditToolbar = ({ save, exit }) => (
   <div className="edit-toolbar">
     <div className="toolbar-element exit">
-      <EditToolbarButton icon="undo" action={exit} />
+      <EditToolbarButton icon="times" action={exit} />
     </div>
-    <div className="toolbar-element">
-      <p className="title">Edit</p>
-    </div>
+    <div className="toolbar-element" />
     <div className="toolbar-element save">
-      <EditToolbarButton icon="save" action={save} />
+      <EditToolbarButton
+        action={save}
+        text="Save"
+        align="right"
+        color="#06b4fe"
+      />
     </div>
     <style jsx>{`
       .edit-toolbar {
@@ -19,10 +22,10 @@ const EditToolbar = ({ save, exit }) => (
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5em 1em;
-        min-height: 60px;
-        background-color: #10aeb2;
-        color: #fff;
+        padding: 10px 20px;
+        height: 56px;
+        background-color: #fff;
+        color: #919bb0;
         font-size: 20px;
         position: fixed;
         top: 0;
@@ -55,7 +58,6 @@ const EditToolbar = ({ save, exit }) => (
 
       .title {
         margin: 0;
-        text-transform: uppercase;
         letter-spacing: 2px;
       }
     `}</style>

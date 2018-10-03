@@ -87,7 +87,7 @@ class Recipes extends React.Component {
   infiniteScroll = () => {
     const rectBoundaries = this._container.getBoundingClientRect();
     if (
-      rectBoundaries.bottom.toFixed(0) >= window.innerHeight - 10 &&
+      rectBoundaries.bottom.toFixed(0) >= window.innerHeight - 20 &&
       rectBoundaries.bottom.toFixed(0) <= window.innerHeight
     ) {
       if (this.state.sortBy === 'Most Popular') {

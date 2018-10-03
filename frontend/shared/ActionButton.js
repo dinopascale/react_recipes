@@ -8,8 +8,7 @@ export default props => {
         <FontAwesomeIcon icon={props.icon} />
         <style jsx>{`
           .icon {
-            font-size: 19px;
-            // margin-right: 10px;
+            font-size: 100%;
             pointer-events: none;
           }
         `}</style>
@@ -43,8 +42,6 @@ export default props => {
           background: transparent;
           padding: 10px;
           border-radius: 3px;
-          font-family: 'Open Sans', sans-serif;
-          font-size: 14px;
           outline: none;
           max-height: 36px;
           max-width: 200px;

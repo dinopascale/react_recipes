@@ -1,17 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default ({ action, icon }) => (
+export default ({ action, icon, text, align = 'left', color = '#919bb0' }) => (
   <button onClick={action} className="toolbar-button">
-    <FontAwesomeIcon icon={icon} />
+    {icon ? <FontAwesomeIcon icon={icon} /> : null}
+    {text ? <span className="text button-text">{text}</span> : null}
     <style jsx>{`
       .toolbar-button {
         background: none;
-        color: #fff;
+        color: ${color};
         border: none;
-        font-size: 18px;
-        width: 36px;
+        width: 100%;
         height: 36px;
         outline: none;
+        text-align: ${align};
+      }
+
+      .text {
+        margin-left: 10px;
       }
     `}</style>
   </button>

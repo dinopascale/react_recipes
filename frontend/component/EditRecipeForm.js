@@ -6,6 +6,7 @@ import ArrayOfInputs from '../shared/form/ArrayOfInputs';
 
 export default ({ form, changed, blurred, validate, addNew, deleteField }) => (
   <form className="edit-recipe-form">
+    <h4 className="form-title">Edit Recipe</h4>
     <SingleInput
       field={form.img}
       change={changed(form.img.name)}
@@ -70,6 +71,12 @@ export default ({ form, changed, blurred, validate, addNew, deleteField }) => (
         background: #fff;
         padding: 30px 16px 10px 16px;
         border-radius: 4px;
+      }
+
+      .form-title {
+        margin: 0px 0 20px 0;
+        color: #26335e;
+        font-weight: 900;
       }
     `}</style>
   </form>

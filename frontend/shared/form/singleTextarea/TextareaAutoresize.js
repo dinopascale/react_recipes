@@ -57,23 +57,21 @@ class TextareaAutoresize extends Component {
             padding: 10px 8px;
             font-family: 'Open Sans', sans-serif;
             font-size: 15px;
-            color: #fff;
+            color: #111;
             line-height: 1.5;
-            border: none;
+            border: 1px solid #bdbdbd;
             border-radius: 3px;
-            background: #10aeb2;
+            background: #fff;
             outline: none;
             transition: all 0.2s linear;
           }
 
           .form-textarea.valid {
-            background: #00e676;
+            border: 1px solid #00e676;
           }
 
           .form-textarea.invalid {
-            background: #b71c1c;
-          }
-          .valid {
+            border: 1px solid #b71c1c;
           }
         `}</style>
       </Fragment>

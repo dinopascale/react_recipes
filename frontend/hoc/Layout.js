@@ -1,7 +1,12 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 
-import { actionTypes } from '../../store/actions';
+import {
+  actionTypes,
+  editUserInfo,
+  editRecipeInfo,
+  openModal
+} from '../../store/actions';
 import Meta from '../component/Meta';
 import Toolbar from '../component/Toolbar';
 import SideDrawer from '../component/SideDrawer';
@@ -9,6 +14,7 @@ import Modal from '../component/Modal';
 import Spinner from '../component/Spinner';
 import Snackbar from '../shared/Snackbar';
 import { CSSTransitionGroup } from 'react-transition-group';
+import ConfirmationModal from '../component/ConfirmationModal';
 
 class Layout extends React.Component {
   state = {
@@ -26,13 +32,19 @@ class Layout extends React.Component {
   };
 
   render() {
-    const { closeModal, errMessage, modal } = this.props;
+    const {
+      closeModal,
+      snackbar,
+      modal,
+      addUserToEdit,
+      addRecipeToEdit,
+      isRecipeAuthor,
+      openModal
+    } = this.props;
     return (
       <Fragment>
         {this.props.loading ? <Spinner /> : null}
-        <Meta
-          isScrollable={!(this.state.showSideDrawer || this.props.modal.isOpen)}
-        />
+        <Meta isScrollable={!(this.state.showSideDrawer || modal.isOpen)} />
         <div
           className={
             this.props.loading ? 'app-container blurred' : 'app-container'
@@ -42,6 +54,10 @@ class Layout extends React.Component {
             opened={this.openSideDrawerHandler}
             isAuth={!!this.props.userInfo}
             userId={this.props.userInfo ? this.props.userInfo._id : null}
+            editUser={addUserToEdit}
+            editRecipe={addRecipeToEdit}
+            openModal={openModal}
+            isRecipeAuthor={isRecipeAuthor}
           />
           <SideDrawer
             open={this.state.showSideDrawer}
@@ -49,22 +65,16 @@ class Layout extends React.Component {
             user={this.props.userInfo}
           />
           <main className="content">{this.props.children}</main>
-          {/* <Modal
-            close={this.props.closeModal}
-            isOpen={this.props.modal.isOpen}
-            error={this.props.errMessage}
-            isSuccess={this.props.modal.isSuccess}
-          /> */}
           <CSSTransitionGroup
             transitionName="fade"
             transitionEnterTimeout={500}
             transitionLeaveTimeout={300}
           >
-            {modal.isOpen ? (
+            {snackbar.isOpen ? (
               <Snackbar
                 close={closeModal}
-                isOpen={modal.isOpen}
-                message={modal.message}
+                isOpen={snackbar.isOpen}
+                message={snackbar.message}
               />
             ) : null}
           </CSSTransitionGroup>
@@ -97,15 +107,19 @@ class Layout extends React.Component {
 const mapStateToProps = state => {
   return {
     userInfo: state.auth.user,
-    modal: state.modal,
-    errMessage: state.errorMessage,
-    loading: state.loading
+    snackbar: state.snackbar,
+    modal: state.confirmationModal,
+    loading: state.loading,
+    isRecipeAuthor: state.recipe ? state.recipe.isAuthor : false
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeModal: () => dispatch({ type: actionTypes.HIDE_MODAL })
+    closeModal: () => dispatch({ type: actionTypes.HIDE_SNACKBAR }),
+    addUserToEdit: () => dispatch(editUserInfo()),
+    addRecipeToEdit: () => dispatch(editRecipeInfo()),
+    openModal: () => dispatch(openModal())
   };
 };
 

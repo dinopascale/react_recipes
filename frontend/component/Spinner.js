@@ -50,7 +50,7 @@ class Spinner extends React.Component {
             width: ${type !== 'contain' ? '100vw' : '100%'};
             height: ${type !== 'contain' ? '100vh' : '100%'};
             background-color: rgba(255, 255, 255, 0.8);
-            z-index: 1001;
+            z-index: ${type !== 'contain' ? '1001' : '90'};
           }
 
           .spinner {

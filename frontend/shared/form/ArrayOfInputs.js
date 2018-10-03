@@ -83,22 +83,20 @@ class ArrayOfInputs extends Component {
         <button
           ref={btnAdd => (this.refsCollection['btn'] = btnAdd)}
           onClick={this.handleAddNew}
-          className="add-new-btn"
+          className="add-new-btn button-text"
         >
-          Add New
+          Add ingredient
         </button>
         <style jsx>{`
           .add-new-btn {
             border: none;
-            border-radius: 5px;
-            background: #ffd166;
+            background: transparent;
+            color: #26335e;
             display: block;
-            width: 50%;
-            max-width: 150px;
-            margin: 30px auto;
+            max-width: 200px;
+            margin: 20px auto;
             padding: 1em;
             outline: none;
-            font-family: 'Open Sans', sans-serif;
           }
 
           .slide-enter {

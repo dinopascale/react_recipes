@@ -2,13 +2,22 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 
-import { auth, modal, loading, toEdit } from './reducers';
+import {
+  auth,
+  snackbar,
+  loading,
+  toEdit,
+  recipe,
+  confirmationModal
+} from './reducers';
 
 const appReducer = combineReducers({
   auth,
-  modal,
+  snackbar,
   loading,
-  toEdit
+  toEdit,
+  recipe,
+  confirmationModal
 });
 
 const rootReducer = (state, action) => {

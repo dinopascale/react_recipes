@@ -5,7 +5,7 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
   <div className="user-info-container">
     <div className="avatar-container" />
     <div className="user-username-container">
-      <h4 className="username">{user.username}</h4>
+      <h5 className="username">{user.username}</h5>
     </div>
     <div className="user-bio-container">
       <h6 className="section-title">Bio</h6>
@@ -57,6 +57,7 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
       }
 
       .username {
+        font-size: 32px;
         color:#26335e;
         font-weight: 900;
       }

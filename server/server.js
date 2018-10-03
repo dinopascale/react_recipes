@@ -49,7 +49,10 @@ app
           //DYNAMIC ROUTES
           server.get('/r/:title', checkAuthor, (req, res) => {
             const actualPage = '/recipe';
-            const queryParams = { id: req.params.title };
+            const queryParams = {
+              id: req.params.title,
+              issuerId: res.locals.issuerId._id
+            };
             app.render(req, res, actualPage, queryParams);
           });
 

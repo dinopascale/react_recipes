@@ -1,4 +1,4 @@
-import ActionButton from '../../../shared/ActionButton';
+import ActionButton from '../../../../shared/ActionButton';
 
 export default props => {
   let classes = ['total'];

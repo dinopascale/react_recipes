@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import withCommentAPI from '../../hoc/withCommentAPI';
-import NewComment from './NewComment';
+import withCommentAPI from '../../../hoc/withCommentAPI';
+import NewComment from '../NewComment';
 import CommentElement from './CommentElement';
 
 class CommentList extends Component {

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const clearTokenAndCreateError = (mex = 'Auth Failed') => {
     res.clearCookie('token');
     const e = new Error(mex);
@@ -21,8 +22,14 @@ module.exports = (req, res, next) => {
       throw clearTokenAndCreateError('Token Expired');
     }
 
-    res.locals.issuerId = decoded.userId;
-    next();
+    const userExist = !!(await User.findOne({ _id: decoded.userId }));
+
+    if (userExist) {
+      res.locals.issuerId = decoded.userId;
+      next();
+    } else {
+      throw new Error('no user found');
+    }
   } catch (e) {
     res.locals.issuerId = null;
     next();

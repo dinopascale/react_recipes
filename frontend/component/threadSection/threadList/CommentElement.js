@@ -1,5 +1,5 @@
-import Editable from '../../shared/Editable';
-import dateIntervale from '../../utils/dateIntervale';
+import Editable from '../../../shared/Editable';
+import dateIntervale from '../../../utils/dateIntervale';
 import RateComment from './commentElement/RateComment';
 
 export default ({ comment, rateComment, deleteSelf, showResponses }) => (

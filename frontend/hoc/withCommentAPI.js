@@ -23,6 +23,7 @@ const withCommentAPI = WrappedComponent => {
         endpoint,
         options,
         json => {
+          console.log(json);
           this.setState({
             listLoaded: true,
             list: json[this.props.type].map(el => {
@@ -65,9 +66,9 @@ const withCommentAPI = WrappedComponent => {
         endpoint,
         options,
         async () => {
-          this.setState({
-            newElement: ''
-          });
+          //   this.setState({
+          //     newElement: ''
+          //   });
           await this.loadData();
         },
         error => {
@@ -140,10 +141,10 @@ const withCommentAPI = WrappedComponent => {
           load={this.loadData}
           list={this.state.list}
           listLoaded={this.state.listLoaded}
-          new={this.state.newElement}
+          newEl={this.state.newElement}
           createNew={this.createNewElement}
           submitNew={this.submitNewElement}
-          delete={this.deleteElement}
+          deleteElement={this.deleteElement}
           rate={this.rateElement}
           {...this.props}
         />

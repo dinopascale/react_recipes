@@ -14,54 +14,77 @@ export default withRouter(props => {
             className="avatar"
             style={{ backgroundImage: `url('${props.isAuth.avatar}')` }}
           />
-          <div
-            contentEditable={auth}
-            dangerouslySetInnerHTML={{ __html: props.value }}
-            onBlur={props.changed}
-            className="new-comment"
-            placeholder={
-              auth ? 'Write a comment...' : 'Login to write a comment'
-            }
-          />
-        </div>
-        <div className="action-row">
-          <ActionButton
-            customStyle={{ color: 'rgb(16, 174, 178)', fontWeight: 'bold' }}
-            handleClick={props.comment}
-          >
-            Publish
-          </ActionButton>
+          <div className="new-comment-container">
+            <div className="username-container">
+              <p className="username caption">{props.isAuth.username}</p>
+            </div>
+            <div
+              contentEditable={auth}
+              onKeyUp={props.changed}
+              className="new-comment body-two"
+              placeholder={
+                auth ? 'Write a comment...' : 'Login to write a comment'
+              }
+            />
+            <div className="action-row">
+              <ActionButton
+                customStyle={{ color: 'rgb(16, 174, 178)', fontWeight: 'bold' }}
+                handleClick={props.comment}
+                disabled={props.value === ''}
+              >
+                Publish
+              </ActionButton>
+            </div>
+          </div>
         </div>
         <style jsx>{`
           .user-img {
+            width: 100%;
             display: flex;
             flex-flow: row nowrap;
+            justify-content: space-between;
             align-items: flex-start;
           }
 
           .avatar {
-            flex-grow: 1;
-            flex-shrink: 0;
+            flex: 0 0 15%;
             background-position: center center;
             background-size: contain;
+            background-repeat: no-repeat;
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            margin: 10px 8px;
+          }
+
+          .new-comment-container {
+            flex: 0 0 82%;
+            display: flex;
+            flex-flow: column;
+            background: #ebedf0;
+            padding: 6px 0px 0px 8px;
+            border-radius: 0 8px 8px 0;
+          }
+
+          .username {
+            padding-bottom: 4px;
+            margin: 0;
+            color: #000;
+            font-weight: bold;
           }
 
           .new-comment {
-            width: 100%;
-            font-size: 14px;
             line-height: 1.6;
-            padding: 10px 8px;
+            padding-right: 16px;
             outline: none;
             color: #000;
+            position: relative;
           }
 
-          .new-comment:empty:before {
+          .new-comment:empty:after {
             content: attr(placeholder);
-            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
             color: #aaa;
           }
 
@@ -77,7 +100,7 @@ export default withRouter(props => {
   } else {
     content = (
       <ActionButton
-        customStyle={{ flex: '0 0 80%', color: '#aaa' }}
+        customStyle={{ flex: '0 0 100%', color: '#777e8e', maxWidth: '100%' }}
         icon="comment"
         handleClick={() => props.router.push('/auth/register')}
       >
@@ -92,18 +115,19 @@ export default withRouter(props => {
         .container {
           padding: 10px 20px;
           position: relative;
+          border-bottom: 1px solid #eee;
         }
 
         .edit-area {
           background-color: #fff;
-          border: none;
+          //   border: 1px solid;
           border-radius: 5px;
           min-height: 56px;
           display: flex;
           flex-flow: row wrap;
           align-items: center;
+          //   padding: 8px 16px;
           color: #aaa;
-          padding: 10px 8px;
         }
       `}</style>
     </div>

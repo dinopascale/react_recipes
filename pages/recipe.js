@@ -5,7 +5,7 @@ import ErrorPage from './_error';
 import { connect } from 'react-redux';
 
 import RateRecipe from '../frontend/component/RateRecipe';
-import ThreadList from '../frontend/component/ThreadList';
+import ThreadSection from '../frontend/component/ThreadSection';
 import SingleRecipe from '../frontend/component/SingleRecipe';
 
 import {
@@ -164,12 +164,12 @@ class Recipe extends React.Component {
                   />
                 )}
               />
-              {/* <ThreadList
+              <ThreadSection
                 apiId={this.props.recipe._id}
                 baseURL="/api/thread"
                 type="threads"
-                isAuth={this.props.isAuthenticated.user}
-              /> */}
+                isAuth={isAuthenticated.user}
+              />
             </Fragment>
           ) : null}
           <style jsx>{`

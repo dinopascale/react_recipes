@@ -22,6 +22,7 @@ export default props => {
       name={props.name}
       className="action-button"
       type="button"
+      disabled={props.disabled}
     >
       {icon}
       {props.children ? (
@@ -45,6 +46,10 @@ export default props => {
           outline: none;
           max-height: 36px;
           max-width: 200px;
+        }
+
+        .action-button:disabled {
+          color: #bbb !important;
         }
 
         .text {

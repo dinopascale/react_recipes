@@ -130,7 +130,7 @@ class Recipes extends React.Component {
           sortBy: sort === 'Most Popular' ? 'Most Popular' : 'Most Recent',
           filterBy: tag ? tag : prevState.tag,
           page: fromScroll ? prevState.page + 1 : 1,
-          total: json.total
+          total: json.meta.total
         }));
       },
       error => {
@@ -184,7 +184,8 @@ class Recipes extends React.Component {
   };
 
   render() {
-    const { user, error } = this.props;
+    const { user, error, recipes } = this.props;
+    const { recipesList, total } = this.state;
 
     if (error) {
       return <ErrorPage statusCode={error.status} />;
@@ -205,6 +206,7 @@ class Recipes extends React.Component {
           <hr className="divider" />
           <RecipesList
             recipes={this.state.recipesList || this.props.recipes}
+            isEnd={recipesList.length === total}
             getRecipes={this.getRecipes}
             sortBy={this.state.sortBy}
             filterBy={this.state.filterBy}

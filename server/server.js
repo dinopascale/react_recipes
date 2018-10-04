@@ -51,7 +51,7 @@ app
             const actualPage = '/recipe';
             const queryParams = {
               id: req.params.title,
-              issuerId: res.locals.issuerId._id
+              issuerId: res.locals.issuerId ? res.locals.issuerId._id : null
             };
             app.render(req, res, actualPage, queryParams);
           });

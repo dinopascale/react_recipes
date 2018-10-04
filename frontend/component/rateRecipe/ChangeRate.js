@@ -10,7 +10,7 @@ const btnStyle = {
 export default props => {
   return (
     <div className="change-rate">
-      <h5 className="title">Rate this Recipe!</h5>
+      <h5 className="title">Rate this recipe</h5>
       <div className="rating-single-container">
         {props.sys.map((el, index) => (
           <div
@@ -26,15 +26,20 @@ export default props => {
         ))}
       </div>
       <div className="button-container">
-        <ActionButton handleClick={props.sendRate} customStyle={btnStyle}>
+        <ActionButton
+          handleClick={props.sendRate}
+          customStyle={btnStyle}
+          disabled={props.pristine}
+        >
           Send
         </ActionButton>
       </div>
       <style jsx>{`
         .change-rate {
           margin: 0px 0 20px 0;
-          padding: 40px 20px;
+          padding: 30px 0px;
           width: 95%;
+          border-top: 1px solid #ccc;
           margin-left: auto;
           margin-right: auto;
           background: #fff;
@@ -44,17 +49,20 @@ export default props => {
           margin: 0;
           color: #26335e;
           font-weight: 900;
-          //   text-align: center;
+          text-align: center;
         }
 
         .rating-single-container {
           display: flex;
           flex-flow: row nowrap;
-          margin: 20px 0 30px 0;
+          width: 80%;
+          padding: 0 16px;
+          justify-content: space-between;
+          margin: 25px auto 40px auto;
         }
 
         .rating-single {
-          flex: 1 0 20%;
+          flex: 0 0 15%;
           font-size: 36px;
           position: relative;
         }

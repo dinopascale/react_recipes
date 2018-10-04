@@ -3,7 +3,7 @@ import DropdownList from '../hoc/DropdownList';
 import RecipeCard from './recipesList/RecipeCard';
 import SortListRow from './recipesList/SortListRow';
 
-const RecipesList = ({ recipes, getRecipes, sortBy, filterBy }) => {
+const RecipesList = ({ recipes, getRecipes, sortBy, filterBy, isEnd }) => {
   return (
     <div className="recipes-list-container">
       <div className="recipe-list-options-container">
@@ -60,6 +60,9 @@ const RecipesList = ({ recipes, getRecipes, sortBy, filterBy }) => {
           <RecipeCard key={recipe._id} recipe={recipe} />
         ))}
       </div>
+      {isEnd ? (
+        <p className="end-message body-two">No more recipes to load</p>
+      ) : null}
       <style jsx>{`
         .recipes-list {
           padding: 15px 0px;
@@ -74,6 +77,14 @@ const RecipesList = ({ recipes, getRecipes, sortBy, filterBy }) => {
           flex-flow: row nowrap;
           justify-content: space-between;
           margin-bottom: 20px;
+        }
+
+        .end-message {
+          text-align: center;
+          margin: 0;
+          color: #777e8e;
+          font-style: italic;
+          padding-bottom: 20px;
         }
       `}</style>
     </div>

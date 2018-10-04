@@ -121,7 +121,8 @@ class Recipe extends React.Component {
       isAuthor,
       modalIsOpen,
       closeModal,
-      openModal
+      openModal,
+      isAuthenticated
     } = this.props;
 
     if (error) {

@@ -12,6 +12,7 @@ class RateRecipe extends Component {
     rated: false,
     isLoading: false,
     initialized: false,
+    pristine: true,
     rateSystem: ['empty', 'empty', 'empty', 'empty', 'empty']
   };
 
@@ -45,7 +46,7 @@ class RateRecipe extends Component {
       }
       return 'empty';
     });
-    this.setState({ rateSystem: newRate });
+    this.setState({ rateSystem: newRate, pristine: false });
   };
 
   sendRate = async () => {
@@ -97,6 +98,7 @@ class RateRecipe extends Component {
       userRate,
       rateSystem,
       rated,
+      pristine,
       isLoading
     } = this.state;
     const canRate = isAuth && !isAuthor;
@@ -139,6 +141,7 @@ class RateRecipe extends Component {
           eventHandler={this.setRate}
           sendRate={this.sendRate}
           recipeId={recipeId}
+          pristine={pristine}
         />
       );
     }

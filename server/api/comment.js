@@ -25,8 +25,15 @@ router.post('/thread/:recipeId', checkAuth, async (req, res, next) => {
     }).save();
 
     res.status(200).json({
-      status: 'Ok',
-      threadInfo: thread._doc
+      meta: { message: 'Ok' },
+      data: {
+        element: {
+          ...thread._doc,
+          editable: true,
+          ratedBefore: false,
+          userRate: false
+        }
+      }
     });
   } catch (e) {
     e.status = 400;
@@ -61,18 +68,21 @@ router.get('/thread/:recipeId', checkAuthor, async (req, res, next) => {
           userRate: rate[0] ? rate[0].value : false
         };
       });
-
       res.status(200).json({
-        status: 'Ok',
-        number_of_threads: queryFiltered.length,
-        threads: await Promise.all(promises)
+        meta: {
+          status: 'Ok',
+          number_of_threads: queryFiltered.length
+        },
+        data: { threads: await Promise.all(promises) }
       });
     } else {
       threads = [...queryFiltered];
       res.status(200).json({
-        status: 'Ok',
-        number_of_threads: threads.length,
-        threads
+        meta: {
+          status: 'Ok',
+          number_of_threads: threads.length
+        },
+        data: { threads }
       });
     }
   } catch (e) {
@@ -85,29 +95,34 @@ router.patch('/thread/:id', checkAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
     const obId = new ObjectId(id);
+    const { text } = req.body;
 
-    const threadToUpdate = await Thread.findById(obId);
-
-    if (!threadToUpdate) {
-      return res.status(404).json({
-        message: `No thread with ID: ${id} was found`
-      });
-    }
-
-    if (!threadToUpdate.user.equals(res.locals.issuerId)) {
-      const e = new Error('Not Author');
-      e.status = 401;
-      throw e;
-    }
-
-    const update = await threadToUpdate.update(
-      { $set: { text: req.body.text } },
+    const threadToUpdate = await Thread.findOneAndUpdate(
+      { _id: id, user: res.locals.issuerId },
+      { $set: { text } },
       { new: true }
-    );
+    ).populate('user', 'user avatar');
+
+    // if (!threadToUpdate) {
+    //   return res.status(404).json({
+    //     meta: { message: `No thread with ID: ${id} was found` }
+    //   });
+    // }
+
+    // if (!threadToUpdate.user.equals(res.locals.issuerId)) {
+    //   const e = new Error('Not Author');
+    //   e.status = 401;
+    //   throw e;
+    // }
+
+    // const update = await threadToUpdate.update(
+    //   { $set: { text: req.body.text } },
+    //   { new: true }
+    // );
 
     res.status(200).json({
-      status: 'Ok',
-      threadUpdate: update
+      meta: { status: 'Ok' },
+      data: { element: threadToUpdate }
     });
   } catch (e) {
     e.status = 400;
@@ -124,17 +139,19 @@ router.delete('/thread/:id', checkAuth, async (req, res, next) => {
 
     if (!toDeletedThread) {
       return res.status(404).json({
-        message: `No thread with ID: ${id} was found`
+        meta: { message: `No thread with ID: ${id} was found` }
       });
     }
 
-    const deletedThread = await toDeletedThread.remove();
+    await toDeletedThread.remove();
 
-    const commentsToDelete = await Comment.deleteMany({ threadId: obId });
+    await Comment.deleteMany({ threadId: obId });
 
     res.status(200).json({
-      status: 'Ok',
-      message: 'Thread and Comments Related Deleted'
+      meta: {
+        status: 'Ok',
+        message: 'Thread and Comments Related Deleted'
+      }
     });
   } catch (e) {
     e.status = 400;
@@ -160,8 +177,8 @@ router.post('/comment/:threadId', checkAuth, async (req, res, next) => {
     }).save();
 
     res.status(200).json({
-      status: 'Ok',
-      commentInfo: comment._doc
+      meta: { status: 'Ok' },
+      data: { element: comment._doc }
     });
   } catch (e) {
     e.status = 401;
@@ -196,16 +213,20 @@ router.get('/comment/:threadId', checkAuthor, async (req, res, next) => {
       });
 
       res.status(200).json({
-        status: 'Ok',
-        number_of_comments: query.length,
-        comments: await Promise.all(promises)
+        meta: {
+          status: 'Ok',
+          number_of_comments: query.length
+        },
+        data: { comments: await Promise.all(promises) }
       });
     } else {
       comments = [...query];
       res.status(200).json({
-        status: 'Ok',
-        number_of_comments: comments.length,
-        comments
+        meta: {
+          status: 'Ok',
+          number_of_comments: comments.length
+        },
+        data: { comments }
       });
     }
   } catch (e) {
@@ -218,28 +239,34 @@ router.patch('/comment/:id', checkAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
     const obId = new ObjectId(id);
+    const { text } = req.body;
 
-    const commentToUpdate = await Comment.findById(obId);
-
-    if (!commentToUpdate) {
-      return res.status(404).json({
-        message: `No thread with ID: ${id} was found`
-      });
-    }
-
-    if (!commentToUpdate.user.equals(res.locals.issuerId)) {
-      const e = new Error('Not Author');
-      e.status = 401;
-      throw e;
-    }
-
-    const update = await commentToUpdate.update(
-      { $set: { text: req.body.text } },
+    const commentToUpdate = await Comment.findOneAndUpdate(
+      { _id: id, user: res.locals.issuerId },
+      { $set: { text } },
       { new: true }
     );
 
+    // if (!commentToUpdate) {
+    //   return res.status(404).json({
+    //     meta: { message: `No thread with ID: ${id} was found` }
+    //   });
+    // }
+
+    // if (!commentToUpdate.user.equals(res.locals.issuerId)) {
+    //   const e = new Error('Not Author');
+    //   e.status = 401;
+    //   throw e;
+    // }
+
+    // const update = await commentToUpdate.update(
+    //   { $set: { text: req.body.text } },
+    //   { new: true }
+    // );
+
     res.status(200).json({
-      status: 'Ok'
+      meta: { status: 'Ok' },
+      data: { element: commentToUpdate }
     });
   } catch (e) {
     e.status = 400;
@@ -260,11 +287,13 @@ router.delete('/comment/:id', checkAuth, async (req, res, next) => {
       });
     }
 
-    const deletedComment = await toDeletedComment.remove();
+    await toDeletedComment.remove();
 
     res.status(200).json({
-      status: 'Ok',
-      message: 'Comment Deleted'
+      meta: {
+        status: 'Ok',
+        message: 'Comment Deleted'
+      }
     });
   } catch (e) {
     e.status = 400;

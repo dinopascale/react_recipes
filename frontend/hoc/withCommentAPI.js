@@ -19,7 +19,9 @@ const withCommentAPI = WrappedComponent => {
         credentials: 'include'
       };
 
-      await this.props.callApi(
+      console.log(this.props);
+
+      const re = await this.props.callApi(
         endpoint,
         options,
         json => {
@@ -39,6 +41,8 @@ const withCommentAPI = WrappedComponent => {
           this.props.onError({ status: error.status, message: error.message });
         }
       );
+
+      console.log(re);
     };
 
     createNewElement = event => {

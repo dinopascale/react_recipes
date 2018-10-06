@@ -55,6 +55,8 @@ export default props => {
         .text {
           margin-top: 0;
           margin-bottom: 0;
+          display: inline-block;
+          width: 100%;
         }
       `}</style>
     </button>

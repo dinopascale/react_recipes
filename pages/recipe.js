@@ -20,6 +20,7 @@ import {
 import IntoView from '../frontend/hoc/IntoView';
 import apiEndpoints from '../frontend/utils/apiEndpoints';
 import ConfirmationModal from '../frontend/component/ConfirmationModal';
+import ThreadsListApi from '../frontend/hoc/ThreadsListApi';
 
 class Recipe extends React.Component {
   static async getInitialProps({ req, res, query, reduxStore }) {
@@ -164,11 +165,44 @@ class Recipe extends React.Component {
                   />
                 )}
               />
-              <ThreadSection
-                apiId={this.props.recipe._id}
-                baseURL="/api/thread"
+              <ThreadsListApi
                 type="threads"
-                isAuth={isAuthenticated.user}
+                id={this.props.recipe._id}
+                render={(
+                  state,
+                  loadData,
+                  showNewThread,
+                  hideNewThread,
+                  setNewThreadRef,
+                  submitNewThread,
+                  setEditableElement,
+                  enterEditMode,
+                  exitEditMode,
+                  submitChangeElement,
+                  deleteElement,
+                  rateElement
+                ) => (
+                  <IntoView
+                    render={isVisible => (
+                      <ThreadSection
+                        listInfo={state}
+                        loadThreads={loadData}
+                        showNewThread={showNewThread}
+                        hideNewThread={hideNewThread}
+                        setNewThreadRef={setNewThreadRef}
+                        setEditableRef={setEditableElement}
+                        submitNewThread={submitNewThread}
+                        isAuth={isAuthenticated.user}
+                        isVisible={isVisible}
+                        enterEditMode={enterEditMode}
+                        exitEditMode={exitEditMode}
+                        submitChangeElement={submitChangeElement}
+                        deleteElement={deleteElement}
+                        rateElement={rateElement}
+                      />
+                    )}
+                  />
+                )}
               />
             </Fragment>
           ) : null}

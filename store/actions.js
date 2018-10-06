@@ -50,6 +50,25 @@ export const callApi = (
   }
 };
 
+export const callApiP = (endpoint, options) => async dispatch => {
+  try {
+    dispatch({ type: actionTypes.START_LOADING });
+    const rawResponse = await fetch(endpoint, options);
+    const json = await rawResponse.json();
+
+    if (rawResponse.status !== 200) {
+      const e = new Error(json.meta.message || rawResponse.statusText);
+      e.status = rawResponse.status;
+      throw e;
+    }
+    dispatch({ type: actionTypes.STOP_LOADING });
+    return json;
+  } catch (e) {
+    dispatch({ type: actionTypes.STOP_LOADING });
+    throw new Error(e);
+  }
+};
+
 export const successAndCloseModal = () => dispatch => {
   dispatch({
     type: actionTypes.SHOW_MODAL,

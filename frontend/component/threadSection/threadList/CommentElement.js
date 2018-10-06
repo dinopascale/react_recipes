@@ -1,32 +1,43 @@
-import Editable from '../../../shared/Editable';
-import dateIntervale from '../../../utils/dateIntervale';
-import RateComment from './commentElement/RateComment';
+import CommentUserRow from './commentElement/CommentUserRow';
+import CommentActionRow from './commentElement/CommentActionRow';
+import CommentArea from './commentElement/CommentArea';
+import EditableCommentArea from './commentElement/EditableCommentArea';
 
-export default ({ comment, rateComment, deleteSelf, showResponses }) => (
+export default ({
+  comment,
+  rateComment,
+  showResponses,
+  editable,
+  setEditableRef,
+  enterEditMode,
+  exitEditMode,
+  editingThread,
+  submitChangeElement,
+  deleteElement,
+  rateElement
+}) => (
   <div className="comment-element">
-    <div className="user-row">
-      <div
-        className="user-avatar"
-        style={{ backgroundImage: `url('${comment.user.avatar}')` }}
-      />
-      <div className="user-name-row">
-        <span className="user-name">{comment.user.username}</span>
-        <span className="rates">
-          {comment.totalRate} votes · {dateIntervale(comment.createdAt)}
-        </span>
-      </div>
-    </div>
-    <Editable
-      data={comment.text}
-      name="text"
-      type="textarea"
-      auth={comment.editable}
-      endpoint={`/api/thread/${comment._id}`}
-      deleteSelf={deleteSelf}
+    <CommentUserRow
+      comment={comment}
+      editable={editable}
+      enterEditMode={enterEditMode}
+      deleteElement={deleteElement}
     />
-    <div className="action-row">
+    {editingThread === comment._id ? (
+      <EditableCommentArea
+        setEditableRef={setEditableRef(comment._id)}
+        text={comment.text}
+      />
+    ) : (
+      <CommentArea
+        text={comment.text}
+        setEditableRef={editable ? setEditableRef(comment._id) : null}
+        isEditing={editingThread === comment._id}
+      />
+    )}
+    {/* <div className="action-row">
       {showResponses ? (
-        <div className="ciao" onClick={showResponses}>
+        <div className="show-conv button-text" onClick={showResponses}>
           Respond
         </div>
       ) : null}
@@ -35,55 +46,20 @@ export default ({ comment, rateComment, deleteSelf, showResponses }) => (
         rateComment={rateComment}
         userRate={comment.userRate}
       />
-    </div>
+    </div> */}
+    <CommentActionRow
+      comment={comment}
+      isEditing={editingThread === comment._id}
+      showResponses={showResponses}
+      rateComment={rateComment}
+      exitEditMode={exitEditMode}
+      submitChangeElement={submitChangeElement}
+      rateElement={rateElement}
+    />
     <style jsx>{`
       .comment-element {
-        padding: 20px 0 10px 0;
-        margin: 0 20px;
         background: #fff;
         border-radius: 5px;
-      }
-
-      .user-row {
-        padding: 10px 20px;
-        display: flex;
-        flex-flow: row nowrap;
-      }
-
-      .user-avatar {
-        background-position: center center;
-        background-size: contain;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
-
-      .user-name-row {
-        font-size: 14px;
-        display: flex;
-        flex-flow: column;
-      }
-
-      .user-name {
-        margin-bottom: 5px;
-      }
-
-      .action-row {
-        display: flex;
-        align-items: center;
-      }
-
-      .ciao {
-        flex: 1 0 50%;
-        padding-left: 20px;
-        color: #aaa;
-        font-size: 13px;
-      }
-
-      .rates {
-        font-size: 12px;
-        color: #aaa;
       }
     `}</style>
   </div>

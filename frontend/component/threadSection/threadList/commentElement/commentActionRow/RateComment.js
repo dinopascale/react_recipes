@@ -1,22 +1,22 @@
-import ActionButton from '../../../../shared/ActionButton';
+import ActionButton from '../../../../../shared/ActionButton';
 
 export default props => {
-  let classes = ['total'];
+  let classes = ['total body-two'];
   if (props.userRate === 1) {
     classes.push('up');
   } else if (props.userRate === -1) {
     classes.push('down');
   }
   return (
-    <div className="rate-comment-row">
+    <div className="rate-comment">
       <ActionButton
         name="up"
         handleClick={props.rateComment}
         icon="long-arrow-alt-up"
         customStyle={{
-          fontSize: '26px',
-          color: props.userRate === 1 ? '#77B5B5' : '#aaa',
-          maxWidth: '42px'
+          color: props.userRate === 1 ? '#77B5B5' : '#777e8e',
+          maxWidth: '42px',
+          padding: '0'
         }}
       />
       <span className={classes.join(' ')}>{props.totalRate}</span>
@@ -25,26 +25,25 @@ export default props => {
         icon="long-arrow-alt-down"
         handleClick={props.rateComment}
         customStyle={{
-          fontSize: '26px',
-          color: props.userRate === -1 ? '#D19DA0' : '#aaa',
-          maxWidth: '42px'
+          color: props.userRate === -1 ? '#D19DA0' : '#777e8e',
+          maxWidth: '42px',
+          padding: '0'
         }}
       />
       <style jsx>{`
-        .rate-comment-row {
+        .rate-comment {
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          flex: 1 0 50%;
+          flex: 0 0 50%;
+          margin-right: 10px;
+          border-right: 1px solid #ccc;
         }
 
         .total {
           flex: 0 1 5%;
-          color: #aaa;
+          color: #777e8e;
           text-align: center;
-          margin: 0 10px;
-          font-weight: bold;
-          font-size: 16px;
         }
 
         .up {

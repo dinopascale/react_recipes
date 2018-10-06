@@ -36,7 +36,7 @@ export default props => {
       </div>
       <style jsx>{`
         .change-rate {
-          margin: 0px 0 20px 0;
+          margin: 0px;
           padding: 30px 0px;
           width: 95%;
           border-top: 1px solid #ccc;

@@ -38,7 +38,17 @@ const apiEndpoints = {
   userStatistics: {
     endpoint: '/api/user/statistics',
     options: fetchOptions.GET
-  }
+  },
+  getThreads: { endpoint: '/api/thread', options: fetchOptions.GET },
+  postThread: { endpoint: '/api/thread', options: fetchOptions.POST },
+  editThread: { endpoint: '/api/thread', options: fetchOptions.PATCH },
+  deleteThread: { endpoint: '/api/thread', options: fetchOptions.DELETE },
+  alreadyRateThread: { endpoint: '/api/rate/c', options: fetchOptions.PATCH },
+  firstRateThread: { endpoint: '/api/rate/c', options: fetchOptions.POST },
+  getComments: { endpoint: '/api/comment', options: fetchOptions.GET },
+  postComment: { endpoint: '/api/comment', options: fetchOptions.POST },
+  editComment: { endpoint: '/api/comment', options: fetchOptions.PATCH },
+  deleteComment: { endpoint: '/api/comment', options: fetchOptions.DELETE }
 };
 
 export default apiEndpoints;

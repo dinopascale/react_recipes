@@ -41,6 +41,15 @@ threadSchema.pre('save', function(next) {
   next();
 });
 
+threadSchema.post('save', function(doc, next) {
+  doc
+    .populate('user', 'username avatar')
+    .execPopulate()
+    .then(function() {
+      next();
+    });
+});
+
 threadSchema.pre('update', function() {
   this.update({}, { $set: { updatedAt: new Date() } });
 });

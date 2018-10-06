@@ -101,15 +101,15 @@ export default props => {
           margin: 0 auto;
         }
 
-        .rating-container:before {
-          content: '';
-          position: absolute;
-          height: 100%;
-          width: 1px;
-          background: #eee;
-          top: 0;
-          left: 50%;
-        }
+        // .rating-container:before {
+        //   content: '';
+        //   position: absolute;
+        //   height: 100%;
+        //   width: 1px;
+        //   background: #eee;
+        //   top: 0;
+        //   left: 50%;
+        // }
 
         .rating-container.author:before {
           display: none;

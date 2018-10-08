@@ -35,8 +35,6 @@ class ThreadsListApi extends React.Component {
         };
       });
 
-      console.log(type, list);
-
       this.setState({
         list,
         listLoaded: true,
@@ -249,10 +247,6 @@ class ThreadsListApi extends React.Component {
       });
     }
   };
-
-  componentWillUnmount() {
-    console.log('unmount');
-  }
 
   render() {
     return this.props.render(

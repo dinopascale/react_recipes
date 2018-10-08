@@ -5,6 +5,7 @@ export default ({ text }) => (
       .comment {
         line-height: 1.6;
         color: #777e8e;
+        padding: 4px 0;
         margin-bottom: 9px;
       }
     `}</style>

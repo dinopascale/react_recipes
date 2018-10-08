@@ -187,6 +187,7 @@ class Recipe extends React.Component {
                       <ThreadSection
                         listInfo={state}
                         loadThreads={loadData}
+                        isAuthor={isAuthor}
                         showNewThread={showNewThread}
                         hideNewThread={hideNewThread}
                         setNewThreadRef={setNewThreadRef}

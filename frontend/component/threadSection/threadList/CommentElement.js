@@ -6,9 +6,9 @@ import EditableCommentArea from './commentElement/EditableCommentArea';
 export default ({
   comment,
   isAuth,
+  isAuthor,
   isComment,
   rateComment,
-  showResponses,
   editable,
   setEditableRef,
   showNewComment,
@@ -27,6 +27,7 @@ export default ({
       editable={editable}
       enterEditMode={enterEditMode}
       deleteElement={deleteElement}
+      isAuthor={isAuthor}
     />
     {editingThread === comment._id ? (
       <EditableCommentArea
@@ -40,24 +41,11 @@ export default ({
         isEditing={editingThread === comment._id}
       />
     )}
-    {/* <div className="action-row">
-      {showResponses ? (
-        <div className="show-conv button-text" onClick={showResponses}>
-          Respond
-        </div>
-      ) : null}
-      <RateComment
-        totalRate={comment.totalRate}
-        rateComment={rateComment}
-        userRate={comment.userRate}
-      />
-    </div> */}
     <CommentActionRow
       comment={comment}
       isAuth={isAuth}
       isComment={isComment}
       isEditing={editingThread === comment._id}
-      showResponses={showResponses}
       rateComment={rateComment}
       exitEditMode={exitEditMode}
       submitChangeElement={submitChangeElement}

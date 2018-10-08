@@ -28,6 +28,7 @@ class ThreadSection extends Component {
       sortBy,
       sorted,
       isAuth,
+      isAuthor,
       isVisible,
       listInfo,
       showNewThread,
@@ -44,8 +45,6 @@ class ThreadSection extends Component {
 
     const loadedAndEmptyList =
       listInfo.list.length === 0 && this.state.initialized;
-    console.log(listInfo.list);
-
 
     if (!isVisible) {
       return (
@@ -58,8 +57,6 @@ class ThreadSection extends Component {
         </div>
       );
     }
-
-    console.log(listInfo.list);
 
     return (
       <div className="comments-section">
@@ -78,21 +75,13 @@ class ThreadSection extends Component {
           submit={submitNewThread}
           setNewRef={setNewThreadRef}
         />
-        {/* <ThreadList
-          list={listInfo.list}
-          sortBy={sortBy}
-          isAuth={isAuth}
-          deleteEl={deleteElement}
-          rate={rate}
-          showResponseList={this.showResponseList}
-          conversationShowed={conversationsShowed}
-        /> */}
         <div className="thread-list-container">
           {!loadedAndEmptyList ? (
             <ThreadList
               list={listInfo.list}
               sortBy={sortBy}
               userInfo={isAuth}
+              isAuthor={isAuthor}
               setEditableRef={setEditableRef}
               enterEditMode={enterEditMode}
               exitEditMode={exitEditMode}

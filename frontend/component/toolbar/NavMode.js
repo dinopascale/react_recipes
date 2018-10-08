@@ -23,8 +23,6 @@ export default props => {
   } = props;
   let element = null;
 
-  console.log(router);
-
   if (router.asPath === '/u/me') {
     element = (
       <ActionButton handleClick={editUser} customStyle={{ color: '#06b4fe' }}>

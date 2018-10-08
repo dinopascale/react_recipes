@@ -94,7 +94,6 @@ router.get('/thread/:recipeId', checkAuthor, async (req, res, next) => {
 router.patch('/thread/:id', checkAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const obId = new ObjectId(id);
     const { text } = req.body;
 
     const threadToUpdate = await Thread.findOneAndUpdate(
@@ -102,23 +101,6 @@ router.patch('/thread/:id', checkAuth, async (req, res, next) => {
       { $set: { text } },
       { new: true }
     ).populate('user', 'user avatar');
-
-    // if (!threadToUpdate) {
-    //   return res.status(404).json({
-    //     meta: { message: `No thread with ID: ${id} was found` }
-    //   });
-    // }
-
-    // if (!threadToUpdate.user.equals(res.locals.issuerId)) {
-    //   const e = new Error('Not Author');
-    //   e.status = 401;
-    //   throw e;
-    // }
-
-    // const update = await threadToUpdate.update(
-    //   { $set: { text: req.body.text } },
-    //   { new: true }
-    // );
 
     res.status(200).json({
       meta: { status: 'Ok' },
@@ -238,7 +220,6 @@ router.get('/comment/:threadId', checkAuthor, async (req, res, next) => {
 router.patch('/comment/:id', checkAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const obId = new ObjectId(id);
     const { text } = req.body;
 
     const commentToUpdate = await Comment.findOneAndUpdate(
@@ -246,23 +227,6 @@ router.patch('/comment/:id', checkAuth, async (req, res, next) => {
       { $set: { text } },
       { new: true }
     );
-
-    // if (!commentToUpdate) {
-    //   return res.status(404).json({
-    //     meta: { message: `No thread with ID: ${id} was found` }
-    //   });
-    // }
-
-    // if (!commentToUpdate.user.equals(res.locals.issuerId)) {
-    //   const e = new Error('Not Author');
-    //   e.status = 401;
-    //   throw e;
-    // }
-
-    // const update = await commentToUpdate.update(
-    //   { $set: { text: req.body.text } },
-    //   { new: true }
-    // );
 
     res.status(200).json({
       meta: { status: 'Ok' },

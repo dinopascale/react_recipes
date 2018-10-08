@@ -3,7 +3,13 @@ import dateIntervale from '../../../../utils/dateIntervale';
 import DropdownList from '../../../../hoc/DropdownList';
 import DropdownMenu from './commentUserRow/DropdownMenu';
 
-export default ({ comment, editable, enterEditMode, deleteElement }) => {
+export default ({
+  comment,
+  editable,
+  enterEditMode,
+  deleteElement,
+  isAuthor
+}) => {
   return (
     <div className="user-row">
       <div
@@ -68,6 +74,7 @@ export default ({ comment, editable, enterEditMode, deleteElement }) => {
         .user-name {
           margin-bottom: 5px;
           color: #06b4fe;
+          font-weight: ${isAuthor ? '900' : '400'};
         }
 
         .rates {

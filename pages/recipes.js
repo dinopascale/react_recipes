@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import ErrorPage from './_error';
 
-import { callApi, createErrorMessage } from '../store/actions';
+import { callApi, createErrorMessage, callApiP } from '../store/actions';
 
 import ActionButton from '../frontend/shared/ActionButton';
 import GreetUser from '../frontend/component/GreetUser';
@@ -74,7 +74,6 @@ class Recipes extends React.Component {
     if (window) {
       window.addEventListener('scroll', this.infiniteScroll, false);
     }
-    console.log(this.props.recipes);
     this.props.router.prefetch('/auth/register');
   }
 
@@ -86,15 +85,18 @@ class Recipes extends React.Component {
 
   infiniteScroll = () => {
     const rectBoundaries = this._container.getBoundingClientRect();
-    if (
-      rectBoundaries.bottom.toFixed(0) >= window.innerHeight - 20 &&
-      rectBoundaries.bottom.toFixed(0) <= window.innerHeight
-    ) {
-      if (this.state.sortBy === 'Most Popular') {
-        this.getRecipes(true, 'Most Popular', this.state.filterBy);
-      } else {
-        this.getRecipes(true, 'Most Recent', this.state.filterBy);
-      }
+    const endOfPage =
+      rectBoundaries.bottom.toFixed(0) >= window.innerHeight - 40 &&
+      rectBoundaries.bottom.toFixed(0) <= window.innerHeight;
+
+    if (!endOfPage) {
+      return false;
+    }
+
+    if (this.state.sortBy === 'Most Popular') {
+      return this.getRecipes(true, 'Most Popular', this.state.filterBy);
+    } else {
+      return this.getRecipes(true, 'Most Recent', this.state.filterBy);
     }
   };
 
@@ -103,10 +105,10 @@ class Recipes extends React.Component {
     sort = 'Most Popular',
     tag = false
   ) => {
-    const { callApi, errorModal } = this.props;
+    const { callApi, errorModal, loading } = this.props;
     const { page, total, recipesList } = this.state;
 
-    if (recipesList.length >= total && fromScroll) {
+    if ((recipesList.length >= total && fromScroll) || loading) {
       return false;
     }
 
@@ -119,24 +121,40 @@ class Recipes extends React.Component {
             tag ? '&tag=' + tag : ''
           }`;
 
-    await callApi(
-      endpoint,
-      null,
-      json => {
-        this.setState(prevState => ({
-          recipesList: fromScroll
-            ? [...prevState.recipesList, ...json.data.results]
-            : json.data.results,
-          sortBy: sort === 'Most Popular' ? 'Most Popular' : 'Most Recent',
-          filterBy: tag ? tag : prevState.tag,
-          page: fromScroll ? prevState.page + 1 : 1,
-          total: json.meta.total
-        }));
-      },
-      error => {
-        errorModal(error);
-      }
-    );
+    try {
+      const json = await callApi(endpoint, null);
+      const otherRecipes = json.data.results;
+      this.setState(prevState => ({
+        recipesList: fromScroll
+          ? [...prevState.recipesList, ...otherRecipes]
+          : otherRecipes,
+        sortBy: sort === 'Most Popular' ? 'Most Popular' : 'Most Recent',
+        filterBy: tag ? tag : prevState.tag,
+        page: fromScroll ? prevState.page + 1 : 1,
+        total: json.meta.total
+      }));
+    } catch (e) {
+      errorModal(e);
+    }
+
+    // await callApi(
+    //   endpoint,
+    //   null,
+    //   json => {
+    //     this.setState(prevState => ({
+    //       recipesList: fromScroll
+    //         ? [...prevState.recipesList, ...json.data.results]
+    //         : json.data.results,
+    //       sortBy: sort === 'Most Popular' ? 'Most Popular' : 'Most Recent',
+    //       filterBy: tag ? tag : prevState.tag,
+    //       page: fromScroll ? prevState.page + 1 : 1,
+    //       total: json.meta.total
+    //     }));
+    //   },
+    //   error => {
+    //     errorModal(error);
+    //   }
+    // );
   };
 
   renderCallToAction = () => {
@@ -235,14 +253,16 @@ class Recipes extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    loading: state.loading
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    callApi: (endpoint, options, onSuccess, onFail) =>
-      dispatch(callApi(endpoint, options, onSuccess, onFail)),
+    // callApi: (endpoint, options, onSuccess, onFail) =>
+    //   dispatch(callApi(endpoint, options, onSuccess, onFail)),
+    callApi: (endpoint, options) => dispatch(callApiP(endpoint, options)),
     errorModal: error => dispatch(createErrorMessage(error))
   };
 };

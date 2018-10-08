@@ -2,16 +2,14 @@ import { Fragment } from 'react';
 
 import RateComment from './commentActionRow/RateComment';
 import ActionButton from '../../../../shared/ActionButton';
-import ShowResponses from './commentActionRow/ShowResponses';
+import Respond from './commentActionRow/Respond';
 
 export default ({
   comment,
   isComment,
   isAuth,
-  showResponses,
   showNewComment,
   listShowed,
-  toggleShowList,
   rateElement,
   isEditing,
   exitEditMode,
@@ -58,13 +56,11 @@ export default ({
           isAuth={isAuth}
           isComment={isComment}
         />
-        <ShowResponses
+        <Respond
           isAuth={isAuth}
           isComment={isComment}
-          showResponses={showResponses}
           showNewComment={showNewComment}
           listShowed={listShowed}
-          toggleShowList={toggleShowList}
         />
       </Fragment>
     );

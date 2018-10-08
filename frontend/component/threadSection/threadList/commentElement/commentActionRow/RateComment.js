@@ -39,11 +39,12 @@ export default props => {
       <style jsx>{`
         .rate-comment {
           display: flex;
-          justify-content: flex-end;
+          justify-content: space-between;
           align-items: center;
-          flex: 0 0 50%;
-          margin-right: ${props.isComment ? '0' : '10px'};
-          border-right: ${props.isComment ? 'none' : '1px solid #ccc'};
+          padding: 0 8px;
+          flex: 0 0 30%;
+          margin-right: 10px;
+          border-right: 1px solid #ccc;
         }
 
         .total {

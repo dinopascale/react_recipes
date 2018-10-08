@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import withCommentAPI from '../../../hoc/withCommentAPI';
 import NewComment from '../NewComment';
 import CommentElement from './CommentElement';
 
 class CommentList extends Component {
-  //   async componentDidMount() {
-  //     await this.props.load();
-  //   }
+  async componentDidMount() {
+    await this.props.loadData();
+  }
 
   render() {
     const {
+      isAuth,
+      isAuthor,
       list,
       loaded,
       showed,
@@ -18,34 +19,51 @@ class CommentList extends Component {
       showNewComment,
       hideNewComment,
       setNewCommentRef,
-      submitNewComment
+      submitNewComment,
+      setEditableElement,
+      editingComment,
+      enterCommentEditMode,
+      exitCommentEditMode,
+      submitChangeComment,
+      deleteComment,
+      rateComment
     } = this.props;
-
-    console.log(!loaded || !showed);
 
     let content = null;
 
     if (!loaded || !showed) {
       content = null;
-    } else if (list.length === 0 && loaded) {
-      content = <p>No comments</p>;
     } else {
-      content = this.props.list.map((comment, index) => (
-        <div key={comment._id} className="response-item">
-          <CommentElement
-            comment={comment}
-            showNewComment={showNewComment}
-            isComment
-            //   deleteSelf={comment.editable ? this.props.delete(index) : null}
-            //   rateComment={this.props.auth ? this.props.rate(index) : null}
-          />
-        </div>
-      ));
+      content = list
+        .sort((a, b) => a.createdAt - b.createdAt)
+        .map((comment, index) => (
+          <div key={comment._id} className="response-item">
+            <CommentElement
+              comment={comment}
+              isAuthor={isAuthor}
+              setEditableRef={setEditableElement}
+              editable={comment.editable}
+              isAuth={isAuth}
+              enterEditMode={enterCommentEditMode}
+              exitEditMode={exitCommentEditMode}
+              editingThread={editingComment}
+              submitChangeElement={submitChangeComment}
+              deleteElement={deleteComment}
+              rateElement={isAuth ? rateComment(index) : null}
+              showNewComment={showNewComment}
+              isComment
+            />
+            <style jsx>{`
+              .response-item {
+                padding: 24px 0 8px 0;
+              }
+            `}</style>
+          </div>
+        ));
     }
 
     return (
       <div className="response-list">
-        {content}
         <NewComment
           userInfo={userInfo}
           showed={newCommentShowed}
@@ -54,14 +72,13 @@ class CommentList extends Component {
           setNewRef={setNewCommentRef}
           isResponse
         />
+        {content}
         <style jsx>{`
           .response-list {
-            margin-left: 50px;
-            margin-top: 10px;
-          }
-
-          .response-item {
-            margin: 10px 0;
+            width: 85%;
+            min-width: 252px;
+            margin-right: 0;
+            margin-left: auto;
           }
         `}</style>
       </div>

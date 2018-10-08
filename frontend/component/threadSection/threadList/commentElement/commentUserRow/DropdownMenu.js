@@ -16,7 +16,7 @@ export default props => {
           .dropdown-menu {
             position: absolute;
             background-color: #fff;
-            width: 100%;
+            width: 130%;
             display: inline-block;
             padding: 8px 16px;
             top: 60%;

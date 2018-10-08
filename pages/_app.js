@@ -31,7 +31,9 @@ import {
   faUndo,
   faUserEdit,
   faArrowLeft,
-  faTimes
+  faTimes,
+  faReply,
+  faCaretUp
 } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../frontend/hoc/Layout';
@@ -47,6 +49,7 @@ library.add(
   faLongArrowAltUp,
   faLongArrowAltDown,
   faCaretDown,
+  faCaretUp,
   faComment,
   faExclamation,
   faCheckCircle,
@@ -62,7 +65,8 @@ library.add(
   faUndo,
   faUserEdit,
   faArrowLeft,
-  faTimes
+  faTimes,
+  faReply
 );
 
 class MyApp extends App {

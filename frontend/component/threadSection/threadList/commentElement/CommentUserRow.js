@@ -59,7 +59,7 @@ export default ({ comment, editable, enterEditMode, deleteElement }) => {
         }
 
         .user-name-row {
-          flex: 0 0 40%;
+          flex: 1 0 50%;
           font-size: 14px;
           display: flex;
           flex-flow: column;
@@ -76,7 +76,7 @@ export default ({ comment, editable, enterEditMode, deleteElement }) => {
         }
 
         .edit-menu {
-          flex: 0 0 40%;
+          flex: 0 0 30%;
           text-align: right;
           color: #777e8e;
         }

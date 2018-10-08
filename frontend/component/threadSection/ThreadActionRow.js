@@ -15,8 +15,8 @@ export default ({ listLength, sortBy, isAuth, showNew, sorted }) => (
           customStyle={{
             margin: '0',
             padding: '0 8px',
-            width: '100%',
             height: '100%',
+            flex: '0 0 100%',
             backgroundColor: '#06b4fe',
             color: '#fff'
           }}
@@ -50,8 +50,10 @@ export default ({ listLength, sortBy, isAuth, showNew, sorted }) => (
 
       .new-comment {
         flex: 0 0 50%;
-        text-align: right;
         height: 36px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
       }
 
       .message {

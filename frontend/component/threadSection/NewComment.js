@@ -3,7 +3,14 @@ import { Fragment } from 'react';
 
 import ActionButton from '../../shared/ActionButton';
 
-export default ({ userInfo, showed, hideNew, submit, setNewRef }) => {
+export default ({
+  userInfo,
+  showed,
+  hideNew,
+  submit,
+  setNewRef,
+  isResponse
+}) => {
   if (!showed) {
     return null;
   }
@@ -32,7 +39,7 @@ export default ({ userInfo, showed, hideNew, submit, setNewRef }) => {
       </div>
       <style jsx>{`
         .new-comment-container {
-          padding: 0 20px;
+          padding: ${isResponse ? '0px' : '0 20px'};
         }
 
         .new-comment {

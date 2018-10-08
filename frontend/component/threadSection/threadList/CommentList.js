@@ -4,27 +4,55 @@ import NewComment from '../NewComment';
 import CommentElement from './CommentElement';
 
 class CommentList extends Component {
-  async componentDidMount() {
-    await this.props.load();
-  }
+  //   async componentDidMount() {
+  //     await this.props.load();
+  //   }
 
   render() {
+    const {
+      list,
+      loaded,
+      showed,
+      userInfo,
+      newCommentShowed,
+      showNewComment,
+      hideNewComment,
+      setNewCommentRef,
+      submitNewComment
+    } = this.props;
+
+    console.log(!loaded || !showed);
+
+    let content = null;
+
+    if (!loaded || !showed) {
+      content = null;
+    } else if (list.length === 0 && loaded) {
+      content = <p>No comments</p>;
+    } else {
+      content = this.props.list.map((comment, index) => (
+        <div key={comment._id} className="response-item">
+          <CommentElement
+            comment={comment}
+            showNewComment={showNewComment}
+            isComment
+            //   deleteSelf={comment.editable ? this.props.delete(index) : null}
+            //   rateComment={this.props.auth ? this.props.rate(index) : null}
+          />
+        </div>
+      ));
+    }
+
     return (
       <div className="response-list">
-        {this.props.list.map((comment, index) => (
-          <div key={comment._id} className="response-item">
-            <CommentElement
-              comment={comment}
-              deleteSelf={comment.editable ? this.props.delete(index) : null}
-              rateComment={this.props.auth ? this.props.rate(index) : null}
-            />
-          </div>
-        ))}
+        {content}
         <NewComment
-          comment={this.props.submitNew}
-          changed={this.props.createNew}
-          value={this.props.new}
-          isAuth={this.props.auth}
+          userInfo={userInfo}
+          showed={newCommentShowed}
+          hideNew={hideNewComment}
+          submit={submitNewComment}
+          setNewRef={setNewCommentRef}
+          isResponse
         />
         <style jsx>{`
           .response-list {
@@ -41,4 +69,4 @@ class CommentList extends Component {
   }
 }
 
-export default withCommentAPI(CommentList);
+export default CommentList;

@@ -2,10 +2,16 @@ import { Fragment } from 'react';
 
 import RateComment from './commentActionRow/RateComment';
 import ActionButton from '../../../../shared/ActionButton';
+import ShowResponses from './commentActionRow/ShowResponses';
 
 export default ({
   comment,
+  isComment,
+  isAuth,
   showResponses,
+  showNewComment,
+  listShowed,
+  toggleShowList,
   rateElement,
   isEditing,
   exitEditMode,
@@ -49,18 +55,17 @@ export default ({
           totalRate={comment.totalRate}
           rateComment={rateElement}
           userRate={comment.userRate}
+          isAuth={isAuth}
+          isComment={isComment}
         />
-        {showResponses ? (
-          <div className="show-conv button-text" onClick={showResponses}>
-            Respond
-            <style jsx>{`
-              .show-conv {
-                color: #777e8e;
-                height: 100%;
-              }
-            `}</style>
-          </div>
-        ) : null}
+        <ShowResponses
+          isAuth={isAuth}
+          isComment={isComment}
+          showResponses={showResponses}
+          showNewComment={showNewComment}
+          listShowed={listShowed}
+          toggleShowList={toggleShowList}
+        />
       </Fragment>
     );
   }

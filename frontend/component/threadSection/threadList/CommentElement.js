@@ -5,10 +5,15 @@ import EditableCommentArea from './commentElement/EditableCommentArea';
 
 export default ({
   comment,
+  isAuth,
+  isComment,
   rateComment,
   showResponses,
   editable,
   setEditableRef,
+  showNewComment,
+  listShowed,
+  toggleShowList,
   enterEditMode,
   exitEditMode,
   editingThread,
@@ -49,12 +54,17 @@ export default ({
     </div> */}
     <CommentActionRow
       comment={comment}
+      isAuth={isAuth}
+      isComment={isComment}
       isEditing={editingThread === comment._id}
       showResponses={showResponses}
       rateComment={rateComment}
       exitEditMode={exitEditMode}
       submitChangeElement={submitChangeElement}
       rateElement={rateElement}
+      showNewComment={showNewComment}
+      listShowed={listShowed}
+      toggleShowList={toggleShowList}
     />
     <style jsx>{`
       .comment-element {

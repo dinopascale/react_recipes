@@ -1,4 +1,5 @@
 import ActionButton from '../../../../../shared/ActionButton';
+import Router from 'next/router';
 
 export default props => {
   let classes = ['total body-two'];
@@ -7,11 +8,16 @@ export default props => {
   } else if (props.userRate === -1) {
     classes.push('down');
   }
+
+  let action = props.isAuth
+    ? props.rateComment
+    : () => Router.push('/auth/register');
+
   return (
     <div className="rate-comment">
       <ActionButton
         name="up"
-        handleClick={props.rateComment}
+        handleClick={action}
         icon="long-arrow-alt-up"
         customStyle={{
           color: props.userRate === 1 ? '#77B5B5' : '#777e8e',
@@ -23,7 +29,7 @@ export default props => {
       <ActionButton
         name="down"
         icon="long-arrow-alt-down"
-        handleClick={props.rateComment}
+        handleClick={action}
         customStyle={{
           color: props.userRate === -1 ? '#D19DA0' : '#777e8e',
           maxWidth: '42px',
@@ -36,8 +42,8 @@ export default props => {
           justify-content: flex-end;
           align-items: center;
           flex: 0 0 50%;
-          margin-right: 10px;
-          border-right: 1px solid #ccc;
+          margin-right: ${props.isComment ? '0' : '10px'};
+          border-right: ${props.isComment ? 'none' : '1px solid #ccc'};
         }
 
         .total {

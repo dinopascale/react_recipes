@@ -7,6 +7,7 @@ import apiEndpoints from '../utils/apiEndpoints';
 class ThreadsListApi extends React.Component {
   state = {
     list: [],
+    showList: false,
     showNewElement: false,
     idElementEditing: null,
     listLoaded: false,
@@ -34,16 +35,26 @@ class ThreadsListApi extends React.Component {
         };
       });
 
+      console.log(type, list);
+
       this.setState({
         list,
-        listLoaded: true
+        listLoaded: true,
+        showList: true
       });
     } catch (e) {
       this.setState({
         listLoaded: true,
-        error: true
+        error: true,
+        showList: true
       });
     }
+  };
+
+  toggleShowList = () => {
+    this.setState(prevState => ({
+      showList: !prevState.showList
+    }));
   };
 
   showNewElement = () => {
@@ -256,7 +267,8 @@ class ThreadsListApi extends React.Component {
       this.exitEditMode,
       this.submitChangeElement,
       this.deleteElement,
-      this.rateElement
+      this.rateElement,
+      this.toggleShowList
     );
   }
 }

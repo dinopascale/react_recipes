@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 
-import withCommentAPI from '../hoc/withCommentAPI';
 import withFilter from '../hoc/withFilter';
 
 import ThreadList from './threadSection/ThreadList';
 import NewComment from './threadSection/NewComment';
-import LoadThreadsButton from './threadSection/LoadThreadsButton';
-import ActionButton from '../shared/ActionButton';
 import ThreadActionRow from './threadSection/ThreadActionRow';
 import NoThreads from './threadSection/NoThreads';
 
@@ -31,16 +28,8 @@ class ThreadSection extends Component {
       sortBy,
       sorted,
       isAuth,
-      list,
-      rate,
-      submitNew,
-      createNew,
-      newEl,
-      listLoaded,
-      load,
       isVisible,
       listInfo,
-      loadThreads,
       showNewThread,
       hideNewThread,
       setNewThreadRef,
@@ -55,7 +44,8 @@ class ThreadSection extends Component {
 
     const loadedAndEmptyList =
       listInfo.list.length === 0 && this.state.initialized;
-    console.log(loadedAndEmptyList);
+    console.log(listInfo.list);
+
 
     if (!isVisible) {
       return (

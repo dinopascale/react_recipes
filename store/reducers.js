@@ -19,6 +19,11 @@ const toEditInitialState = {
 
 const recipeInitialState = null;
 
+const newRecipeInitialState = {
+  schema: [],
+  values: null
+};
+
 export const loading = (state = null, action) => {
   switch (action.type) {
     case actionTypes.START_LOADING:
@@ -127,6 +132,26 @@ export const recipe = (state = recipeInitialState, action) => {
       return {
         ...state,
         ...action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+export const newRecipe = (state = newRecipeInitialState, action) => {
+  switch (action.type) {
+    case actionTypes.SET_SCHEMA:
+      return {
+        ...state,
+        schema: [...state.schema, ...action.payload]
+      };
+    case actionTypes.SET_VALUES_FORM:
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          ...action.payload
+        }
       };
     default:
       return state;

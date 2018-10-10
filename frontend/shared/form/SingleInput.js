@@ -4,9 +4,9 @@ import ImgDynamicSrc from './singleInput/ImgDinamycSrc';
 export default ({ field, change, blur, type, width }) => (
   <div className="form-group">
     <div className="form-field">
-      {type !== 'img' ? null : (
+      {/* {type !== 'img' ? null : (
         <ImgDynamicSrc imgURL={field.value} key={field.value} />
-      )}
+      )} */}
       <label className="form-label" htmlFor={field.name}>
         {field.name}{' '}
         <span className="form-label-req">

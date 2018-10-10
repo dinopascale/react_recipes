@@ -73,6 +73,18 @@ app
             app.render(req, res, '/new_recipe');
           });
 
+          server.get('/new_recipe/:step', checkAuth, (req, res) => {
+            if (!res.locals.issuerId) {
+              res.redirect(301, '/auth/login');
+            }
+            const actualPage = '/new_recipe/step';
+            const queryParams = {
+              step: req.params.step,
+              stepName: req.params.stepName
+            };
+            app.render(req, res, actualPage, queryParams);
+          });
+
           server.get('/u/me', checkAuth, (req, res) => {
             if (!res.locals.issuerId) {
               res.redirect(301, '/');

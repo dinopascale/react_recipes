@@ -1,5 +1,4 @@
 import Router from 'next/router';
-import apiEndpoints from '../frontend/utils/apiEndpoints';
 
 export const actionTypes = {
   TRY_LOGIN: 'TRY_LOGIN',
@@ -21,7 +20,10 @@ export const actionTypes = {
   ADD_RECIPE: 'ADD_RECIPE',
   TRY_DELETE_RECIPE: 'TRY_DELETE_RECIPE',
   SUCCESS_DELETE_RECIPE: 'SUCCESS_DELETE_RECIPE',
-  FAIL_DELETE_RECIPE: 'FAIL_DELETE_RECIPE'
+  FAIL_DELETE_RECIPE: 'FAIL_DELETE_RECIPE',
+  SET_SCHEMA: 'SET_SCHEMA',
+  SET_VALUES_FORM: 'SET_VALUES_FORM',
+  RESET_VALUES_FORM: 'RESET_VALUES_FORM'
 };
 
 //MIDDLEWARES
@@ -212,9 +214,23 @@ export const addItemToEdit = item => {
   };
 };
 
+export const setSchema = schema => {
+  return {
+    type: actionTypes.SET_SCHEMA,
+    payload: schema
+  };
+};
+
 export const addRecipe = recipe => {
   return {
     type: actionTypes.ADD_RECIPE,
     payload: recipe
+  };
+};
+
+export const setValuesForm = values => {
+  return {
+    type: actionTypes.SET_VALUES_FORM,
+    payload: values
   };
 };

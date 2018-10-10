@@ -9,44 +9,50 @@ import {
 import { validationRules, validationError } from '../utils/validationRules';
 import { connect } from 'react-redux';
 
+const isObject = obj => {
+  return obj === Object(obj);
+};
+
+const transformPropToForm = (prop, filledValue = null) => {
+  return prop.reduce((frm, field) => {
+    frm[field.name] = {
+      name: field.name,
+      value: field.subSchema
+        ? filledValue && Object.keys(filledValue).length !== 0
+          ? filledValue[field.name].map(subfield =>
+              transformPropToForm(field.subSchema, subfield)
+            )
+          : [transformPropToForm(field.subSchema)]
+        : filledValue
+          ? isObject(filledValue[field.name])
+            ? filledValue[field.name].value
+            : filledValue[field.name]
+          : field.default,
+      enum: field.enum,
+      instance: field.instance,
+      isPristine: true,
+      isInvalid: true,
+      subSchema: field.subSchema,
+      errorMessage: null,
+      rules: {
+        ...field.validationRules,
+        isUrl: field.name === 'img',
+        isEmail: field.name === 'email'
+      }
+    };
+    return frm;
+  }, {});
+};
+
 class Form extends Component {
   constructor(props) {
     super(props);
 
     const { data, filledValues } = this.props;
-    const form = this.transformPropToForm(data, filledValues);
+    const form = transformPropToForm(data, filledValues);
 
-    this.state = { ...form };
+    this.state = { form };
   }
-
-  transformPropToForm = (prop, filledValue = null) => {
-    return prop.reduce((frm, field) => {
-      frm[field.name] = {
-        name: field.name,
-        value: field.subSchema
-          ? filledValue
-            ? filledValue[field.name].map(subfield =>
-                this.transformPropToForm(field.subSchema, subfield)
-              )
-            : [this.transformPropToForm(field.subSchema)]
-          : filledValue
-            ? filledValue[field.name]
-            : field.default,
-        enum: field.enum,
-        instance: field.instance,
-        isPristine: true,
-        isInvalid: true,
-        subSchema: field.subSchema,
-        errorMessage: null,
-        rules: {
-          ...field.validationRules,
-          isUrl: field.name === 'img',
-          isEmail: field.name === 'email'
-        }
-      };
-      return frm;
-    }, {});
-  };
 
   extractNestedInfo = array => {
     return array.map(el => {
@@ -58,7 +64,7 @@ class Form extends Component {
   };
 
   formToAPI = () => {
-    const form = { ...this.state };
+    const form = { ...this.state.form };
     return Object.keys(form).reduce((obj, fieldName) => {
       obj[fieldName] = form[fieldName].subSchema
         ? this.extractNestedInfo(form[fieldName].value)
@@ -106,27 +112,36 @@ class Form extends Component {
     }
 
     this.setState({
-      [field]: {
-        ...this.state[field],
-        value:
-          this.state[field].instance === 'Boolean' ? value === 'true' : value
+      form: {
+        ...this.state.form,
+        [field]: {
+          ...this.state.form[field],
+          value:
+            this.state.form[field].instance === 'Boolean'
+              ? value === 'true'
+              : value
+        }
       }
     });
   };
 
   handleInputBlur = field => (event, data) => {
-    const fieldToValidate = { ...this.state[field] };
+    const fieldToValidate = { ...this.state.form[field] };
     let result = data ? data : this.validateSingle(fieldToValidate);
     this.setState({
-      [field]: {
-        ...this.state[field],
-        ...result
+      form: {
+        ...this.state.form,
+        [field]: {
+          ...this.state.form[field],
+          ...result
+        }
       }
     });
   };
 
   validateSingle = field => {
     const fieldToValidate = { ...field };
+    console.log(fieldToValidate);
 
     const dirtyAndValid = {
       isInvalid: false,
@@ -216,14 +231,17 @@ class Form extends Component {
 
   addNewField = field => event => {
     event.preventDefault();
-    const subSchema = this.transformPropToForm(field.subSchema);
+    const subSchema = transformPropToForm(field.subSchema);
 
     const value = [...field.value];
     value.push(subSchema);
     this.setState({
-      [field.name]: {
-        ...this.state[field.name],
-        value
+      form: {
+        ...this.state.form,
+        [field.name]: {
+          ...this.state.form[field.name],
+          value
+        }
       }
     });
   };
@@ -231,23 +249,31 @@ class Form extends Component {
   deleteField = field => (event, index) => {
     const value = field.value.filter((subfield, i) => i !== index);
     this.setState({
-      [field.name]: {
-        ...this.state[field.name],
-        value
+      form: {
+        ...this.state.form,
+        [field.name]: {
+          ...this.state.form[field.name],
+          value
+        }
       }
     });
   };
 
-  componentDidMount() {
-    // const form = this.transformPropToForm(data, filledValues);
-    // this.setState({
-    //   ...form
-    // });
+  componentDidUpdate(prevProps, prevState) {
+    const { step, data, filledValues } = this.props;
+
+    if (step && prevProps.step !== step) {
+      const form = transformPropToForm(data, filledValues);
+      console.log('update form', form);
+      this.setState({
+        form
+      });
+    }
   }
 
   render() {
     return this.props.render(
-      this.state,
+      this.state.form,
       this.handleInputChange,
       this.handleInputBlur,
       this.handleSubmit,
@@ -259,6 +285,12 @@ class Form extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    recipeSchema: state.newRecipe.schema
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {

@@ -123,15 +123,15 @@ export default ({
       </Step>
       <style jsx>{`
         .new-recipe-form {
-          padding: 0 20px;
           position: relative;
-          top: 74px;
           display: flex;
           align-items: center;
-          width: 100%;
-          min-height: calc(100vh - 74px);
-          background-color: #ff7f50;
-          overflow-x: hidden;
+          width: 95%;
+          border-radius: 8px;
+          margin: 90px auto 30px auto;
+          padding: 30px 16px 30px 16px;
+          height: 100%;
+          background-color: #fff;
         }
       `}</style>
     </form>

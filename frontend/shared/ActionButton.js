@@ -1,7 +1,9 @@
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default props => {
   let icon = null;
+
   if (props.icon) {
     icon = (
       <span className="icon">
@@ -15,7 +17,8 @@ export default props => {
       </span>
     );
   }
-  return (
+
+  let button = (
     <button
       onClick={props.handleClick}
       style={props.customStyle}
@@ -61,4 +64,14 @@ export default props => {
       `}</style>
     </button>
   );
+
+  if (props.isLink) {
+    return (
+      <Link href={props.href} as={props.as}>
+        {button}
+      </Link>
+    );
+  }
+
+  return button;
 };

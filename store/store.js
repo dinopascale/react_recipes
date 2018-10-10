@@ -8,7 +8,8 @@ import {
   loading,
   toEdit,
   recipe,
-  confirmationModal
+  confirmationModal,
+  newRecipe
 } from './reducers';
 
 const appReducer = combineReducers({
@@ -17,6 +18,7 @@ const appReducer = combineReducers({
   loading,
   toEdit,
   recipe,
+  newRecipe,
   confirmationModal
 });
 

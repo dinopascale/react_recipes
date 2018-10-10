@@ -22,7 +22,7 @@ export default ({ active, next, back, error, fields, children }) => (
         position: absolute;
         top: 80px;
         left: 50%;
-        width: 90%;
+        width: 100%;
         border-radius: 4px;
         opacity: 0;
         transform: translate(-1000px, 0);

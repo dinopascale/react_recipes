@@ -1,5 +1,5 @@
 const filter = {
-  general: ['name', 'img', 'sharable'],
+  general: ['name', 'img', 'sharable', 'tag'],
   times: ['preparationTime', 'cookTime', 'serves', 'difficulty'],
   directions: ['directions'],
   ingredients: ['ingredients'],
@@ -15,6 +15,10 @@ const filter = {
     'ingredients'
   ]
 };
+
+// const booleanToString = bool => {
+//   return bool ? 'true' : 'false';
+// };
 
 export const chunkSchema = (schema, name) => {
   return schema.filter(el => filter[name].includes(el.name));

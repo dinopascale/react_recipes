@@ -16,7 +16,9 @@ export default props => (
       />
     </Head>
     <style jsx global>{`
-      * {
+      *,
+      *:before,
+      *:after {
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
       }

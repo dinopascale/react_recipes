@@ -11,12 +11,6 @@ const WelcomePage = ({ router }) => {
       </p>
       <div className="button-row">
         <ActionButton
-          //   handleClick={() =>
-          //     router.push(
-          //       '/new_recipe/step?stepName=general&step=1',
-          //       '/new_recipe/general'
-          //     )
-          //   }
           isLink
           href="/new_recipe/step?stepName=general&step=1"
           as="/new_recipe/general"
@@ -25,49 +19,7 @@ const WelcomePage = ({ router }) => {
             color: '#fff'
           }}
         >
-          General
-        </ActionButton>
-        <ActionButton
-          handleClick={() =>
-            router.push(
-              '/new_recipe/step?stepName=times&step=2',
-              '/new_recipe/times'
-            )
-          }
-          customStyle={{
-            backgroundColor: 'rgb(6, 180, 254)',
-            color: '#fff'
-          }}
-        >
-          times
-        </ActionButton>
-        <ActionButton
-          handleClick={() =>
-            router.push(
-              '/new_recipe/step?stepName=directions&step=3',
-              '/new_recipe/directions'
-            )
-          }
-          customStyle={{
-            backgroundColor: 'rgb(6, 180, 254)',
-            color: '#fff'
-          }}
-        >
-          directions
-        </ActionButton>
-        <ActionButton
-          handleClick={() =>
-            router.push(
-              '/new_recipe/step?stepName=ingredients&step=4',
-              '/new_recipe/ingredients'
-            )
-          }
-          customStyle={{
-            backgroundColor: 'rgb(6, 180, 254)',
-            color: '#fff'
-          }}
-        >
-          ingredients
+          Start
         </ActionButton>
       </div>
       <style jsx>{`

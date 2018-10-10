@@ -103,10 +103,7 @@ class Form extends Component {
     let value = null;
     if (event) {
       const target = event.target;
-      value =
-        target.tagName === 'LABEL'
-          ? target.previousSibling.value
-          : target.value;
+      value = target.title === 'switch' ? target.checked : target.value;
     } else {
       value = data;
     }
@@ -116,10 +113,10 @@ class Form extends Component {
         ...this.state.form,
         [field]: {
           ...this.state.form[field],
-          value:
-            this.state.form[field].instance === 'Boolean'
-              ? value === 'true'
-              : value
+          value
+          // this.state.form[field].instance === 'Boolean'
+          //   ? value === 'true'
+          //   : value
         }
       }
     });
@@ -141,7 +138,6 @@ class Form extends Component {
 
   validateSingle = field => {
     const fieldToValidate = { ...field };
-    console.log(fieldToValidate);
 
     const dirtyAndValid = {
       isInvalid: false,
@@ -264,7 +260,6 @@ class Form extends Component {
 
     if (step && prevProps.step !== step) {
       const form = transformPropToForm(data, filledValues);
-      console.log('update form', form);
       this.setState({
         form
       });
@@ -285,12 +280,6 @@ class Form extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    recipeSchema: state.newRecipe.schema
-  };
-};
 
 const mapDispatchToProps = dispatch => {
   return {

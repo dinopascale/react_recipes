@@ -15,8 +15,8 @@ export default ({ values }) => {
               <ul className="list-ingredients">
                 {values[key].map(el => {
                   return (
-                    <li className="info body-one" key={el.name.value}>
-                      {el.name.value}: {el.quantity.value}
+                    <li className="info body-one" key={el.name}>
+                      {el.name}: {el.quantity}
                     </li>
                   );
                 })}

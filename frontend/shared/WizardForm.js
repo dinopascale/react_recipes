@@ -9,9 +9,20 @@ class WizardForm extends Component {
     errorValidation: false
   };
 
+  extractNestedValues = arr => {
+    return arr.map(el => {
+      return Object.keys(el).reduce((newObj, key) => {
+        newObj[key] = el[key].value;
+        return newObj;
+      }, {});
+    });
+  };
+
   extractValues = obj => {
     return Object.values(obj).reduce((newObj, element) => {
-      newObj[element.name] = element.value;
+      newObj[element.name] = Array.isArray(element.value)
+        ? this.extractNestedValues(element.value)
+        : element.value;
       return newObj;
     }, {});
   };
@@ -31,13 +42,12 @@ class WizardForm extends Component {
     const fieldsToValidate = this.objToArr(fieldsToTransform);
     const result = validateFields(fieldsToValidate);
 
-    console.log(result, fieldsToValidate);
-
     if (result) {
       this.setState({
         errorValidation: false
       });
       const values = this.extractValues(fields);
+      console.log('values', values);
       setValues(values);
       router.push(
         `/new_recipe/step?stepName=${steps[step]}&step=${+step + 1}`,

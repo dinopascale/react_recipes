@@ -61,11 +61,13 @@ export const confirmationModal = (
 
 export const snackbar = (state = snackbarInitialState, action) => {
   switch (action.type) {
+    case actionTypes.SHOW_SNACKBAR:
     case actionTypes.LOGIN_FAIL:
     case actionTypes.NEW_ERROR_MESSAGE:
-    case actionTypes.SHOW_SNACKBAR:
     case actionTypes.SUCCESS_DELETE_RECIPE:
     case actionTypes.FAIL_DELETE_RECIPE:
+    case actionTypes.SUCCESS_SUBMIT_RECIPE:
+    case actionTypes.FAIL_SUBMIT_RECIPE:
       return {
         ...state,
         isOpen: true,

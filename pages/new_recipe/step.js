@@ -1,8 +1,16 @@
 import React, { Component, Fragment } from 'react';
+import Router from 'next/router';
 import Head from 'next/head';
+
+import { connect } from 'react-redux';
+import {
+  callApiP,
+  successSubmitRecipe,
+  failSubmitRecipe
+} from '../../store/actions';
+
 import { chunkSchema, chunkValues } from '../../frontend/utils/stepSchema';
 import Form from '../../frontend/shared/Form';
-
 import General from '../../frontend/component/new_recipe/General';
 import Times from '../../frontend/component/new_recipe/Times';
 import Directions from '../../frontend/component/new_recipe/Directions';
@@ -11,6 +19,8 @@ import NextButton from '../../frontend/component/new_recipe/NextButton';
 import BackButton from '../../frontend/component/new_recipe/BackButton';
 import WizardForm from '../../frontend/shared/WizardForm';
 import Recap from '../../frontend/component/new_recipe/Recap';
+import apiEndpoints from '../../frontend/utils/apiEndpoints';
+import SubmitButton from '../../frontend/component/new_recipe/SubmitButton';
 
 const steps = ['general', 'times', 'directions', 'ingredients', 'recap'];
 
@@ -24,8 +34,6 @@ class Step extends Component {
       });
       res.end();
     }
-
-    console.log(query.stepName);
 
     const newRecipe = reduxStore.getState().newRecipe;
 
@@ -56,6 +64,28 @@ class Step extends Component {
     };
   }
 
+  submitRecipe = async () => {
+    const {
+      values,
+      callApi,
+      successSubmitRecipe,
+      failSubmitRecipe
+    } = this.props;
+    const { options, endpoint } = apiEndpoints.newRecipe;
+
+    const optionsWithBody = { ...options, body: JSON.stringify(values) };
+
+    try {
+      const json = await callApi(endpoint, optionsWithBody);
+      const newRecipeId = json.data.recipeCreated._id;
+      successSubmitRecipe();
+      Router.push(`/recipe?id=${newRecipeId}`, `/r/${newRecipeId}`);
+    } catch (e) {
+      console.log(e);
+      //   failSubmitRecipe(e);
+    }
+  };
+
   render() {
     const {
       step,
@@ -67,8 +97,9 @@ class Step extends Component {
       values
     } = this.props;
 
+    console.log(stepFilledValues);
+
     const isRecap = stepName === 'recap';
-    console.log('renderStepSchema', stepFilledValues);
     return (
       <Fragment>
         <Head>
@@ -138,7 +169,11 @@ class Step extends Component {
                       }[stepName]
                     }
                     <div className="nav">
-                      <NextButton next={next} fields={state} error={error} />
+                      {isRecap ? (
+                        <SubmitButton submit={this.submitRecipe} />
+                      ) : (
+                        <NextButton next={next} fields={state} error={error} />
+                      )}
                       <BackButton step={step} steps={steps} />
                     </div>
                   </div>
@@ -153,7 +188,7 @@ class Step extends Component {
                 height: 100vh;
                 position: fixed;
                 background: url('${
-                  stepFilledValues ? bgImg : '/static/recipe-bg.jpg'
+                  stepFilledValues || values ? bgImg : '/static/recipe-bg.jpg'
                 }') no-repeat center center;
                 background-size: cover;
                 filter: blur(2px);
@@ -164,11 +199,12 @@ class Step extends Component {
             .step-form-container {
               width: 90%;
               margin: 120px auto 30px auto;
-              padding: 10px 0px 30px 0px;
+              padding: 10px 0px 10px 0px;
               background: #fff;
               border-radius: 0px 8px 8px 8px;
               position: relative;
               box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
+              z-index: 90;
             }
 
             .step-form-container:before {
@@ -222,4 +258,15 @@ class Step extends Component {
   }
 }
 
-export default Step;
+const mapDispatchToProps = dispatch => {
+  return {
+    callApi: (endpoint, options) => dispatch(callApiP(endpoint, options)),
+    successSubmitRecipe: () => dispatch(successSubmitRecipe()),
+    failSubmitRecipe: message => dispatch(failSubmitRecipe(message))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Step);

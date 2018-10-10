@@ -23,7 +23,9 @@ export const actionTypes = {
   FAIL_DELETE_RECIPE: 'FAIL_DELETE_RECIPE',
   SET_SCHEMA: 'SET_SCHEMA',
   SET_VALUES_FORM: 'SET_VALUES_FORM',
-  RESET_VALUES_FORM: 'RESET_VALUES_FORM'
+  RESET_VALUES_FORM: 'RESET_VALUES_FORM',
+  SUCCESS_SUBMIT_RECIPE: 'SUCCESS_SUBMIT_RECIPE',
+  FAIL_SUBMIT_RECIPE: 'FAIL_SUBMIT_RECIPE'
 };
 
 //MIDDLEWARES
@@ -124,33 +126,6 @@ export const exitEdit = (type, newInfo = null, withSave = false) => (
   }
 };
 
-// export const tryDeleteRecipe = () => async (dispatch, getState) => {
-//   try {
-//     dispatch({ type: actionTypes.START_LOADING });
-//     const recipe = getState().recipe;
-//     const { endpoint, options } = apiEndpoints.deleteRecipe;
-
-//     const rawResponse = await fetch(endpoint + `/${recipe._id}`, options);
-//     const json = await rawResponse.json();
-
-//     if (rawResponse.status !== 200) {
-//       const e = new Error(json.meta.message || rawResponse.statusText);
-//       e.status = rawResponse.status;
-//       throw e;
-//     }
-
-//     dispatch({ type: actionTypes.STOP_LOADING });
-//     dispatch(successSnackbar('Recipe deleted'));
-
-//     Router.push('/recipes');
-//   } catch (e) {
-//     dispatch({
-//       type: actionTypes.FAIL_DELETE_RECIPE,
-//       payload: 'Recipe not deleted'
-//     });
-//   }
-// };
-
 //Action creator
 
 export const openModal = () => {
@@ -232,5 +207,19 @@ export const setValuesForm = values => {
   return {
     type: actionTypes.SET_VALUES_FORM,
     payload: values
+  };
+};
+
+export const successSubmitRecipe = () => {
+  return {
+    type: actionTypes.SUCCESS_SUBMIT_RECIPE,
+    payload: 'Recipe successfully created'
+  };
+};
+
+export const failSubmitRecipe = message => {
+  return {
+    type: actionTypes.FAIL_SUBMIT_RECIPE,
+    payload: message
   };
 };

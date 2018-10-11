@@ -47,6 +47,8 @@ export default ({ values }) => {
 
         .title {
           margin: 48px 0 0 0;
+          font-weight: 900;
+          color: #26335e;
         }
 
         .subtitle {

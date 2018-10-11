@@ -1,12 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 
-import apiCall from '../frontend/utils/apiCall';
-import Form from '../frontend/shared/Form';
-import NewRecipeForm from '../frontend/component/NewRecipeForm';
-import Steps from '../frontend/shared/form/Steps';
-import apiEndpoints from '../frontend/utils/apiEndpoints';
 import { connect } from 'react-redux';
 import { setSchema, callApiP } from '../store/actions';
 import WelcomePage from '../frontend/component/new_recipe/WelcomePage';
@@ -46,7 +40,7 @@ class NewRecipe extends Component {
   }
 
   render() {
-    const { newRecipeSchema, error } = this.props;
+    const { error } = this.props;
 
     if (error) {
       return <ErrorPage statusCode={error.status} />;
@@ -57,50 +51,6 @@ class NewRecipe extends Component {
         <Head>
           <title>New Recipe | React Recipes</title>
         </Head>
-        {/* <Link
-          href="/new_recipe/step?stepName=general&step=1"
-          as="/new_recipe/general"
-        >
-          <a style={{ marginTop: '70px', display: 'inline-block' }}>Ciao</a>
-        </Link>
-        <Form
-          endpoint={apiEndpoints.newRecipe.endpoint}
-          options={apiEndpoints.newRecipe.options}
-          data={newRecipeSchema}
-          render={(
-            state,
-            onChange,
-            onBlur,
-            onSubmit,
-            validateSingle,
-            validateChunk,
-            addNewField,
-            deleteField,
-            formToAPI
-          ) => (
-            <Steps
-              validateChunk={validateChunk}
-              max="5"
-              render={(steps, goNext, goBack, jumpBack) => (
-                <NewRecipeForm
-                  form={state}
-                  changed={onChange}
-                  blurred={onBlur}
-                  submitted={onSubmit}
-                  validate={validateSingle}
-                  addNew={addNewField}
-                  deleteField={deleteField}
-                  steps={steps}
-                  next={goNext}
-                  back={goBack}
-                  jump={jumpBack}
-                  dataToApi={formToAPI}
-                  max="5"
-                />
-              )}
-            />
-          )}
-        /> */}
         <div className="container">
           <WelcomePage />
           <style jsx>{`

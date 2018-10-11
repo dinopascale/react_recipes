@@ -64,6 +64,18 @@ class Step extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.step !== '1') {
+      Router.push('/new_recipe');
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (window) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   submitRecipe = async () => {
     const {
       values,
@@ -81,8 +93,7 @@ class Step extends Component {
       successSubmitRecipe();
       Router.push(`/recipe?id=${newRecipeId}`, `/r/${newRecipeId}`);
     } catch (e) {
-      console.log(e);
-      //   failSubmitRecipe(e);
+      failSubmitRecipe(e);
     }
   };
 
@@ -96,8 +107,6 @@ class Step extends Component {
       schema,
       values
     } = this.props;
-
-    console.log(stepFilledValues);
 
     const isRecap = stepName === 'recap';
     return (

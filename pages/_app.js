@@ -1,6 +1,8 @@
 import App, { Container } from 'next/app';
 import React from 'react';
 
+import { refreshSession } from '../store/actions';
+
 import withReduxStore from '../store/withReduxStore';
 import { Provider } from 'react-redux';
 
@@ -78,6 +80,15 @@ class MyApp extends App {
     }
 
     return { pageProps };
+  }
+
+  componentDidMount() {
+    const { reduxStore } = this.props;
+    const { expires } = reduxStore.getState().auth;
+    const isUser = !!expires;
+    if (isUser) {
+      reduxStore.dispatch(refreshSession(expires));
+    }
   }
 
   render() {

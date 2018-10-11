@@ -3,6 +3,8 @@ import SingleTextarea from '../shared/form/SingleTextarea';
 
 export default ({ form, changed, blurred }) => (
   <form className="edit-user-form">
+    <div className="avatar-container" />
+    <h5 className="title">Edit your account</h5>
     <SingleInput
       field={form.avatar}
       change={changed(form.avatar.name)}
@@ -25,11 +27,38 @@ export default ({ form, changed, blurred }) => (
     <style jsx>{`
       .edit-user-form {
         flex: 0 0 95%;
-        margin: 90px 0 40px 0;
+        margin: 120px 0 40px 0;
         z-index: 110;
         background: #fff;
-        padding: 30px 16px 10px 16px;
+        padding: 70px 16px 10px 16px;
         border-radius: 4px;
+        position: relative;
+      }
+
+      .avatar-container {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        top: -50px;
+        left: 52%;
+        transform: translateX(-52%);
+        background: #cad1de url('${
+          form.avatar ? form.avatar.value : '/static/chef.png'
+        }') no-repeat center center;
+        background-size: cover;
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+
+      .title {
+        margin: 0 0 24px 0;
+        font-weight: 900;
       }
     `}</style>
   </form>

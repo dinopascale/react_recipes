@@ -27,12 +27,12 @@ async function getUserInfo(appContext) {
     headers: { cookie: appContext.ctx.req.headers.cookie }
   });
   const json = await resp.json();
-  console.log(json.data);
   return {
     auth: {
       user: {
         ...json.data.user
-      }
+      },
+      expires: new Date(+json.meta.sessionExpires)
     }
   };
 }
@@ -47,6 +47,7 @@ export default App => {
           reduxStore = getOrCreateStore(userStore);
         }
       }
+
       appContext.ctx.reduxStore = reduxStore;
 
       let appProps = {};

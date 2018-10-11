@@ -30,6 +30,7 @@ const apiEndpoints = {
   logout: { endpoint: '/api/user/me/logout', options: fetchOptions.POST },
   login: { endpoint: '/api/user/login', options: fetchOptions.POST },
   register: { endpoint: '/api/user/signup', options: fetchOptions.POST },
+  refresh: { endpoint: '/api/user/refresh', options: fetchOptions.GET },
   editRecipe: { endpoint: '/api/recipe', options: fetchOptions.PATCH },
   deleteRecipe: { endpoint: '/api/recipe', options: fetchOptions.DELETE },
   editUser: { endpoint: '/api/user', options: fetchOptions.PATCH },

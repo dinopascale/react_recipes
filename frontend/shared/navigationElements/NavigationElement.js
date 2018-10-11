@@ -7,7 +7,7 @@ export default ({ href, as, title, icon }) => (
     as={as}
     color="#555"
     focusColor="#10aeb2"
-    activeColor="#10aeb2"
+    activeColor="#06b4fe"
   >
     <p>
       {icon ? (
@@ -20,6 +20,10 @@ export default ({ href, as, title, icon }) => (
     <style jsx>{`
       span {
         margin-right: 10px;
+      }
+
+      p {
+        margin: 10px 0;
       }
     `}</style>
   </ActiveLink>

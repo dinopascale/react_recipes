@@ -38,12 +38,14 @@ router.post('/user/login', async (req, res, next) => {
     const user = await User.findByCredentials(email, password);
 
     const token = await user.generateAuthToken();
+    const expiresIn = Date.now() + 3600000;
 
     res
       .status(200)
-      .cookie('token', token, { maxAge: 3600000 })
+      .cookie('token', token, { expires: new Date(expiresIn) })
+      .cookie('tokenExpireDate', expiresIn)
       .json({
-        meta: { message: 'Login Success' },
+        meta: { message: 'Login Success', sessionExpires: expiresIn },
         data: {
           userInfo: {
             username: user.username,
@@ -67,12 +69,14 @@ router.post('/user/signup', async (req, res, next) => {
     const user = await new User({ email, password, username }).save();
 
     const token = await user.generateAuthToken();
+    const expiresIn = Date.now() + 3600000;
 
     res
       .status(200)
-      .cookie('token', token, { maxAge: 3600000 })
+      .cookie('token', token, { expires: new Date(expiresIn) })
+      .cookie('tokenExpireDate', expiresIn)
       .json({
-        meta: { message: 'Registration completed!' },
+        meta: { message: 'Registration completed!', sessionExpires: expiresIn },
         data: {
           userInfo: {
             username: user.username,
@@ -91,30 +95,73 @@ router.post('/user/signup', async (req, res, next) => {
 //USER LOGOUT
 
 router.post('/user/me/logout', checkAuth, (req, res, next) => {
-  res.cookie('token', '', { expires: new Date(0) }).json({
-    meta: { message: 'Logout success' },
-    data: {}
-  });
+  res
+    .cookie('token', '', { expires: new Date(0) })
+    .cookie('tokenExpireDate', '', { expires: new Date(0) })
+    .json({
+      meta: { message: 'Logout success' },
+      data: {}
+    });
 });
 
 //GET MY ACCOUNT
 
 router.get('/user/me', checkAuth, async (req, res, next) => {
   try {
-    const userId = new ObjectId(res.locals.issuerId);
+    const { issuerId, _expiresIn } = res.locals;
+    const userId = new ObjectId(issuerId);
     const me = await User.findOne({ _id: userId }).select(
       'username avatar bio'
     );
 
     if (!me) {
       return res.status(404).json({
-        meta: { message: `No user with ID: ${id} was found` },
+        meta: { message: `No user with ID: ${userId} was found` },
         data: {}
       });
     }
 
-    res.status(200).json({ meta: { message: 'Ok' }, data: { user: me } });
+    res.status(200).json({
+      meta: { message: 'Ok', sessionExpires: _expiresIn },
+      data: { user: me }
+    });
   } catch (e) {
+    e.status = 400;
+    next(e);
+  }
+});
+
+router.get('/user/refresh', checkAuth, async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    const { issuerId } = res.locals;
+    const userId = new ObjectId(issuerId);
+    const me = await User.findOne({ _id: userId }).select(
+      'username avatar bio'
+    );
+
+    if (!me) {
+      return res.status(404).json({
+        meta: { message: `No user with ID: ${userId} was found` },
+        data: {}
+      });
+    }
+
+    const expiresIn = Date.now() + 3600000;
+    // const expiresIn = Date.now() + 900000;
+
+    res
+      .cookie('token', token, { expires: new Date(expiresIn) })
+      .cookie('tokenExpireDate', expiresIn)
+      .json({
+        meta: { message: 'Ok' },
+        data: { expiresIn }
+      });
+    // res.json({
+    //   greet: 'ciao'
+    // });
+  } catch (e) {
+    console.log(e);
     e.status = 400;
     next(e);
   }
@@ -250,5 +297,7 @@ router.post('/s/user', async (req, res, next) => {
     next(e);
   }
 });
+
+//refresh cookie
 
 module.exports = router;

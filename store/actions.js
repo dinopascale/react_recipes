@@ -1,4 +1,5 @@
 import Router from 'next/router';
+import apiEndpoints from '../frontend/utils/apiEndpoints';
 
 export const actionTypes = {
   TRY_LOGIN: 'TRY_LOGIN',
@@ -7,6 +8,9 @@ export const actionTypes = {
   TRY_LOGOUT: 'TRY_LOGOUT',
   LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
   LOGOUT_FAIL: 'LOGOUT_FAIL',
+  SET_NEW_EXPIRES: 'SET_NEW_EXPIRES',
+  START_INTERVAL: 'START_INTERVAL',
+  STOP_INTERVAL: 'STOP_INTERVAL',
   NEW_ERROR_MESSAGE: 'NEW_ERROR_MESSAGE',
   SHOW_SNACKBAR: 'SHOW_SNACKBAR',
   HIDE_SNACKBAR: 'HIDE_SNACKBAR',
@@ -29,6 +33,24 @@ export const actionTypes = {
 };
 
 //MIDDLEWARES
+
+export const refreshSession = expires => async (dispatch, getState) => {
+  //   const { expires } = getState().auth;
+  console.log('expires', expires);
+  const intervalToRefresh = new Date(expires) - new Date() - 180000;
+  const { endpoint, options } = apiEndpoints.refresh;
+
+  const interval = setInterval(async () => {
+    const json = await dispatch(callApiP(endpoint, options));
+    const newExpires = new Date(+json.data.expiresIn);
+    dispatch(newExpiresDate(newExpires));
+    clearInterval(interval);
+    dispatch(stopInterval());
+    dispatch(refreshSession(newExpires));
+  }, intervalToRefresh);
+
+  dispatch(startInterval(interval));
+};
 
 export const callApi = (
   endpoint,
@@ -147,10 +169,10 @@ export const successSnackbar = message => {
   };
 };
 
-export const successLogin = userInfo => {
+export const successLogin = (userInfo, expires) => {
   return {
     type: actionTypes.LOGIN_SUCCESS,
-    payload: userInfo
+    payload: { userInfo, expires }
   };
 };
 
@@ -172,6 +194,13 @@ export const failLogout = error => {
   return {
     type: actionTypes.LOGOUT_FAIL,
     payload: error.message
+  };
+};
+
+export const newExpiresDate = expires => {
+  return {
+    type: actionTypes.SET_NEW_EXPIRES,
+    payload: expires
   };
 };
 
@@ -221,5 +250,18 @@ export const failSubmitRecipe = message => {
   return {
     type: actionTypes.FAIL_SUBMIT_RECIPE,
     payload: message
+  };
+};
+
+export const startInterval = interval => {
+  return {
+    type: actionTypes.START_INTERVAL,
+    payload: interval
+  };
+};
+
+export const stopInterval = () => {
+  return {
+    type: actionTypes.STOP_INTERVAL
   };
 };

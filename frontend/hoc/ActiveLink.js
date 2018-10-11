@@ -22,6 +22,8 @@ const ActiveLink = ({
             flex: 1 0 0;
             cursor: pointer;
             transition: all 0.3s ease-out;
+            padding: 0 6px;
+            margin: 8px 0;
           }
           a:hover,
           a:focus {
@@ -30,6 +32,9 @@ const ActiveLink = ({
           .active {
             color: ${activeColor || '#000'};
             font-weight: bold;
+            border-radius: 20px;
+            background-color: rgba(6, 180, 254, 0.3);
+            padding: 0 6px;
           }
           a.active:hover,
           a.active:focus {

@@ -136,25 +136,6 @@ class Recipes extends React.Component {
     } catch (e) {
       errorModal(e);
     }
-
-    // await callApi(
-    //   endpoint,
-    //   null,
-    //   json => {
-    //     this.setState(prevState => ({
-    //       recipesList: fromScroll
-    //         ? [...prevState.recipesList, ...json.data.results]
-    //         : json.data.results,
-    //       sortBy: sort === 'Most Popular' ? 'Most Popular' : 'Most Recent',
-    //       filterBy: tag ? tag : prevState.tag,
-    //       page: fromScroll ? prevState.page + 1 : 1,
-    //       total: json.meta.total
-    //     }));
-    //   },
-    //   error => {
-    //     errorModal(error);
-    //   }
-    // );
   };
 
   renderCallToAction = () => {
@@ -242,7 +223,7 @@ class Recipes extends React.Component {
             .divider {
               border: 1px solid;
               color: #777e8e;
-              margin: 40px 0 20px 0;
+              margin: 20px 0 20px 0;
             }
           `}</style>
         </div>

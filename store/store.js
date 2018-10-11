@@ -7,6 +7,7 @@ import {
   snackbar,
   loading,
   toEdit,
+  interval,
   recipe,
   confirmationModal,
   newRecipe
@@ -17,6 +18,7 @@ const appReducer = combineReducers({
   snackbar,
   loading,
   toEdit,
+  interval,
   recipe,
   newRecipe,
   confirmationModal

@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
   };
 
   try {
-    const { token } = req.cookies;
+    const { token, tokenExpireDate } = req.cookies;
 
     if (!token) {
       throw clearTokenAndCreateError();
@@ -26,6 +26,7 @@ module.exports = async (req, res, next) => {
 
     if (userExist) {
       res.locals.issuerId = decoded.userId;
+      res.locals._expiresIn = tokenExpireDate;
       next();
     } else {
       throw new Error('no user found');

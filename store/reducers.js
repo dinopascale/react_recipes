@@ -1,7 +1,8 @@
 import { actionTypes } from './actions';
 
 const authInitialState = {
-  user: null
+  user: null,
+  expires: null
 };
 
 const confirmationModaInitialState = {
@@ -22,6 +23,17 @@ const recipeInitialState = null;
 const newRecipeInitialState = {
   schema: [],
   values: null
+};
+
+export const interval = (state = null, action) => {
+  switch (action.type) {
+    case actionTypes.START_INTERVAL:
+      return action.payload;
+    case actionTypes.STOP_INTERVAL:
+      return null;
+    default:
+      return state;
+  }
 };
 
 export const loading = (state = null, action) => {
@@ -90,8 +102,9 @@ export const auth = (state = authInitialState, action) => {
       return {
         ...state,
         user: {
-          ...action.payload
-        }
+          ...action.payload.userInfo
+        },
+        expires: action.payload.expires
       };
     case actionTypes.LOGIN_FAIL:
       return {
@@ -108,6 +121,11 @@ export const auth = (state = authInitialState, action) => {
           avatar,
           bio
         }
+      };
+    case actionTypes.SET_NEW_EXPIRES:
+      return {
+        ...state,
+        expires: action.payload
       };
     default:
       return state;

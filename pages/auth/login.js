@@ -4,7 +4,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
 
-import { callApi, successLogin, failLogin } from '../../store/actions';
+import {
+  callApi,
+  successLogin,
+  failLogin,
+  refreshSession
+} from '../../store/actions';
 import LoginForm from '../../frontend/component/LoginForm';
 import Spinner from '../../frontend/component/Spinner';
 
@@ -57,8 +62,9 @@ class Login extends Component {
   };
 
   loggedInAndPushToRecipes = json => {
-    const { loginSuccess, router } = this.props;
-    loginSuccess(json.data.userInfo);
+    const { loginSuccess, router, startIntervalToRefresh } = this.props;
+    loginSuccess(json.data.userInfo, json.meta.sessionExpires);
+    startIntervalToRefresh(json.meta.sessionExpires);
     router.push('/recipes');
   };
 
@@ -156,7 +162,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loginSuccess: userInfo => dispatch(successLogin(userInfo)),
+    startIntervalToRefresh: expires => dispatch(refreshSession(expires)),
+    loginSuccess: (userInfo, expires) =>
+      dispatch(successLogin(userInfo, expires)),
     loginFail: error => dispatch(failLogin(error)),
     callApi: (endpoint, options, onSuccess, onFail) =>
       dispatch(callApi(endpoint, options, onSuccess, onFail))

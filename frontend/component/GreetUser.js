@@ -7,36 +7,37 @@ export default ({ user }) => {
         <Link prefetch as="/u/me" href={`/user?userId=${user._id}&isMe=true`}>
           <div className="avatar-container" />
         </Link>
-        <h5 className="title">{user.username}!</h5>
+        <div className="user-info-container">
+          <h5 className="title">Hi, {user.username}!</h5>
+          <p className="subtitle">Take a look at these awesome Recipes!</p>
+        </div>
       </div>
-      <div>
-        <p className="subtitle">Take a look at these awesome Recipes!</p>
-      </div>
+
       <style jsx>{`
         .greet-user-container {
-          margin: 0px auto 20px auto;
+          margin: 0px auto 0px auto;
           width: 100%;
           border-radius: 4px;
         //   display: flex;
-        //   flex-flow: row wrap;
+        //   flex-flow: row nowrap;
         //   justify-content: space-between;
         //   position: relative;
         }
 
-            // .user-info-container {
-            //     flex: 0 0 50%;
-            // }
+            .user-info-container {
+                flex: 0 0 50%;
+            }
 
         .user-row {
             display: flex;
-            flex-flow: row wrap;
+            flex-flow: row nowrap;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .avatar-container {
-          width: 80px;
-          height: 80px;
+          width: 60px;
+          height: 60px;
           border-radius: 50%;
           background: #f1f1f1 url("${user.avatar}") no-repeat center center;
           background-size: cover;

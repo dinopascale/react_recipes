@@ -25,7 +25,18 @@ export default props => {
 
   if (router.asPath === '/u/me') {
     element = (
-      <ActionButton handleClick={editUser} customStyle={{ color: '#06b4fe' }}>
+      <ActionButton
+        handleClick={editUser}
+        customStyle={{
+          background: 'none',
+          color: '#06b4fe',
+          border: 'none',
+          width: '100%',
+          height: '36px',
+          outline: 'none',
+          textAlign: 'right'
+        }}
+      >
         Edit
       </ActionButton>
     );
@@ -50,8 +61,13 @@ export default props => {
       <ActionButton
         handleClick={access}
         customStyle={{
-          backgroundColor: '#fff',
-          color: '#06b4fe'
+          background: 'none',
+          color: '#06b4fe',
+          border: 'none',
+          width: '100%',
+          height: '36px',
+          outline: 'none',
+          textAlign: 'right'
         }}
       >
         Accedi

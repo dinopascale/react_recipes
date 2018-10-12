@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 import ErrorPage from './_error';
 
 import apiEndpoints from '../frontend/utils/apiEndpoints';
@@ -9,7 +9,7 @@ import SingleUser from '../frontend/component/SingleUser';
 import FloatingButton from '../frontend/shared/FloatingButton';
 
 class User extends Component {
-  static async getInitialProps({ req, res, query }) {
+  static async getInitialProps({ req, res, query, reduxStore }) {
     try {
       const isServer = !!req;
       let userId = null;
@@ -35,6 +35,8 @@ class User extends Component {
       }
 
       const { endpoint, options } = apiEndpoints.user;
+      const userInState = reduxStore.getState().auth.user;
+
       isMe = query.isMe || false;
       userId = query.userId;
 
@@ -45,7 +47,7 @@ class User extends Component {
         error => (error = error)
       );
 
-      return { user, error, isMe };
+      return { user, userInState, error, isMe };
     } catch (error) {
       return {
         error
@@ -60,16 +62,37 @@ class User extends Component {
     isLoading: true
   };
 
+  checkAuth = () => {
+    const { router, userInState, user } = this.props;
+
+    if (
+      userInState &&
+      userInState._id === user._id &&
+      router.asPath !== '/u/me'
+    ) {
+      console.log('here caso 1');
+      router.push(`/user?userId=${user._id}&isMe=true`, '/u/me');
+    } else if (
+      !userInState ||
+      (userInState._id !== user._id && router.asPath === '/u/me')
+    ) {
+      console.log('here caso 2');
+      router.push(`/user?userId=${user._id}`, `/u/${user._id}`);
+    }
+  };
+
   async componentDidMount() {
+    console.log('montato');
+    this.checkAuth();
     await this.getUserStatistics();
   }
 
   async componentDidUpdate(prevProps) {
+    // this.checkAuth();
     if (prevProps.user._id !== this.props.user._id) {
       await this.getUserStatistics();
     }
   }
-
   async getUserStatistics() {
     const { endpoint, options } = apiEndpoints.userStatistics;
     const { _id } = this.props.user;

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 import React, { Fragment } from 'react';
 
 import ErrorPage from './_error';
@@ -16,6 +16,20 @@ const loginButton = {
 };
 
 class Index extends React.Component {
+  static async getInitialProps({ req, reduxStore }) {
+    const isServer = !!req;
+    if (!isServer) {
+      const isAuth = !!reduxStore.getState().auth.expires;
+      if (isAuth) {
+        Router.push('/recipes');
+      } else {
+        return {};
+      }
+    }
+
+    return {};
+  }
+
   navigateTo = path => () => {
     const { router } = this.props;
     router.push(path);

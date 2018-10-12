@@ -5,6 +5,7 @@ import { refreshSession } from '../store/actions';
 
 import withReduxStore from '../store/withReduxStore';
 import { Provider } from 'react-redux';
+import { PageTransition } from 'next-page-transitions';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -97,9 +98,27 @@ class MyApp extends App {
       <Container>
         <Provider store={reduxStore}>
           <Layout>
-            <Component {...pageProps} />
+            <PageTransition timeout={300} classNames="page-transition">
+              <Component {...pageProps} />
+            </PageTransition>
           </Layout>
         </Provider>
+        <style jsx global>{`
+          .page-transition-enter {
+            opacity: 0;
+          }
+          .page-transition-enter-active {
+            opacity: 1;
+            transition: opacity 300ms;
+          }
+          .page-transition-exit {
+            opacity: 1;
+          }
+          .page-transition-exit-active {
+            opacity: 0;
+            transition: opacity 300ms;
+          }
+        `}</style>
       </Container>
     );
   }

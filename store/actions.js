@@ -34,22 +34,35 @@ export const actionTypes = {
 
 //MIDDLEWARES
 
-export const refreshSession = expires => async (dispatch, getState) => {
-  //   const { expires } = getState().auth;
-  console.log('expires', expires);
-  const intervalToRefresh = new Date(expires) - new Date() - 180000;
-  const { endpoint, options } = apiEndpoints.refresh;
+const _tryRefresh = (endpoint, options, interval = null) => async dispatch => {
+  const json = await dispatch(callApiP(endpoint, options));
+  const newExpires = new Date(+json.data.expiresIn);
+  dispatch(newExpiresDate(newExpires));
 
-  const interval = setInterval(async () => {
-    const json = await dispatch(callApiP(endpoint, options));
-    const newExpires = new Date(+json.data.expiresIn);
-    dispatch(newExpiresDate(newExpires));
+  if (interval) {
     clearInterval(interval);
     dispatch(stopInterval());
-    dispatch(refreshSession(newExpires));
-  }, intervalToRefresh);
+  }
 
-  dispatch(startInterval(interval));
+  dispatch(refreshSession(newExpires));
+};
+
+export const refreshSession = expires => async (dispatch, getState) => {
+  const { endpoint, options } = apiEndpoints.refresh;
+  const intervalBeforeRefresh = new Date(expires) - new Date();
+  const treshold = 180000;
+  let interval = null;
+
+  console.log(intervalBeforeRefresh - treshold <= 0);
+
+  if (intervalBeforeRefresh - treshold <= 0) {
+    dispatch(_tryRefresh(endpoint, options));
+  } else {
+    interval = setInterval(() => {
+      dispatch(_tryRefresh(endpoint, options, interval));
+    }, intervalBeforeRefresh - treshold);
+    dispatch(startInterval(interval));
+  }
 };
 
 export const callApi = (

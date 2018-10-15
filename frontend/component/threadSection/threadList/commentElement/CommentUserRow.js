@@ -55,13 +55,14 @@ export default ({
         }
 
         .user-avatar {
+          background-repeat: no-repeat;
           background-position: center center;
           background-size: contain;
           width: 36px;
           height: 36px;
           border-radius: 50%;
           margin-right: 10px;
-          flex: 0 0 10%;
+          //   flex: 0 0 10%;
         }
 
         .user-name-row {

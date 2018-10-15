@@ -75,7 +75,7 @@ const RecipesList = ({ recipes, getRecipes, sortBy, filterBy, isEnd }) => {
         .recipe-list-options-container {
           display: flex;
           flex-flow: row nowrap;
-          justify-content: space-between;
+          justify-content: flex-start;
           margin-bottom: 20px;
         }
 

@@ -6,7 +6,8 @@ export default ({ next, fields, error }) => {
     margin: '10px auto',
     flex: '1 0 100%',
     backgroundColor: 'rgb(6, 180, 254)',
-    color: '#fff'
+    color: '#fff',
+    width: '150px'
   };
 
   if (error) {
@@ -14,7 +15,8 @@ export default ({ next, fields, error }) => {
       margin: '10px auto',
       flex: '1 0 100%',
       backgroundColor: '#cc0000',
-      color: '#fff'
+      color: '#fff',
+      width: '150px'
     };
   }
 

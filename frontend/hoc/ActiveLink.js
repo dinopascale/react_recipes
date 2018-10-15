@@ -8,7 +8,9 @@ const ActiveLink = ({
   as,
   color,
   activeColor,
-  focusColor
+  focusColor,
+  full,
+  textAlign
 }) => {
   return (
     <Link prefetch as={as} href={href}>
@@ -38,7 +40,22 @@ const ActiveLink = ({
           }
           a.active:hover,
           a.active:focus {
-            color: #ecf284;
+            color: #26335e;
+          }
+
+          @media (min-width: 499px) {
+            a {
+              margin: 0;
+              max-height: 36px;
+              display: flex;
+              justify-content: ${textAlign ? textAlign : 'flex-start'};
+              flex: ${full ? '0 0 100%' : '0 0 24%'};
+              align-items: center;
+            }
+
+            a.active {
+              background-color: #fff;
+            }
           }
         `}</style>
       </a>

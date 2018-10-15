@@ -3,7 +3,7 @@ import { withRouter } from 'next/router';
 
 const WelcomePage = ({ router }) => {
   return (
-    <div>
+    <div className="welcome-container">
       <h4 className="title">Create Your New Recipe!</h4>
       <p className="sub-title body-one">
         It's really simple: click on the button down below and follow the
@@ -23,6 +23,13 @@ const WelcomePage = ({ router }) => {
         </ActionButton>
       </div>
       <style jsx>{`
+        .welcome-container {
+          background: #fff;
+          padding: 24px;
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
         .title {
           color: #26335e;
           font-weight: 900;

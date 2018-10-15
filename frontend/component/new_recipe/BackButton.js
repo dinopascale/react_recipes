@@ -12,7 +12,8 @@ export default ({ step, steps }) => {
       as={`/new_recipe/${steps[+step - 2]}`}
       customStyle={{
         margin: '10px auto',
-        flex: '1 0 100%'
+        flex: '1 0 100%',
+        width: '150px'
       }}
     >
       Back

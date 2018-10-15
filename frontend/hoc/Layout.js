@@ -52,7 +52,7 @@ class Layout extends React.Component {
         >
           <Toolbar
             opened={this.openSideDrawerHandler}
-            isAuth={!!this.props.userInfo}
+            isAuth={this.props.userInfo}
             userId={this.props.userInfo ? this.props.userInfo._id : null}
             editUser={addUserToEdit}
             editRecipe={addRecipeToEdit}
@@ -87,13 +87,7 @@ class Layout extends React.Component {
               background-color: #cad1de;
             }
 
-            .app-container.blurred {
-              //   filter: blur(2px);
-            }
-
             .content {
-              //   max-width: 800px;
-              min-height: 100vh;
               background-color: #cad1de;
               margin: 0 auto;
             }

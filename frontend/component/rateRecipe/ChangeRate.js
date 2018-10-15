@@ -39,6 +39,7 @@ export default props => {
           margin: 0px;
           padding: 30px 0px;
           width: 95%;
+          max-width: 700px;
           border-top: 1px solid #ccc;
           margin-left: auto;
           margin-right: auto;
@@ -56,6 +57,7 @@ export default props => {
           display: flex;
           flex-flow: row nowrap;
           width: 80%;
+          max-width: 400px;
           padding: 0 16px;
           justify-content: space-between;
           margin: 25px auto 40px auto;

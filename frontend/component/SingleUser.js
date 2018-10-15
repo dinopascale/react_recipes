@@ -1,12 +1,41 @@
 import UserStatistics from './singleUser/UserStatistics';
 import UserRecipesList from './singleUser/UserRecipesList';
+import ActionButton from '../shared/ActionButton';
 
-export default ({ user, recipes, comments, rates, isLoading }) => (
+export default ({
+  user,
+  recipes,
+  comments,
+  rates,
+  isLoading,
+  isMe,
+  userToEdit
+}) => (
   <div className="user-info-container">
     <div className="avatar-container" />
     <div className="user-username-container">
       <h5 className="username">{user.username}</h5>
     </div>
+    {isMe ? (
+      <div className="author-action-row">
+        <ActionButton
+          handleClick={userToEdit}
+          customStyle={{
+            marginLeft: '16px',
+            // color: '#06b4fe',
+            background: '#06b4fe',
+            color: '#fff',
+            border: 'none',
+            flex: '0 0 15%',
+            height: '36px',
+            outline: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          Edit
+        </ActionButton>
+      </div>
+    ) : null}
     <div className="user-bio-container">
       <h6 className="section-title">Bio</h6>
       <p className="bio body-one">{user.bio || 'No bio avaible'}</p>
@@ -23,6 +52,7 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
       .user-info-container {
         margin: 150px auto 20px auto;
         width: 95%;
+        max-width: 700px;
         min-height: 100%;
         background: #fff;
         border-radius: 4px;
@@ -62,6 +92,10 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
         font-weight: 900;
       }
 
+      .author-action-row {
+        display: none;
+    }
+
       .bio {
         margin:0;
         color: #777e8e;
@@ -73,6 +107,22 @@ export default ({ user, recipes, comments, rates, isLoading }) => (
         font-weight: 900;
         margin: 0 0 10px 0;
       }
+
+       @media (min-width: 700px) {
+        .user-info-container {
+            padding: 2px 36px;
+        }
+
+        .author-action-row {
+            display: flex;
+            flex-flow: row-nowrap;
+            justify-content: flex-end;
+            margin: 0px 0 32px 0;
+            padding: 16px 0;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+       }
     `}</style>
   </div>
 );

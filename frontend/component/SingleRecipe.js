@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import ActionButton from '../shared/ActionButton';
 
-export default ({ recipe, isAuthor }) => {
+export default ({ recipe, isAuthor, recipeToEdit, openDiscardModal }) => {
   return (
     <div className="single-recipe-container">
       <div className="recipe-img" />
@@ -23,6 +24,36 @@ export default ({ recipe, isAuthor }) => {
             </Link>
           </p>
         </div>
+
+        {isAuthor ? (
+          <div className="author-action-row">
+            <ActionButton
+              handleClick={openDiscardModal}
+              customStyle={{
+                flex: '0 0 15%',
+                color: '#06b4fe'
+              }}
+            >
+              Delete
+            </ActionButton>
+            <ActionButton
+              handleClick={recipeToEdit}
+              customStyle={{
+                marginLeft: '16px',
+                // color: '#06b4fe',
+                background: '#06b4fe',
+                color: '#fff',
+                border: 'none',
+                flex: '0 0 15%',
+                height: '36px',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              Edit
+            </ActionButton>
+          </div>
+        ) : null}
 
         <div className="grid-simple-info">
           <div className="simple-info">
@@ -78,6 +109,7 @@ export default ({ recipe, isAuthor }) => {
         .info-container {
             background: #fff;
             width: 95%;
+            max-width: 700px;
             margin: 0 auto;
             padding: 2px 8px;
         }
@@ -111,11 +143,14 @@ export default ({ recipe, isAuthor }) => {
             cursor:pointer;
         }
 
+        .author-action-row {
+            display: none;
+        }
 
         .grid-simple-info {
             display: flex;
             flex-flow: row wrap;
-            justify-content: space-between;
+            justify-content: flex-start;
         }
 
         .simple-info {
@@ -167,6 +202,30 @@ export default ({ recipe, isAuthor }) => {
             margin-top: 5px;
             line-height: 1.6;
             color: #777e8e;
+        }
+
+        @media (min-width: 700px) {
+            .info-container {
+                padding: 2px 36px;
+            }
+
+            .simple-info {
+                flex: 0 0 33.3333%;
+            }
+
+            .ingredients {
+                width: 50%;
+            }
+
+            .author-action-row {
+                display: flex;
+                flex-flow: row-nowrap;
+                justify-content: flex-end;
+                margin: 0px 0 32px 0;
+                padding: 16px 0;
+                border-top: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+            }
         }
 
       `}</style>

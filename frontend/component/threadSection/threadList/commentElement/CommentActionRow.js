@@ -72,10 +72,17 @@ export default ({
       <style jsx>{`
         .action-row {
           display: flex;
+          max-width: 300px;
           flex-flow: row nowrap;
           justify-content: flex-end;
           align-items: center;
           min-height: 36px;
+        }
+
+        @media (min-width: 700px) {
+          .action-row {
+            justify-content: flex-start;
+          }
         }
       `}</style>
     </div>

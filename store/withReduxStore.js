@@ -43,6 +43,7 @@ export default App => {
       let reduxStore = getOrCreateStore();
       if (isServer) {
         if (appContext.ctx.req.headers.cookie) {
+          console.log('here', appContext.ctx.req.headers.cookie);
           const userStore = await getUserInfo(appContext);
           reduxStore = getOrCreateStore(userStore);
         }

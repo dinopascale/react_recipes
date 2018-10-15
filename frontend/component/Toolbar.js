@@ -49,9 +49,6 @@ class Toolbar extends React.Component {
             height: 56px;
             top: 0;
             left: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             flex: 1 0 0;
             padding: 10px 20px;
             background: #fff;
@@ -61,7 +58,13 @@ class Toolbar extends React.Component {
 
           @media (min-width: 499px) {
             .navbar {
-              padding: 10px 110px;
+              padding: 10px 20px;
+            }
+          }
+
+          @media (min-width: 700px) {
+            .navbar {
+              justify-content: flex-end;
             }
           }
         `}</style>

@@ -1,15 +1,12 @@
-import Link from 'next/link';
-
 export default ({ user }) => {
   return (
     <div className="greet-user-container">
       <div className="user-row">
-        <Link prefetch as="/u/me" href={`/user?userId=${user._id}&isMe=true`}>
-          <div className="avatar-container" />
-        </Link>
         <div className="user-info-container">
-          <h5 className="title">Hi, {user.username}!</h5>
-          <p className="subtitle">Take a look at these awesome Recipes!</p>
+          <h3 className="title">Hi, {user.username}!</h3>
+          <p className="body-one subtitle">
+            Take a look at these awesome Recipes!
+          </p>
         </div>
       </div>
 
@@ -18,15 +15,15 @@ export default ({ user }) => {
           margin: 0px auto 0px auto;
           width: 100%;
           border-radius: 4px;
-        //   display: flex;
-        //   flex-flow: row nowrap;
-        //   justify-content: space-between;
-        //   position: relative;
         }
 
-            .user-info-container {
-                flex: 0 0 50%;
-            }
+        .user-info-container {
+            flex: 0 0 50%;
+            width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
 
         .user-row {
             display: flex;
@@ -56,14 +53,15 @@ export default ({ user }) => {
         }
 
         .title {
-          flex: 0 0 70%;
           color: #26335e;
           font-weight: 900;
           margin-bottom: 10px;
         }
 
         .subtitle {
-          font-size: 14px;
+          color: #777e8e;
+          margin-bottom: 10px;
+          line-height: 1.5;
         }
       `}</style>
     </div>

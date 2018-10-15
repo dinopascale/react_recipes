@@ -49,6 +49,7 @@ export default props => {
           outline: none;
           max-height: 36px;
           max-width: 200px;
+          cursor: pointer;
         }
 
         .action-button:disabled {
@@ -60,6 +61,12 @@ export default props => {
           margin-bottom: 0;
           display: inline-block;
           width: 100%;
+        }
+
+        @media (min-width: 700px) {
+          .action-button {
+            flex: 0 1 10%;
+          }
         }
       `}</style>
     </button>

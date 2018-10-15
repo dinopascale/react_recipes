@@ -213,6 +213,7 @@ class Recipes extends React.Component {
           <style jsx>{`
             .recipes-container {
               width: 90%;
+              max-width: 900px;
               margin: ${marginTop} auto 30px auto;
               border-radius: 8px;
               min-height: 100%;
@@ -224,6 +225,12 @@ class Recipes extends React.Component {
               border: 1px solid;
               color: #777e8e;
               margin: 20px 0 20px 0;
+            }
+
+            @media (min-width: 700px) {
+              .recipes-container {
+                padding: 30px 36px 0px 36px;
+              }
             }
           `}</style>
         </div>

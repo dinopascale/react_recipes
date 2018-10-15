@@ -35,7 +35,13 @@ class Step extends Component {
       res.end();
     }
 
-    const newRecipe = reduxStore.getState().newRecipe;
+    const { newRecipe, auth } = reduxStore.getState();
+    const isAuth = !!auth.expires;
+
+    if (!isAuth) {
+      Router.push('/auth/register');
+      return {};
+    }
 
     const { schema, values } = newRecipe;
     const bgImg = values ? values.img : '/static/recipe-bg.jpg';
@@ -46,7 +52,8 @@ class Step extends Component {
         stepName: query.stepName,
         schema,
         values,
-        bgImg
+        bgImg,
+        isAuth
       };
     }
 
@@ -60,14 +67,15 @@ class Step extends Component {
       stepName: query.stepName,
       stepSchema,
       stepFilledValues,
-      bgImg
+      bgImg,
+      isAuth
     };
   }
 
   componentDidMount() {
-    if (this.props.step !== '1') {
-      Router.push('/new_recipe');
-    }
+    // if (!this.props.isAuth) {
+    //   Router.push('/auth/login');
+    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -207,6 +215,7 @@ class Step extends Component {
 
             .step-form-container {
               width: 90%;
+              max-width: 500px;
               margin: 120px auto 30px auto;
               padding: 10px 0px 10px 0px;
               background: #fff;
@@ -259,13 +268,20 @@ class Step extends Component {
               margin-top: 40px;
               padding: 16px 0;
               display: flex;
-              flex-flow: row wrap;
+            //   flex-flow: row wrap;
+            flex-flow:column;
             }
           `}</style>
       </Fragment>
     );
   }
 }
+
+// const mapStateToProps = state => {
+//   return {
+//     isAuth: !!state.auth.expires
+//   };
+// };
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -276,6 +292,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
+  //   mapStateToProps,
   null,
   mapDispatchToProps
 )(Step);

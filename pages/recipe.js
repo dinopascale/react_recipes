@@ -10,12 +10,11 @@ import SingleRecipe from '../frontend/component/SingleRecipe';
 
 import {
   actionTypes,
-  addItemToEdit,
-  createErrorMessage,
   callApi,
   addRecipe,
   closeModal,
-  openModal
+  openModal,
+  editRecipeInfo
 } from '../store/actions';
 import IntoView from '../frontend/hoc/IntoView';
 import apiEndpoints from '../frontend/utils/apiEndpoints';
@@ -123,6 +122,7 @@ class Recipe extends React.Component {
       modalIsOpen,
       closeModal,
       openModal,
+      addRecipeToEdit,
       isAuthenticated
     } = this.props;
 
@@ -134,8 +134,8 @@ class Recipe extends React.Component {
       <Fragment>
         <Head>
           <title>
-            {recipe.name + ' | React Recipes' ||
-              'Fantastic Recipe | React Recipes'}
+            {recipe.name + ' - React Recipes' ||
+              'Fantastic Recipe - React Recipes'}
           </title>
         </Head>
         <div className="recipe-c">
@@ -148,67 +148,76 @@ class Recipe extends React.Component {
               onCancle={closeModal}
             />
           ) : null}
-          <SingleRecipe recipe={recipe} isAuthor={isAuthor} />
-          {recipe.sharable ? (
-            <Fragment>
-              <IntoView
-                render={isVisible => (
-                  <RateRecipe
-                    ratedBefore={this.props.recipe.ratedBefore}
-                    userRate={this.props.recipe.userRateValue}
-                    rateValue={this.props.recipe.rateValue}
-                    rateCount={this.props.recipe.rateCount}
-                    isAuth={this.props.isAuthenticated.user}
-                    isAuthor={isAuthor}
-                    recipeId={recipe._id}
-                    isVisible={isVisible}
-                  />
-                )}
-              />
-              <ThreadsListApi
-                type="threads"
-                id={this.props.recipe._id}
-                render={(
-                  state,
-                  loadData,
-                  showNewThread,
-                  hideNewThread,
-                  setNewThreadRef,
-                  submitNewThread,
-                  setEditableElement,
-                  enterEditMode,
-                  exitEditMode,
-                  submitChangeElement,
-                  deleteElement,
-                  rateElement
-                ) => (
-                  <IntoView
-                    render={isVisible => (
-                      <ThreadSection
-                        listInfo={state}
-                        loadThreads={loadData}
-                        isAuthor={isAuthor}
-                        showNewThread={showNewThread}
-                        hideNewThread={hideNewThread}
-                        setNewThreadRef={setNewThreadRef}
-                        setEditableRef={setEditableElement}
-                        submitNewThread={submitNewThread}
-                        isAuth={isAuthenticated.user}
-                        isVisible={isVisible}
-                        enterEditMode={enterEditMode}
-                        exitEditMode={exitEditMode}
-                        submitChangeElement={submitChangeElement}
-                        deleteElement={deleteElement}
-                        rateElement={rateElement}
-                      />
-                    )}
-                  />
-                )}
-              />
-            </Fragment>
-          ) : null}
+          <div style={{ display: 'flex', flexFlow: 'column' }}>
+            <SingleRecipe
+              recipe={recipe}
+              isAuthor={isAuthor}
+              recipeToEdit={addRecipeToEdit}
+              openDiscardModal={openModal}
+            />
+            {recipe.sharable ? (
+              <Fragment>
+                <IntoView
+                  render={isVisible => (
+                    <RateRecipe
+                      ratedBefore={this.props.recipe.ratedBefore}
+                      userRate={this.props.recipe.userRateValue}
+                      rateValue={this.props.recipe.rateValue}
+                      rateCount={this.props.recipe.rateCount}
+                      isAuth={this.props.isAuthenticated.user}
+                      isAuthor={isAuthor}
+                      recipeId={recipe._id}
+                      isVisible={isVisible}
+                    />
+                  )}
+                />
+                <ThreadsListApi
+                  type="threads"
+                  id={this.props.recipe._id}
+                  render={(
+                    state,
+                    loadData,
+                    showNewThread,
+                    hideNewThread,
+                    setNewThreadRef,
+                    submitNewThread,
+                    setEditableElement,
+                    enterEditMode,
+                    exitEditMode,
+                    submitChangeElement,
+                    deleteElement,
+                    rateElement
+                  ) => (
+                    <IntoView
+                      render={isVisible => (
+                        <ThreadSection
+                          listInfo={state}
+                          loadThreads={loadData}
+                          isAuthor={isAuthor}
+                          showNewThread={showNewThread}
+                          hideNewThread={hideNewThread}
+                          setNewThreadRef={setNewThreadRef}
+                          setEditableRef={setEditableElement}
+                          submitNewThread={submitNewThread}
+                          isAuth={isAuthenticated.user}
+                          isVisible={isVisible}
+                          enterEditMode={enterEditMode}
+                          exitEditMode={exitEditMode}
+                          submitChangeElement={submitChangeElement}
+                          deleteElement={deleteElement}
+                          rateElement={rateElement}
+                        />
+                      )}
+                    />
+                  )}
+                />
+              </Fragment>
+            ) : null}
+          </div>
           <style jsx>{`
             .recipe-c {
+              //   display: flex;
+              //   justify-content: center;
               height: ${modalIsOpen ? '100vh' : 'auto'};
               margin-bottom: 40px;
             }
@@ -228,7 +237,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRecipeToEdit: recipe => dispatch(addItemToEdit(recipe)),
+    addRecipeToEdit: () => dispatch(editRecipeInfo()),
     callApi: (endpoint, options, onSuccess, onFail) =>
       dispatch(callApi(endpoint, options, onSuccess, onFail)),
     onError: () =>

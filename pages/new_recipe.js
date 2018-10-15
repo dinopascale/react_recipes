@@ -56,9 +56,8 @@ class NewRecipe extends Component {
           <style jsx>{`
             .container {
               width: 90%;
-              margin: 90px auto 30px auto;
-              padding: 30px 16px 20px 16px;
-              background: #fff;
+              margin: 0 auto;
+              padding: 160px 16px 20px 16px;
               border-radius: 8px;
             }
           `}</style>

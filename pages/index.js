@@ -78,9 +78,9 @@ class Index extends React.Component {
 
           .title-action {
             width: 90%;
+            max-width: 500px;
             margin: 0 auto;
             padding: 30px 16px;
-            text-align: center;
             display: flex;
             flex-flow: column;
             justify-content: center;
@@ -116,7 +116,25 @@ class Index extends React.Component {
             align-items: center;
           }
 
-          @keyframes;
+          @media (min-width: 700px) {
+            .title-action {
+              padding: 0 100px;
+              width: 100%;
+              max-width: 100%;
+              height: 100%;
+              justify-content: center;
+              align-items: flex-start;
+              border-radius: 0;
+            }
+
+            .title {
+              font-size: 76px;
+            }
+
+            .subtitle {
+              font-size: 32px;
+            }
+          }
         `}</style>
       </Fragment>
     );

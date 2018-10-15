@@ -7,6 +7,8 @@ import ActionButton from '../../shared/ActionButton';
 import DropdownList from '../../hoc/DropdownList';
 import DropdownMenu from './navMode/DropdownMenu';
 import BackButton from './navMode/BackButton';
+import DropdownDesktop from './navMode/DropdownDesktop';
+import NavigationElement from '../../shared/navigationElements/NavigationElement';
 
 export default props => {
   const {
@@ -61,13 +63,13 @@ export default props => {
       <ActionButton
         handleClick={access}
         customStyle={{
-          background: 'none',
-          color: '#06b4fe',
+          background: '#06b4fe',
+          color: '#fff',
           border: 'none',
           width: '100%',
           height: '36px',
           outline: 'none',
-          textAlign: 'right'
+          cursor: 'pointer'
         }}
       >
         Accedi
@@ -81,25 +83,71 @@ export default props => {
 
   return (
     <Fragment>
-      {router.pathname === '/recipe' ? (
-        <BackButton />
-      ) : (
-        <ToggleButton openSideDrawer={opened} />
-      )}
-      {element}
-      <nav className="desktop-only">
-        <NavigationElements userId={userId} />
-      </nav>
+      <div className="mobile-only">
+        {router.pathname === '/recipe' ? (
+          <BackButton />
+        ) : (
+          <ToggleButton openSideDrawer={opened} />
+        )}
+        {element}
+      </div>
+      <div className="desktop-only">
+        <NavigationElement
+          href="/recipes"
+          title="All recipes"
+          textAlign="flex-end"
+        />
+        {isAuth ? (
+          <DropdownList
+            render={(isOpen, toggleShow, close) => (
+              <DropdownDesktop
+                toggle={toggleShow}
+                isOpen={isOpen}
+                userdId={userId}
+                userInfo={isAuth}
+              />
+            )}
+          />
+        ) : isAuthPage ? null : (
+          <ActionButton
+            handleClick={access}
+            customStyle={{
+              background: '#06b4fe',
+              color: '#fff',
+              border: 'none',
+              width: '100%',
+              height: '36px',
+              outline: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            Accedi
+          </ActionButton>
+        )}
+      </div>
       <style jsx>{`
         .desktop-only {
           display: none;
-          color: #fff;
         }
 
-        @media (min-width: 499px) {
+        .mobile-only {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 100%;
+        }
+
+        @media (min-width: 700px) {
+          .mobile-only {
+            display: none;
+          }
+
           .desktop-only {
-            flex: 1 0 1;
-            display: inherit;
+            display: flex;
+            max-height: 36px;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100%;
           }
         }
       `}</style>

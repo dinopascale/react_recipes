@@ -20,9 +20,6 @@ export default ({ recipeList }) => (
         border-radius: 4px;
         max-height: 150px;
       }
-
-      recipe-info-container {
-      }
     `}</style>
   </div>
 );

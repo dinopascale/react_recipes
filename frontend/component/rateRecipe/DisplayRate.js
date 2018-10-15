@@ -98,6 +98,7 @@ export default props => {
           position: relative;
           background: #fff;
           width: 95%;
+          max-width: 700px;
           margin: 0 auto;
         }
 

@@ -100,6 +100,7 @@ class ThreadSection extends Component {
             padding: 10px 0;
             margin-top: 0px;
             width: 95%;
+            max-width: 700px;
             margin: 0 auto 48px auto;
             border-top: 1px solid #ccc;
           }

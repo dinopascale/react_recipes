@@ -47,6 +47,12 @@ class RecipeCard extends React.PureComponent {
               display: flex;
               flex-flow: column;
               color: #777e8e;
+              cursor: pointer;
+              transition: transform 0.2s ease-out;
+            }
+
+            .recipe-card:hover {
+              transform: scale(1.1);
             }
 
             .recipe-img-container {

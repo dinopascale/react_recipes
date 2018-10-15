@@ -16,16 +16,16 @@ export default ({ recipe }) => (
       <div className="recipe-info-container">
         <div className="recipe-name-container">
           <p className="recipe-name body-one">{recipe.name}</p>
-          <div className="recipe-rate-row">
-            <p className="recipe-rate caption">
-              {recipe.rateCount !== 0
-                ? (recipe.rateValue / recipe.rateCount).toFixed(1)
-                : 0}
-            </p>
-            <span className="icon">
-              <FontAwesomeIcon icon="star" />
-            </span>
-          </div>
+        </div>
+        <div className="recipe-rate-row">
+          <p className="recipe-rate caption">
+            {recipe.rateCount !== 0
+              ? (recipe.rateValue / recipe.rateCount).toFixed(1)
+              : 0}
+          </p>
+          <span className="icon">
+            <FontAwesomeIcon icon="star" />
+          </span>
         </div>
         <div className="recipe-date-container">
           <p className="created caption">{dateInterval(recipe.createdAt)}</p>
@@ -72,6 +72,13 @@ export default ({ recipe }) => (
           flex-flow: column;
       }
 
+      .recipe-name-container {
+          width: 100%;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+          hyphens: auto;
+      }
+
       .recipe-name {
           margin: 0;
           font-size: 15px;
@@ -108,6 +115,12 @@ export default ({ recipe }) => (
           margin: 5px 0 0 0;
           font-size: 12px;
           color: #999;
+      }
+
+      @media (min-width: 700px) {
+          .user-recipe {
+              flex: 0 0 45%;
+          }
       }
     `}</style>
     </div>

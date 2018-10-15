@@ -120,12 +120,14 @@ class Login extends Component {
 
             .auth-link {
               margin-bottom: 20px;
-              color: #10aeb2;
+              color: rgb(6, 180, 254);
               font-size: 14px;
+              cursor: pointer;
             }
 
             .form {
               width: 90%;
+              max-width: 500px;
               margin-top: 50px;
               min-height: 236px;
               background: #fff;

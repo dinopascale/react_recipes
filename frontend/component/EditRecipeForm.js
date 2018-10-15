@@ -66,6 +66,7 @@ export default ({ form, changed, blurred, validate, addNew, deleteField }) => (
     <style jsx>{`
       .edit-recipe-form {
         flex: 0 0 95%;
+        max-width: 700px;
         margin: 90px 0 40px 0;
         z-index: 110;
         background: #fff;

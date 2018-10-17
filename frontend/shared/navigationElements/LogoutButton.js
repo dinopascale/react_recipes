@@ -3,24 +3,20 @@ import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { callApi, successLogout, failLogout } from '../../../store/actions';
+import { callApiP, successLogout, failLogout } from '../../../store/actions';
 import apiEndpoints from '../../utils/apiEndpoints';
 
 class LogoutButton extends React.Component {
   clickHandler = async () => {
     const { logoutSuccess, logoutFail, callApi, router } = this.props;
     const { endpoint, options } = apiEndpoints.logout;
-    await callApi(
-      endpoint,
-      options,
-      json => {
-        router.push('/auth/login');
-        logoutSuccess(json.meta.message);
-      },
-      error => {
-        logoutFail(error.meta);
-      }
-    );
+    try {
+      const json = await callApi(endpoint, options);
+      router.push('/auth/login');
+      logoutSuccess(json.meta.message);
+    } catch (e) {
+      logoutFail(e.meta);
+    }
   };
 
   render() {
@@ -70,8 +66,7 @@ class LogoutButton extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    callApi: (endpoint, options, onSuccess, onFail) =>
-      dispatch(callApi(endpoint, options, onSuccess, onFail)),
+    callApi: (endpoint, options) => dispatch(callApiP(endpoint, options)),
     logoutSuccess: message => dispatch(successLogout(message)),
     logoutFail: error => dispatch(failLogout(error))
   };

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
 
 import {
-  callApi,
+  callApiP,
   successLogin,
   failLogin,
   refreshSession
@@ -40,20 +40,17 @@ class Login extends Component {
       body: JSON.stringify({ filter: 'auth' })
     };
 
-    await callApi(
-      endpoint,
-      options,
-      json =>
-        this.setState({
-          schema: json.data.schema,
-          isLoading: false
-        }),
-      error => {
-        this.setState({
-          isLoading: false
-        });
-      }
-    );
+    try {
+      const json = await callApi(endpoint, options);
+      this.setState({
+        schema: json.data.schema,
+        isLoading: false
+      });
+    } catch (e) {
+      this.setState({
+        isLoading: false
+      });
+    }
   }
 
   state = {
@@ -168,8 +165,7 @@ const mapDispatchToProps = dispatch => {
     loginSuccess: (userInfo, expires) =>
       dispatch(successLogin(userInfo, expires)),
     loginFail: error => dispatch(failLogin(error)),
-    callApi: (endpoint, options, onSuccess, onFail) =>
-      dispatch(callApi(endpoint, options, onSuccess, onFail))
+    callApi: (endpoint, options) => dispatch(callApiP(endpoint, options))
   };
 };
 

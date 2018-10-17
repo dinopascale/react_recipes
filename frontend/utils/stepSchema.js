@@ -16,10 +16,6 @@ const filter = {
   ]
 };
 
-// const booleanToString = bool => {
-//   return bool ? 'true' : 'false';
-// };
-
 export const chunkSchema = (schema, name) => {
   return schema.filter(el => filter[name].includes(el.name));
 };

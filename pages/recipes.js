@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import ErrorPage from './_error';
 
-import { callApi, createErrorMessage, callApiP } from '../store/actions';
+import { createErrorMessage, callApiP } from '../store/actions';
 
 import ActionButton from '../frontend/shared/ActionButton';
 import GreetUser from '../frontend/component/GreetUser';
@@ -248,8 +248,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // callApi: (endpoint, options, onSuccess, onFail) =>
-    //   dispatch(callApi(endpoint, options, onSuccess, onFail)),
     callApi: (endpoint, options) => dispatch(callApiP(endpoint, options)),
     errorModal: error => dispatch(createErrorMessage(error))
   };

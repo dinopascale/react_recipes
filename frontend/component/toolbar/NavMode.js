@@ -113,6 +113,7 @@ export default props => {
             handleClick={access}
             customStyle={{
               background: '#06b4fe',
+              marginLeft: '20px',
               color: '#fff',
               border: 'none',
               width: '100%',

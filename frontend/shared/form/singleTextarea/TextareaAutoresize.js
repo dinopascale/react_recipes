@@ -6,16 +6,6 @@ class TextareaAutoresize extends Component {
     this.state = { textareaStyle: { ...this.props.customStyle } };
   }
 
-  //   state = {
-  //     textareaStyle: null
-  //   };
-
-  //   componentWillMount() {
-  //     this.setState({
-  //       textareaStyle: { ...this.props.customStyle }
-  //     });
-  //   }
-
   autoResize = event => {
     const target = event.target;
     const textareaStyle = {

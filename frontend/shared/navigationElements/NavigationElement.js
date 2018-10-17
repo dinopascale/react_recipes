@@ -29,10 +29,6 @@ export default ({ href, as, title, icon, full, textAlign }) => (
       }
 
       @media (min-width: 499px) {
-        span {
-          //   display: none;
-        }
-
         p {
           margin: 0;
         }

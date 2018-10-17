@@ -47,7 +47,6 @@ class WizardForm extends Component {
         errorValidation: false
       });
       const values = this.extractValues(fields);
-      console.log('values', values);
       setValues(values);
       router.push(
         `/new_recipe/step?stepName=${steps[step]}&step=${+step + 1}`,

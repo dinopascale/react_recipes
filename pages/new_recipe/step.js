@@ -72,12 +72,6 @@ class Step extends Component {
     };
   }
 
-  componentDidMount() {
-    // if (!this.props.isAuth) {
-    //   Router.push('/auth/login');
-    // }
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if (window) {
       window.scrollTo(0, 0);
@@ -268,20 +262,13 @@ class Step extends Component {
               margin-top: 40px;
               padding: 16px 0;
               display: flex;
-            //   flex-flow: row wrap;
-            flex-flow:column;
+              flex-flow:column;
             }
           `}</style>
       </Fragment>
     );
   }
 }
-
-// const mapStateToProps = state => {
-//   return {
-//     isAuth: !!state.auth.expires
-//   };
-// };
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -292,7 +279,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  //   mapStateToProps,
   null,
   mapDispatchToProps
 )(Step);

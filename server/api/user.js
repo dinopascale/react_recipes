@@ -148,7 +148,6 @@ router.get('/user/refresh', checkAuth, async (req, res, next) => {
     }
 
     const expiresIn = Date.now() + 3600000;
-    // const expiresIn = Date.now() + 900000;
 
     res
       .cookie('token', token, { expires: new Date(expiresIn) })
@@ -157,11 +156,7 @@ router.get('/user/refresh', checkAuth, async (req, res, next) => {
         meta: { message: 'Ok' },
         data: { expiresIn }
       });
-    // res.json({
-    //   greet: 'ciao'
-    // });
   } catch (e) {
-    console.log(e);
     e.status = 400;
     next(e);
   }

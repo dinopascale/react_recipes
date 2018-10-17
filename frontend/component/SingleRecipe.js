@@ -40,7 +40,6 @@ export default ({ recipe, isAuthor, recipeToEdit, openDiscardModal }) => {
               handleClick={recipeToEdit}
               customStyle={{
                 marginLeft: '16px',
-                // color: '#06b4fe',
                 background: '#06b4fe',
                 color: '#fff',
                 border: 'none',
@@ -121,7 +120,6 @@ export default ({ recipe, isAuthor, recipeToEdit, openDiscardModal }) => {
             background: #fff;
             border-radius: 5px 5px 0 0;
             padding-top: 8px;
-            // width: 80%;
             margin: 0 auto;
         }
 
@@ -158,7 +156,6 @@ export default ({ recipe, isAuthor, recipeToEdit, openDiscardModal }) => {
             display: flex;
             flex-flow: column;
             text-align: center;
-            // border-bottom: 1px solid #eee;
             padding: 15px 0;
         }
 
@@ -188,7 +185,6 @@ export default ({ recipe, isAuthor, recipeToEdit, openDiscardModal }) => {
 
         .ingredients {
             margin: 5px 0;
-            // padding: 0 10px;
             padding:0;
         }
 

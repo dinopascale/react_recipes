@@ -22,7 +22,6 @@ export default ({
           handleClick={userToEdit}
           customStyle={{
             marginLeft: '16px',
-            // color: '#06b4fe',
             background: '#06b4fe',
             color: '#fff',
             border: 'none',

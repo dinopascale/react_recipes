@@ -62,7 +62,6 @@ export default ({
           height: 36px;
           border-radius: 50%;
           margin-right: 10px;
-          //   flex: 0 0 10%;
         }
 
         .user-name-row {

@@ -39,8 +39,6 @@ export default ({ isOpen, toggleShow, items, close, sortBy }) => {
 
         .choice {
           color: #777e8e;
-          //   font-weight: bold;
-          //   font-size: 14px;
           padding: 10px 0;
           margin: 0;
           width: 100%;

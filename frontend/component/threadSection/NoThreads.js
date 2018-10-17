@@ -11,7 +11,6 @@ export default props => (
       .message {
         color: #bbb;
         line-height: 1.6;
-        // font-style: italic;
         text-align: center;
       }
     `}</style>

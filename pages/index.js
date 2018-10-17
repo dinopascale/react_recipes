@@ -108,7 +108,6 @@ class Index extends React.Component {
             background: #10aeb2;
             height: 60px;
             bottom: 0;
-            // transform: translateY(40px);
             transition: transform 0.3s 1s ease-in;
             color: #fff;
             display: flex;

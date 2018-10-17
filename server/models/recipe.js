@@ -170,30 +170,6 @@ recipeSchema.statics.findAndSortByAvgRate = async function(tag) {
             : 0
       };
     });
-    // const recipes = await Recipe.find({ sharable: true })
-    //   .populate('_creator', 'avatar username')
-    //   .select(
-    //     'name preparationTime cookTime difficulty _creator img tag rateCount rateValue createdAt'
-    //   );
-
-    // const promises = recipes.map(async recipe => {
-    //   const rates = await RecipeRate.find({ recipeId: recipe._id }).select(
-    //     'value'
-    //   );
-    //   const rateCount = rates.length;
-    //   const rateValue =
-    //     rates.length === 0
-    //       ? 0
-    //       : rates.reduce((sum, rate) => sum + rate.value, 0);
-    //   return {
-    //     ...recipe._doc,
-    //     rateCount,
-    //     rateValue,
-    //     avgRate: rateCount !== 0 ? +(rateValue / rateCount).toFixed(2) : 0
-    //   };
-    // });
-
-    // return Promise.all(promises);
   } catch (e) {
     throw e;
   }

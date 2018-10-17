@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head';
-import Router, { withRouter } from 'next/router';
+import { withRouter } from 'next/router';
 import ErrorPage from './_error';
 
 import apiEndpoints from '../frontend/utils/apiEndpoints';

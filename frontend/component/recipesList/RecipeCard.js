@@ -88,7 +88,6 @@ class RecipeCard extends React.PureComponent {
               font-weight: normal;
               margin-top: 4px;
               display: flex;
-              //   align-content: baseline;
               align-items: center;
             }
 

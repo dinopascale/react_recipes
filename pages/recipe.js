@@ -10,7 +10,7 @@ import SingleRecipe from '../frontend/component/SingleRecipe';
 
 import {
   actionTypes,
-  callApi,
+  callApiP,
   addRecipe,
   closeModal,
   openModal,
@@ -103,15 +103,12 @@ class Recipe extends React.Component {
 
     const dynamicEndpoint = endpoint + `/${recipe._id}`;
 
-    await callApi(
-      dynamicEndpoint,
-      options,
-      () => router.push('/recipes'),
-      error => {
-        console.log(error);
-        onError({ status: error.status, message: error.message });
-      }
-    );
+    try {
+      const json = await callApi(dynamicEndpoint, options);
+      router.push('/recipes');
+    } catch (e) {
+      onError({ status: e.status, message: e.message });
+    }
   };
 
   render() {
@@ -216,8 +213,6 @@ class Recipe extends React.Component {
           </div>
           <style jsx>{`
             .recipe-c {
-              //   display: flex;
-              //   justify-content: center;
               height: ${modalIsOpen ? '100vh' : 'auto'};
               margin-bottom: 40px;
             }
@@ -238,8 +233,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addRecipeToEdit: () => dispatch(editRecipeInfo()),
-    callApi: (endpoint, options, onSuccess, onFail) =>
-      dispatch(callApi(endpoint, options, onSuccess, onFail)),
+    callApi: (endpoint, options) => dispatch(callApiP(endpoint, options)),
     onError: () =>
       dispatch({
         type: actionTypes.FAIL_DELETE_RECIPE,

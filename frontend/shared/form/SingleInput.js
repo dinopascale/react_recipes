@@ -98,15 +98,11 @@ export default ({ field, change, blur, type, width }) => (
       }
 
       .form-input.valid {
-        // background: #00e676;
-        // color: #fff;
         border: 1px solid #00e676;
       }
 
       .form-input.invalid {
         border: 1px solid #b71c1c;
-        // color: #fff;
-        // border: none;
       }
 
       .form-icon {

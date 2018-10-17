@@ -3,7 +3,6 @@ import ToggleSwitch from '../../shared/form/ToggleSwitch';
 import SingleRadioButton from '../../shared/form/SingleRadioButton';
 
 export default ({ form, changed, blurred }) => {
-  console.log(form);
   return (
     <div className="form">
       <h5 className="title">General Info</h5>

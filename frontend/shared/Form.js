@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import {
-  callApi,
   successAndCloseModal,
-  createErrorMessage
+  createErrorMessage,
+  callApiP
 } from '../../store/actions';
 
 import { validationRules, validationError } from '../utils/validationRules';
@@ -83,20 +83,17 @@ class Form extends Component {
       successModal,
       errorModal,
       submitSuccess,
-      submitFail
+      submitFail,
+      callApi
     } = this.props;
 
     const optionsWithBody = { ...options, body: JSON.stringify(form) };
-    await this.props.callApi(
-      endpoint,
-      optionsWithBody,
-      json => {
-        submitSuccess ? submitSuccess(json) : successModal();
-      },
-      error => {
-        submitFail ? submitFail(error.message) : errorModal(error.message);
-      }
-    );
+    try {
+      const json = await callApi(endpoint, optionsWithBody);
+      submitSuccess ? submitSuccess(json) : successModal();
+    } catch (e) {
+      submitFail ? submitFail(e.message) : errorModal(e.message);
+    }
   };
 
   handleInputChange = field => (event, data) => {
@@ -114,9 +111,6 @@ class Form extends Component {
         [field]: {
           ...this.state.form[field],
           value
-          // this.state.form[field].instance === 'Boolean'
-          //   ? value === 'true'
-          //   : value
         }
       }
     });
@@ -283,8 +277,7 @@ class Form extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    callApi: (endpoint, options, onSuccess, onFail) =>
-      dispatch(callApi(endpoint, options, onSuccess, onFail)),
+    callApi: (endpoint, options) => dispatch(callApiP(endpoint, options)),
     successModal: () => dispatch(successAndCloseModal()),
     errorModal: error => dispatch(createErrorMessage(error))
   };

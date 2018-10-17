@@ -27,6 +27,14 @@ async function getUserInfo(appContext) {
     headers: { cookie: appContext.ctx.req.headers.cookie }
   });
   const json = await resp.json();
+  //   if (Object.keys(json.data.user).length === 0) {
+  //     return {
+  //       auth: {
+  //         user: null,
+  //         expires: null
+  //       }
+  //     };
+  //   }
   return {
     auth: {
       user: {
@@ -43,8 +51,10 @@ export default App => {
       let reduxStore = getOrCreateStore();
       if (isServer) {
         if (appContext.ctx.req.headers.cookie) {
-          const userStore = await getUserInfo(appContext);
-          reduxStore = getOrCreateStore(userStore);
+          if (appContext.ctx.req.headers.cookie.includes('token')) {
+            const userStore = await getUserInfo(appContext);
+            reduxStore = getOrCreateStore(userStore);
+          }
         }
       }
 

@@ -4,6 +4,7 @@ const nextJS = require('next');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const compression = require('compression');
 
 const custoErrorHandler = require('./middleware/errorHandler');
 const userRoutes = require('./api/user');
@@ -39,6 +40,8 @@ app
             req.db = reactRecipesdb;
             next();
           });
+          server.use();
+          server.use(compression());
 
           //API ROUTES
           server.use('/api', userRoutes);

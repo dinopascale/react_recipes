@@ -63,29 +63,6 @@ export const refreshSession = expires => async (dispatch, getState) => {
   }
 };
 
-// export const callApi = (
-//   endpoint,
-//   options,
-//   successCallBack,
-//   failCallBack
-// ) => async dispatch => {
-//   try {
-//     dispatch({ type: actionTypes.START_LOADING });
-//     const rawResponse = await fetch(endpoint, options);
-//     const json = await rawResponse.json();
-
-//     if (rawResponse.status !== 200) {
-//       const e = new Error(json.meta.message || rawResponse.statusText);
-//       e.status = rawResponse.status;
-//       throw e;
-//     }
-//     dispatch({ type: actionTypes.STOP_LOADING });
-//     successCallBack(json);
-//   } catch (e) {
-//     dispatch({ type: actionTypes.STOP_LOADING });
-//     failCallBack(e);
-//   }
-// };
 
 export const callApiP = (endpoint, options) => async dispatch => {
   try {

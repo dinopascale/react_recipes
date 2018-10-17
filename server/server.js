@@ -40,7 +40,6 @@ app
             req.db = reactRecipesdb;
             next();
           });
-          server.use();
           server.use(compression());
 
           //API ROUTES

@@ -36,4 +36,8 @@ In order to connect the Database with the application, I developed a really basi
 
 ## Client Side
 
-[React](https://reactjs.org/) was my UI library of choice for the webapp's client side.
+[React](https://reactjs.org/) was my UI library of choice for the webapp's client side. I've already used React for some of my projects in the past, but used in some basic way. This time I used some of the advanced patterns (expecially **HOC** and **Render Props**) and I paid more attention to Components Lifecycle in order to obtain better performances.
+
+I decided to use no CSS Framework this time around, but I regretted it and in the end I tried to give a Google Material's feeling to the app.
+
+For the App Global State Managment I used [Redux](https://redux.js.org/) and Redux-Thunk. I decided to use Redux for sharing User information (if authenticated or not and so on) and to centralize interaction with the API and so the global loading/not-loading state of the app and eventual errors.

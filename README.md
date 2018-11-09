@@ -19,3 +19,7 @@ $ npm install
 # Run the app in a dev env
 $ npm run dev
 ```
+
+# Live Example
+
+You can find a [live example of React Recipes](https://recipesreact-hgnhlnvqgz.now.sh/) (It can take a while for the first boot of the app).

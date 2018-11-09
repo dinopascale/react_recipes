@@ -6,7 +6,7 @@ React Recipes is a MERN (MongoDB, Express, React, NodeJS) application. It's a we
 
 To clone and run this application, you'll need [Git](https://git-scm.com/) and [Node.js](https://nodejs.org/en/download/) (which comes with npm) installed on your computer. From your command line:
 
-```
+```source-shell
 # Clone this repository
 $ git clone https://github.com/dinopascale/react_recipes.git
 
